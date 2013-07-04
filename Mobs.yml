@@ -1,0 +1,64 @@
+# zombie, babyzombie, villagezombie, babyvillagezombie, skeleton, skeletonwither
+# Mobs below works, except: Damage, Aggro, Speed, Health!
+# spider, cavespider, slime, magmacube, pigmen, babypigmen, blaze, bat, witch, wolf, creeper, ghast
+
+Mobs:
+  Szombie:
+    Mob: zombie
+    Display: '&6King_of_Zombies'
+    Speed: 0.3
+    Health: 50
+    Damage: 5
+    Aggro: 20
+    Despawn: false
+    Equipment:
+    - BloodHelmet 4
+    - BloodSword 0
+    Drops:
+    - BloodHelmet 0.1
+    - BloodSword 0.01
+    - 322:0:10 0.1
+    Skills:
+    - teleport 50 0.05
+    - dragin 50 0.5
+  Stest:
+    Mob: babyzombie
+    Display: '&4Mother_of_all_Babys'
+    Speed: 0.3
+    Health: 3
+    Damage: 5
+    Aggro: 2
+    Despawn: false
+    Equipment:
+    - BloodHelmet 4
+    - BloodSword 0
+    Drops:
+    - BloodHelmet 0.1
+    - BloodSword 0.01
+    - 322:0:10 0.1
+  test:
+    Mob: babyvillagezombie
+    Display: '&2Troll'
+    Speed: 0.3
+    Health: 13
+    Damage: 4
+    Aggro: 100
+    Despawn: false
+    Equipment:
+    - BloodHelmet 4
+    Drops:
+    - BloodHelmet 0.1
+    - BloodSword 0.01
+  test2:
+    Mob: spider
+    Display: '&4Im a big Spider'
+    Speed: 0.3
+    Health: 100
+    Damage: 100
+    Aggro: 200
+    Despawn: false
+    Equipment:
+    - BloodHelmet 4
+    Drops:
+    - BloodHelmet 0.1
+    - BloodSword 0.01

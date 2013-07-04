@@ -1,0 +1,33 @@
+Items:
+  BloodSword:
+    Id: 283
+    Data: 0
+    Amount: 1
+    Name: '&3Blood_Sword'
+    Lore:
+    - '&4This_Is_a_sword'
+    - '&2Ye_Test'
+    Enchantments:
+    - KNOCKBACK,2
+    - DAMAGE_ALL,7
+    - FIRE_ASPECT,2
+    - DURABILITY,5
+  BloodHelmet:
+    Id: 302
+    Data: 0
+    Amount: 1
+    Name: '&4Blood_Helmet'
+    Lore:
+    - '&bI_like_It'
+    - '&6Test_again'
+    Enchantments:
+    - DURABILITY,5
+  PrizeEgg:
+    Id: 122
+    Data: 0
+    Amount: 1
+    Name: '&6PRIZE_EGG'
+    Lore:
+    - '&6Type_&2/pb_use_&6_to_open_it!'
+    Enchantments:
+    
