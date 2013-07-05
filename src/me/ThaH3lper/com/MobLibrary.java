@@ -14,8 +14,11 @@ import me.ThaH3lper.com.Entitys.Custom.ModZombie;
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Items.LoadItems;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
+import me.ThaH3lper.com.Spawner.SpawnerListener;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
 import net.minecraft.server.v1_5_R3.EntityTypes;
 
+import org.bukkit.command.defaults.SpawnpointCommand;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,6 +32,7 @@ public class MobLibrary extends JavaPlugin{
 	public MobsHandler mobHandler;
 	public AllEntitys allEntitys;
 	
+	public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
 	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
 	public List<MobTemplet> mobTempletList = new ArrayList<MobTemplet>();
 	
@@ -57,6 +61,7 @@ public class MobLibrary extends JavaPlugin{
 		
 		PluginManager manager = this.getServer().getPluginManager();
 		manager.registerEvents(new EventListener(this), this);
+		manager.registerEvents(new SpawnerListener(), this);
 	}
 	
 	public void Setup()
