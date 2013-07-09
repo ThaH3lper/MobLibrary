@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class LoadItems {
 	
@@ -93,5 +94,15 @@ public class LoadItems {
 		}
 		return null;
 	}
+	
+	/*
+	 * Save and Load Spawners
+	 * Going to add here
+	 */
+
+	/*public void saveSpawner(SpawnerPlace sp)
+	{
+		sp.getLocation();
+	}*/
 
 }

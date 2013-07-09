@@ -16,6 +16,7 @@ import me.ThaH3lper.com.Items.LoadItems;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
+import me.ThaH3lper.com.Spawner.Ticker;
 import net.minecraft.server.v1_5_R3.EntityTypes;
 
 import org.bukkit.command.defaults.SpawnpointCommand;
@@ -61,7 +62,9 @@ public class MobLibrary extends JavaPlugin{
 		
 		PluginManager manager = this.getServer().getPluginManager();
 		manager.registerEvents(new EventListener(this), this);
-		manager.registerEvents(new SpawnerListener(), this);
+		manager.registerEvents(new SpawnerListener(this), this);
+		
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10l, 20l);
 	}
 	
 	public void Setup()
