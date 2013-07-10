@@ -1,7 +1,6 @@
 package me.ThaH3lper.com.Entitys;
 
 
-import net.minecraft.server.v1_6_R2.EntityHorse;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Bat;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;

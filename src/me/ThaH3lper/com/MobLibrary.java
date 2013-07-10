@@ -1,8 +1,7 @@
 package me.ThaH3lper.com;
 
-import java.lang.reflect.Method;
+//import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -17,9 +16,6 @@ import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 import me.ThaH3lper.com.Spawner.Ticker;
-import net.minecraft.server.v1_6_R2.EntityTypes;
-
-import org.bukkit.command.defaults.SpawnpointCommand;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,7 +64,7 @@ public class MobLibrary extends JavaPlugin{
 	}
 	
 	public void Setup()
-	{
+	{/*
 	    try
 	    {
 	      Class[] args = new Class[3];
@@ -79,13 +75,13 @@ public class MobLibrary extends JavaPlugin{
 	      Method a = EntityTypes.class.getDeclaredMethod("a", args);
 	      a.setAccessible(true);
 
-//	      a.invoke(a, new Object[] { ModZombie.class, "Zombie", Integer.valueOf(54) });
-//	      a.invoke(a, new Object[] { ModSkeleton.class, "Skeleton", Integer.valueOf(51) });
+	      a.invoke(a, new Object[] { ModZombie.class, "Zombie", Integer.valueOf(54) });
+	      a.invoke(a, new Object[] { ModSkeleton.class, "Skeleton", Integer.valueOf(51) });
 	    }
 	    catch (Exception e)
 	    {
 	      e.printStackTrace();
 	      setEnabled(false);
 	    }
-	}
+*/	}
 }
