@@ -1,19 +1,13 @@
 package me.ThaH3lper.com;
 
 import me.ThaH3lper.com.Entitys.MobTemplet;
-import me.ThaH3lper.com.Entitys.Custom.ModZombie;
 import me.ThaH3lper.com.Items.ItemsObject;
-import me.ThaH3lper.com.Skills.FireBall;
-
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
 public class CommandHandler implements CommandExecutor{
 	

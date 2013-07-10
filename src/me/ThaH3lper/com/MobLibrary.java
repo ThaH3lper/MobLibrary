@@ -9,15 +9,15 @@ import java.util.logging.Logger;
 import me.ThaH3lper.com.Entitys.AllEntitys;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Entitys.MobTemplet;
-import me.ThaH3lper.com.Entitys.Custom.ModSkeleton;
-import me.ThaH3lper.com.Entitys.Custom.ModZombie;
+//import me.ThaH3lper.com.Entitys.Custom.ModSkeleton;
+//import me.ThaH3lper.com.Entitys.Custom.ModZombie;
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Items.LoadItems;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 import me.ThaH3lper.com.Spawner.Ticker;
-import net.minecraft.server.v1_5_R3.EntityTypes;
+import net.minecraft.server.v1_6_R2.EntityTypes;
 
 import org.bukkit.command.defaults.SpawnpointCommand;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -79,8 +79,8 @@ public class MobLibrary extends JavaPlugin{
 	      Method a = EntityTypes.class.getDeclaredMethod("a", args);
 	      a.setAccessible(true);
 
-	      a.invoke(a, new Object[] { ModZombie.class, "Zombie", Integer.valueOf(54) });
-	      a.invoke(a, new Object[] { ModSkeleton.class, "Skeleton", Integer.valueOf(51) });
+//	      a.invoke(a, new Object[] { ModZombie.class, "Zombie", Integer.valueOf(54) });
+//	      a.invoke(a, new Object[] { ModSkeleton.class, "Skeleton", Integer.valueOf(51) });
 	    }
 	    catch (Exception e)
 	    {

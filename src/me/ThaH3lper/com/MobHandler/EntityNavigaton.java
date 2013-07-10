@@ -1,4 +1,4 @@
-package me.ThaH3lper.com.MobHandler;
+/*package me.ThaH3lper.com.MobHandler;
 
 import org.bukkit.Bukkit;
 
@@ -42,3 +42,4 @@ public class EntityNavigaton extends Navigation
     return super.a(path, speed);
   }
 }
+*/

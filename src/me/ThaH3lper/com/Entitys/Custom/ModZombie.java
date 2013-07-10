@@ -1,4 +1,4 @@
-package me.ThaH3lper.com.Entitys.Custom;
+/*package me.ThaH3lper.com.Entitys.Custom;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -210,3 +210,4 @@ public ModZombie(World world, double speed, int damage, int health, Float aggro,
     this.health = i;
   }
 }
+*/
