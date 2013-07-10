@@ -1,15 +1,10 @@
-/*package me.ThaH3lper.com.MobHandler;
+package me.ThaH3lper.com.MobHandler;
 
-import org.bukkit.Bukkit;
+//import org.bukkit.Bukkit;
 
-import net.minecraft.server.v1_5_R3.EntityLiving;
-import net.minecraft.server.v1_5_R3.MathHelper;
-import net.minecraft.server.v1_5_R3.Navigation;
-import net.minecraft.server.v1_5_R3.PathEntity;
-import net.minecraft.server.v1_5_R3.World;
 
-public class EntityNavigaton extends Navigation
-{
+public class EntityNavigaton //extends Navigation
+{/*
   double speedMod = 1.0D;
 
   public EntityNavigaton(EntityLiving entity, World world, float f)
@@ -40,6 +35,5 @@ public class EntityNavigaton extends Navigation
   {
     speed = (float)(speedMod);
     return super.a(path, speed);
-  }
+  }*/
 }
-*/

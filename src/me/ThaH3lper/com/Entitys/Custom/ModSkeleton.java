@@ -1,43 +1,20 @@
-/*
+
 package me.ThaH3lper.com.Entitys.Custom;
 
-import java.lang.reflect.Field;
-import java.util.List;
+//import java.lang.reflect.Field;
+//import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_5_R3.CraftServer;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftSkeleton;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftSpider;
-import org.bukkit.craftbukkit.v1_5_R3.entity.CraftZombie;
-import org.bukkit.plugin.Plugin;
+//import org.bukkit.Bukkit;
+//import org.bukkit.plugin.Plugin;
 
-import me.ThaH3lper.com.MobLibrary;
-import me.ThaH3lper.com.MobHandler.EntityNavigaton;
-import me.ThaH3lper.com.MobHandler.ReflectionUtils;
-import net.minecraft.server.v1_5_R3.Entity;
-import net.minecraft.server.v1_5_R3.EntityHuman;
-import net.minecraft.server.v1_5_R3.EntityLiving;
-import net.minecraft.server.v1_5_R3.EntitySkeleton;
-import net.minecraft.server.v1_5_R3.EntitySpider;
-import net.minecraft.server.v1_5_R3.EntityVillager;
-import net.minecraft.server.v1_5_R3.EntityZombie;
-import net.minecraft.server.v1_5_R3.ItemStack;
-import net.minecraft.server.v1_5_R3.PathfinderGoalBreakDoor;
-import net.minecraft.server.v1_5_R3.PathfinderGoalFloat;
-import net.minecraft.server.v1_5_R3.PathfinderGoalHurtByTarget;
-import net.minecraft.server.v1_5_R3.PathfinderGoalLookAtPlayer;
-import net.minecraft.server.v1_5_R3.PathfinderGoalMeleeAttack;
-import net.minecraft.server.v1_5_R3.PathfinderGoalMoveThroughVillage;
-import net.minecraft.server.v1_5_R3.PathfinderGoalMoveTowardsRestriction;
-import net.minecraft.server.v1_5_R3.PathfinderGoalNearestAttackableTarget;
-import net.minecraft.server.v1_5_R3.PathfinderGoalRandomLookaround;
-import net.minecraft.server.v1_5_R3.PathfinderGoalRandomStroll;
-import net.minecraft.server.v1_5_R3.World;
+//import me.ThaH3lper.com.MobLibrary;
+//import me.ThaH3lper.com.MobHandler.EntityNavigaton;
+//import me.ThaH3lper.com.MobHandler.ReflectionUtils;
 
 
 
-public class ModSkeleton extends EntitySkeleton
-{
+public class ModSkeleton// extends EntitySkeleton
+{/*
   private MobLibrary plugin;
   int damage = 4;
   float aggro = 16;
@@ -213,6 +190,5 @@ public ModSkeleton(World world, double speed, int damage, int health, Float aggr
   public void setHealth(int i)
   {
     this.health = i;
-  }
+  }*/
 }
-*/

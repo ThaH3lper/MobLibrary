@@ -1,9 +1,10 @@
 # zombie, babyzombie, villagezombie, babyvillagezombie, skeleton, skeletonwither
-# Mobs below works, except: Damage, Aggro, Speed, Health!
 # spider, cavespider, slime, magmacube, pigmen, babypigmen, blaze, bat, witch, wolf, creeper, ghast
+# wither, enderdragon, horse, babyhorse, pig, babypig, cow, babycow, ocelot, babyocelot, mushroomcow,
+# babymushroomcow, villager, babyvillager, irongolem,
 
 Mobs:
-  Szombie:
+  KingZombie:
     Mob: zombie
     Display: '&6King_of_Zombies'
     Speed: 0.3
@@ -21,7 +22,7 @@ Mobs:
     Skills:
     - teleport 50 0.05
     - dragin 50 0.5
-  Stest:
+  BabyZombieMother:
     Mob: babyzombie
     Display: '&4Mother_of_all_Babys'
     Speed: 0.3
@@ -36,7 +37,7 @@ Mobs:
     - BloodHelmet 0.1
     - BloodSword 0.01
     - 322:0:10 0.1
-  test:
+  Gremlin:
     Mob: babyvillagezombie
     Display: '&2Troll'
     Speed: 0.3
@@ -49,7 +50,7 @@ Mobs:
     Drops:
     - BloodHelmet 0.1
     - BloodSword 0.01
-  test2:
+  Gargantua:
     Mob: spider
     Display: '&4Im a big Spider'
     Speed: 0.3

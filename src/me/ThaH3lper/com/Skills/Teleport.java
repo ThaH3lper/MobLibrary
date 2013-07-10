@@ -7,13 +7,9 @@ import me.ThaH3lper.com.Effects.FireWorkEffect;
 
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class Teleport {
 	public static FireWorkEffect fplayer = new FireWorkEffect();
