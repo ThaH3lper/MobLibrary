@@ -29,7 +29,7 @@ public class MobLibrary extends JavaPlugin{
 	public MobsHandler mobHandler;
 	public AllEntitys allEntitys;
 	
-	public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
+	public static List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
 	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
 	public List<MobTemplet> mobTempletList = new ArrayList<MobTemplet>();
 	

@@ -2,6 +2,8 @@ package me.ThaH3lper.com;
 
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemsObject;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,6 +50,18 @@ public class CommandHandler implements CommandExecutor{
 					p.sendMessage(mhead);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
 					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:" + getMobs());
+				}
+				else if(args[0].equalsIgnoreCase("testread"))
+				{					
+					Bukkit.broadcastMessage("===TESTING READDATA DATA WILL PRINT BELOW===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("test");
+
+				}
+				else if(args[0].equalsIgnoreCase("testwrite"))
+				{					
+					Bukkit.broadcastMessage("===TESTING READDATA DATA WILL PRINT BELOW===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("test");
+
 				}
 			}
 			if(args.length == 3)
