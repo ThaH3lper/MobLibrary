@@ -1,24 +1,30 @@
 package me.ThaH3lper.com.Spawner;
 
-import me.ThaH3lper.com.MobLibrary;
+import java.util.List;
 
+import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.SaveLoad.SaveLoad;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SpawnerListener implements Listener{
 	
-	MobLibrary ml;
+	public static MobLibrary ml;
 	
 	public SpawnerListener(MobLibrary ml)
 	{
-		this.ml = ml;
+		SpawnerListener.ml = ml;
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
@@ -52,7 +58,8 @@ public class SpawnerListener implements Listener{
 				s.setLine(0, ChatColor.GREEN + "[MobSpawner]");
 				s.update();
 				
-				ml.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
+				MobLibrary.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
+				SaveLoad.storeData("StoredLocations.txt");
 			}
 			else
 			{
@@ -61,13 +68,34 @@ public class SpawnerListener implements Listener{
 			
 		}
 	}
+	@EventHandler
+	public void signDestroy(BlockBreakEvent e){
+		if(!(e.getBlock().getState() instanceof Sign)){
+			return;
+		}
+		Sign s = (Sign) e.getBlock().getState();
+		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]")){
+			for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
+				Location existing = MobLibrary.spawnerList.get(i).getLocation();
+				Location loc = s.getLocation();
+				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
+					List<LivingEntity> mobs = MobLibrary.spawnerList.get(i).getMobsList();
+					for(LivingEntity mob:mobs){
+						mob.remove();
+					}
+					MobLibrary.spawnerList.remove(i);
+					SaveLoad.storeData("StoredLocations.txt");
+				}
+			}
+		}
+	}
 	@EventHandler(priority = EventPriority.HIGH)
 	public void SignCreate(EntityDeathEvent e)
 	{
 		if(e.getEntity() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
-			for(SpawnerPlace sp : ml.spawnerList)
+			for(SpawnerPlace sp : MobLibrary.spawnerList)
 			{
 				sp.DeathMob(l);
 			}

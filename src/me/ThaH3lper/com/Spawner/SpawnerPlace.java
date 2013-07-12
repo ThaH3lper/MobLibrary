@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
 public class SpawnerPlace {
-
+	public boolean locked = false;
 	public Location loc;
 	public String cmdMob;
 	public int Amount, interval, radious;
@@ -28,12 +28,13 @@ public class SpawnerPlace {
 		this.interval = interval;
 		this.ml = ml;
 		this.radious = radious;
+		this.locked = false;
 	}
 	
 	public void tick()
 	{
 		tick++;
-		if(tick >= interval)
+		if(tick >= interval && locked == false)
 		{
 			tick = 0;
 			if(mobs.size() >= Amount)
@@ -46,12 +47,12 @@ public class SpawnerPlace {
 	
 	public void spawnMob()
 	{
-		Location l = getLocation();
+		Location l = getMobSpawnLocation();
 		LivingEntity entity = ml.mobHandler.SpawnAPI(cmdMob, l, 1f);
 		mobs.add(entity);
 	}
 	
-	public Location getLocation()
+	public Location getMobSpawnLocation()
 	{
 		double x = (loc.getX()-radious) +(r.nextInt((int) ((loc.getX()+radious)-(loc.getX()-radious))));
 		double z = (loc.getZ()-radious) +(r.nextInt((int) ((loc.getZ()+radious)-(loc.getZ()-radious))));
@@ -59,7 +60,27 @@ public class SpawnerPlace {
 		Location l = new Location(loc.getWorld(), x, loc.getY() + 2, z);
 		return l;
 	}
-	
+	public Location getLocation(){
+		return this.loc;
+	}
+	public String getCmdMob(){
+		return this.cmdMob;
+	}
+	public int getAmount(){
+		return this.Amount;
+	}
+	public int getInterval(){
+		return this.interval;
+	}
+	public int getRadius(){
+		return this.radious;
+	}
+	public void setLocked(){
+		locked = true;
+	}
+	public List<LivingEntity> getMobsList(){
+		return this.mobs;
+	}
 	public void DeathMob(LivingEntity l)
 	{
 		if(!mobs.contains(l))

@@ -32,9 +32,10 @@ public class MobLibrary extends JavaPlugin{
 	public static List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
 	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
 	public List<MobTemplet> mobTempletList = new ArrayList<MobTemplet>();
-	
 	@Override
 	public void onDisable() {
+		SaveLoad.storeData("StoredLocations.txt");
+		SaveLoad.clearMobs();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName() +  " Has Been Disabled!");
 		
@@ -61,6 +62,7 @@ public class MobLibrary extends JavaPlugin{
 		manager.registerEvents(new SpawnerListener(this), this);
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10l, 20l);
+		me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
 	}
 	
 	public void Setup()

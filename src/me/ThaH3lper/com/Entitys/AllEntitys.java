@@ -434,6 +434,15 @@ public class AllEntitys {
 			m.setBaby();
 			return m;
 		}
+		else if(s.equals("snowman"))
+		{
+			Villager m = (Villager) loc.getWorld().spawnEntity(loc, EntityType.SNOWMAN);
+			setMobMaxHealth( m, (float)health);
+			setMobHealth( m , m.getMaxHealth());
+			setMobSpeed( m,speed);
+			setMobDamage( m ,damage);
+			return m;
+		}
 		return null;
 	}
 	public static void setMobMaxHealth(LivingEntity mob , double maxHealth){

@@ -33,7 +33,7 @@ public class MobsHandler {
 			return;
 		for(String Name : ml.mobs.getCustomConfig().getConfigurationSection("Mobs").getKeys(false))
 		{
-			if(Cheak(Name))
+			if(Check(Name))
 			{
 				String mob = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Mob");
 				String display = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Display");
@@ -159,7 +159,7 @@ public class MobsHandler {
 		return null;
 	}
 	
-	public Boolean Cheak(String s)
+	public Boolean Check(String s)
 	{
 		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Mob"))
 			return false;

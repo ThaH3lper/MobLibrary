@@ -3,7 +3,6 @@ package me.ThaH3lper.com;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemsObject;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,6 +35,10 @@ public class CommandHandler implements CommandExecutor{
 				p.sendMessage(head);
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item" + ChatColor.DARK_GREEN + " to go to Item Libaray");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib load" + ChatColor.DARK_GREEN + " to read sign locations from memory");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib restore" + ChatColor.DARK_GREEN + " to restore signs from backup file");
 			}
 			if(args.length == 1)
 			{
@@ -51,16 +54,27 @@ public class CommandHandler implements CommandExecutor{
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
 					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:" + getMobs());
 				}
-				else if(args[0].equalsIgnoreCase("testread"))
+				else if(args[0].equalsIgnoreCase("load"))
 				{					
-					Bukkit.broadcastMessage("===TESTING READDATA DATA WILL PRINT BELOW===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("test");
+					p.sendMessage(ChatColor.GREEN + "===READING DATA FROM DATA FILE===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
 
 				}
-				else if(args[0].equalsIgnoreCase("testwrite"))
+				else if(args[0].equalsIgnoreCase("save"))
 				{					
-					Bukkit.broadcastMessage("===TESTING READDATA DATA WILL PRINT BELOW===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("test");
+					p.sendMessage(ChatColor.GREEN + "===WRITING SIGN DATA TO FILE===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+
+				}
+				else if(args[0].equalsIgnoreCase("backup"))
+				{					
+					p.sendMessage(ChatColor.YELLOW + "===WRITING SIGN DATA TO BACKUP FILE===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.storeBackupData();
+				}
+				else if(args[0].equalsIgnoreCase("restore"))
+				{					
+					p.sendMessage(ChatColor.YELLOW + "===LOADING SIGN DATA FROM BACKUP===");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.restoreBackupData();
 
 				}
 			}
