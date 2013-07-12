@@ -29,6 +29,7 @@ public class SpawnerPlace {
 		this.ml = ml;
 		this.radious = radious;
 		this.locked = false;
+		spawnMob();
 	}
 	
 	public void tick()
@@ -42,6 +43,13 @@ public class SpawnerPlace {
 			else
 				spawnMob();
 				
+		}
+		if(tick > 1000000){
+			tick = 1;
+		}
+//		String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
+		for(LivingEntity mob:mobs){
+			mob.setCustomNameVisible(true);
 		}
 	}
 	

@@ -93,7 +93,9 @@ public class SaveLoad {
 		File actualFile = new File (dir, fileName);
 		// This will reference one line at a time
 		String line = null;
-		clearMobs();
+		if(!MobLibrary.spawnerList.isEmpty()){
+			clearMobs();
+		}
 		try {
 			FileReader fileReader = new FileReader(actualFile);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -194,13 +196,20 @@ public class SaveLoad {
 		readStoredData("StoredLocationsBackup.txt");
 	}
 	public static void clearMobs(){
-		for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
-			MobLibrary.spawnerList.get(i).setLocked();
-			List<LivingEntity> mobs = MobLibrary.spawnerList.get(i).getMobsList();
-			for(LivingEntity mob:mobs){
-				mob.remove();
-			}
+		if(MobLibrary.spawnerList.isEmpty()){
+			return;
 		}
-		MobLibrary.spawnerList.clear();
+		else{
+			for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
+				MobLibrary.spawnerList.get(i).setLocked();
+				List<LivingEntity> mobs = MobLibrary.spawnerList.get(i).getMobsList();
+				if(!mobs.isEmpty()){
+					for(LivingEntity mob:mobs){
+						mob.remove();
+					}
+				}
+			}
+			MobLibrary.spawnerList.clear();
+		}
 	}
 }

@@ -1,7 +1,7 @@
 # zombie, babyzombie, villagezombie, babyvillagezombie, skeleton, skeletonwither
 # spider, cavespider, slime, magmacube, pigmen, babypigmen, blaze, bat, witch, wolf, creeper, ghast
 # wither, enderdragon, horse, babyhorse, pig, babypig, cow, babycow, ocelot, babyocelot, mushroomcow,
-# babymushroomcow, villager, babyvillager, irongolem,
+# babymushroomcow, villager, babyvillager, irongolem, snowman
 
 Mobs:
   KingZombie:

@@ -52,7 +52,8 @@ public class CommandHandler implements CommandExecutor{
 				{
 					p.sendMessage(mhead);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
-					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:" + getMobs());
+					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:");
+					getMobs(p);
 				}
 				else if(args[0].equalsIgnoreCase("load"))
 				{					
@@ -120,14 +121,20 @@ public class CommandHandler implements CommandExecutor{
 		return s;
 	}
 	
-	public String getMobs()
+	public void getMobs(Player player)
 	{
 		String s = " ";
+		int count = 0;
 		for(MobTemplet mt : ml.mobTempletList)
 		{
+			count++;
 			s += ChatColor.LIGHT_PURPLE + mt.cmdName + ChatColor.DARK_GREEN + ", ";
+			if(count == 5){
+				count = 0;
+				player.sendMessage(s);
+				s = " ";
+			}
 		}
-		return s;
 	}
 
 }

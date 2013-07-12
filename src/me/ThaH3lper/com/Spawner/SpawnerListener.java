@@ -5,9 +5,10 @@ import java.util.List;
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
@@ -36,7 +37,7 @@ public class SpawnerListener implements Listener{
 			return;
 		
 		Sign s = (Sign) e.getClickedBlock().getState();
-		if(s.getLine(0).equalsIgnoreCase("[mobs]"))
+		if(s.getLine(0).equalsIgnoreCase("[mobs]") && e.getPlayer().hasPermission("Mobs.Create"))
 		{			
 			int inteval = 0;
 			int amount = 0;
@@ -52,7 +53,7 @@ public class SpawnerListener implements Listener{
 			inteval = Integer.parseInt(parts[1]);
 			radious = Integer.parseInt(s.getLine(1));
 			
-			if(inteval != 0 && amount != 0 && radious != 0)
+			if(inteval != 0 && amount != 0 && radious != 0 && ml.mobs.getCustomConfig().contains("Mobs." + cmdname))
 			{
 				e.getPlayer().sendMessage(ChatColor.GREEN + "Spawner Created");
 				s.setLine(0, ChatColor.GREEN + "[MobSpawner]");
@@ -64,8 +65,17 @@ public class SpawnerListener implements Listener{
 			else
 			{
 				e.getPlayer().sendMessage(ChatColor.RED + "Spawner Creation Failed!"  + parts[0] + " : " + parts[1] + " : " + inteval + " : " + amount);
+				if(!ml.mobs.getCustomConfig().contains("Mobs." + cmdname)){
+					e.getPlayer().sendMessage(ChatColor.RED + "Spawner Creation Failed: "+ cmdname + " Doesn't Exist in config canceling sign");
+				}
+				Block block = s.getBlock();
+				block.setType(Material.AIR);
 			}
 			
+		}
+		else if(s.getLine(0).equalsIgnoreCase("[mobs]")){
+			Block block = s.getBlock();
+			block.setType(Material.AIR);
 		}
 	}
 	@EventHandler
