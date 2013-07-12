@@ -11,6 +11,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor{
+	final String VERSION = ChatColor.RED + "Version 0.7 ALPHA";
 	
 	MobLibrary ml;
 	
@@ -39,6 +40,8 @@ public class CommandHandler implements CommandExecutor{
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib restore" + ChatColor.DARK_GREEN + " to restore signs from backup file");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib ver" + ChatColor.DARK_GREEN + " Version Info");
+
 			}
 			if(args.length == 1)
 			{
@@ -65,6 +68,11 @@ public class CommandHandler implements CommandExecutor{
 				{					
 					p.sendMessage(ChatColor.GREEN + "===WRITING SIGN DATA TO FILE===");
 					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+
+				}
+				else if(args[0].equalsIgnoreCase("ver"))
+				{					
+					p.sendMessage(VERSION);
 
 				}
 				else if(args[0].equalsIgnoreCase("backup"))

@@ -102,7 +102,6 @@ public class SaveLoad {
 			while((line = bufferedReader.readLine()) != null) {
 				boolean alreadyexist = false;
 				StringTokenizer st= new StringTokenizer(line, "/");
-				Bukkit.broadcastMessage(line);
 				double x = Integer.parseInt(st.nextToken()),
 					y = Integer.parseInt(st.nextToken()),
 				    z = Integer.parseInt(st.nextToken());
@@ -113,7 +112,6 @@ public class SaveLoad {
 					interval = Integer.parseInt(st.nextToken()),
 					radius = Integer.parseInt(st.nextToken());
 				if(me.ThaH3lper.com.MobLibrary.spawnerList.isEmpty()){
-					Bukkit.broadcastMessage(ChatColor.YELLOW + "EMPTY LIST POPULATED");
 					me.ThaH3lper.com.MobLibrary.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, me.ThaH3lper.com.Spawner.SpawnerListener.ml));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
@@ -132,12 +130,10 @@ public class SaveLoad {
 					Location existing = MobLibrary.spawnerList.get(i).getLocation();
 					if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
 						alreadyexist = true;
-						Bukkit.broadcastMessage(ChatColor.YELLOW + "=FOUND=");
 					}
 				}
 				if(alreadyexist == false){
 					me.ThaH3lper.com.MobLibrary.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, me.ThaH3lper.com.Spawner.SpawnerListener.ml));
-					Bukkit.broadcastMessage(ChatColor.GREEN + "DOESNT EXIST NEW SPAWNER");
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
 					if(loc.getBlock().getType() != Material.SIGN){
@@ -152,7 +148,6 @@ public class SaveLoad {
 					sign.update();
 				}
 				if(alreadyexist == true){
-					Bukkit.broadcastMessage(ChatColor.RED + "SIGN EXISTS STOPING SPAWN");
 					Bukkit.getLogger().info("TRIED TO LOAD SPAWNER THAT ALREADY EXISTED IGNORED");
 				}
 				alreadyexist = false;

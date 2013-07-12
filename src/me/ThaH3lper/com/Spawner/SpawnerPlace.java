@@ -6,6 +6,7 @@ import java.util.Random;
 
 import me.ThaH3lper.com.MobLibrary;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
@@ -47,9 +48,9 @@ public class SpawnerPlace {
 		if(tick > 1000000){
 			tick = 1;
 		}
-//		String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
+        String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		for(LivingEntity mob:mobs){
-			mob.setCustomNameVisible(true);
+			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
 		}
 	}
 	
