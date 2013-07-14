@@ -2,6 +2,7 @@ package me.ThaH3lper.com;
 
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemsObject;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -36,6 +37,7 @@ public class CommandHandler implements CommandExecutor{
 				p.sendMessage(head);
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item" + ChatColor.DARK_GREEN + " to go to Item Libaray");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib locations" + ChatColor.DARK_GREEN + " Mob spawner locations");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib load" + ChatColor.DARK_GREEN + " to read sign locations from memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
@@ -73,6 +75,12 @@ public class CommandHandler implements CommandExecutor{
 				else if(args[0].equalsIgnoreCase("ver"))
 				{					
 					p.sendMessage(VERSION);
+
+				}
+				else if(args[0].equalsIgnoreCase("locations"))
+				{					
+					p.sendMessage(ChatColor.GREEN + "Listing Mob Locations:");
+					getSignLocations(p);
 
 				}
 				else if(args[0].equalsIgnoreCase("backup"))
@@ -138,6 +146,21 @@ public class CommandHandler implements CommandExecutor{
 			count++;
 			s += ChatColor.LIGHT_PURPLE + mt.cmdName + ChatColor.DARK_GREEN + ", ";
 			if(count == 5){
+				count = 0;
+				player.sendMessage(s);
+				s = " ";
+			}
+		}
+	}
+	public void getSignLocations(Player player)
+	{
+		String s = " ";
+		int count = 0;
+		for(SpawnerPlace sign : MobLibrary.spawnerList)
+		{
+			count++;
+			s += ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";
+			if(count == 1){
 				count = 0;
 				player.sendMessage(s);
 				s = " ";

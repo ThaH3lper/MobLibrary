@@ -93,6 +93,7 @@ public class SpawnerListener implements Listener{
 					for(LivingEntity mob:mobs){
 						mob.remove();
 					}
+					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + MobLibrary.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
 					MobLibrary.spawnerList.remove(i);
 					SaveLoad.storeData("StoredLocations.txt");
 				}

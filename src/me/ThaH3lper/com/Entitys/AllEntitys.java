@@ -452,10 +452,10 @@ public class AllEntitys {
 		mob.setHealth(health);
 	}
 	public static void setMobSpeed(LivingEntity mob , double speed){
-		mob.setVelocity(mob.getVelocity().multiply(speed));
+		//mob.setVelocity(mob.getVelocity().multiply(speed));
 	}
 	public static void setMobDamage(LivingEntity mob, double damage){
-		mob.setLastDamage(damage);
+		//mob.setLastDamage(damage);
 	}
 //	public Zombie spawnZombie(Location loc, double speed, int damage, int health, float aggro, float multi)
 //	{
