@@ -23,8 +23,10 @@ import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Silverfish;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Slime;
+import org.bukkit.entity.Snowman;
 import org.bukkit.entity.Spider;
 import org.bukkit.entity.Squid;
 import org.bukkit.entity.Villager;
@@ -154,6 +156,7 @@ public class AllEntitys {
 			setMobHealth(m , m.getMaxHealth());
 			setMobSpeed(m,speed);
 			setMobDamage(m ,damage);
+			m.setAngry(true);
 			return m;
 		}
 		else if(s.equals("babypigmen"))
@@ -164,6 +167,7 @@ public class AllEntitys {
 			setMobSpeed(m,speed);
 			setMobDamage(m ,damage);
 			m.setBaby(true);
+			m.setAngry(true);
 			return m;
 		}
 		else if(s.equals("blaze"))
@@ -436,7 +440,16 @@ public class AllEntitys {
 		}
 		else if(s.equals("snowman"))
 		{
-			Villager m = (Villager) loc.getWorld().spawnEntity(loc, EntityType.SNOWMAN);
+			Snowman m = (Snowman) loc.getWorld().spawnEntity(loc, EntityType.SNOWMAN);
+			setMobMaxHealth( m, (float)health);
+			setMobHealth( m , m.getMaxHealth());
+			setMobSpeed( m,speed);
+			setMobDamage( m ,damage);
+			return m;
+		}
+		else if(s.equals("silverfish"))
+		{
+			Silverfish m = (Silverfish) loc.getWorld().spawnEntity(loc, EntityType.SILVERFISH);
 			setMobMaxHealth( m, (float)health);
 			setMobHealth( m , m.getMaxHealth());
 			setMobSpeed( m,speed);

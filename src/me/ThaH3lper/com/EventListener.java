@@ -5,9 +5,13 @@ import java.util.List;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Skills.SkillHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -25,7 +29,7 @@ public class EventListener implements Listener {
 		this.ml = ml;
 	}
 			
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModDeath(EntityDeathEvent e)
 	{
 		LivingEntity l = e.getEntity();
@@ -41,12 +45,16 @@ public class EventListener implements Listener {
 		}
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModHit(EntityDamageByEntityEvent e)
 	{
+		if(e.getDamager() instanceof WitherSkull){
+			return;
+		}
 		if(e.getEntity() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
+			LivingEntity damager = (LivingEntity)e.getDamager();
 			if(ml.mobHandler.getSkills(l) != null)
 			{
 				try {
@@ -56,6 +64,19 @@ public class EventListener implements Listener {
 				} catch (Exception e1) {
 				}
 			}
+			if(getMobTemplet(damager) != null)
+			{
+				MobTemplet mt = getMobTemplet(damager);
+				e.setDamage((double)mt.damage/10);
+				Bukkit.broadcastMessage("" + e.getDamage());
+			}
+		}
+		if(e.getEntity() instanceof Arrow){
+			Arrow arrow = (Arrow)e.getEntity();
+			if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
+				MobTemplet mt = getMobTemplet((LivingEntity)arrow.getShooter());
+				e.setDamage((double)mt.damage + e.getDamage()/10);
+			}
 		}
 	}
 	
@@ -64,8 +85,8 @@ public class EventListener implements Listener {
 		for(MobTemplet mt : ml.mobTempletList)
 		{
 			String name = mt.display;
-			name = name.replace("_", " ");
 			name = ChatColor.translateAlternateColorCodes('&', name);
+			name = name.replace("_", " ");
 			if(l.getCustomName() != null)
 			{
 				if(l.getCustomName().equals(name))
