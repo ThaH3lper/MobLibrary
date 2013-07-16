@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.plugin.Plugin;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class MobsHandler {
 
@@ -181,12 +182,36 @@ public class MobsHandler {
 			return false;
 		return true;
 	}
-	
+	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
+		for(SpawnerPlace sign:me.ThaH3lper.com.MobLibrary.spawnerList){
+			for(LivingEntity mob:sign.getMobsList()){
+				if(mob == l){
+					return getMobTempletFromCmdName(sign.getCmdMob());
+				}
+			}
+		}
+		return null;
+	}
+	public MobTemplet getMobTempletFromCmdName(String cmdName)
+	{
+		for(MobTemplet mt : ml.mobTempletList)
+		{
+			String name = mt.cmdName;
+			if(cmdName != null)
+			{
+				if(cmdName.equals(name))
+				{
+					return mt;
+				}
+			}
+		}
+		return null;
+	}
 	public List<String> getSkills(LivingEntity l)
 	{
-		if(getTempletDisplay(l.getCustomName()) != null)
+		if(getMobTempletFromSpawner(l) != null)
 		{
-			MobTemplet mt = getTempletDisplay(l.getCustomName());
+			MobTemplet mt = getMobTempletFromSpawner(l);
 			return mt.skills;
 		}
 		
