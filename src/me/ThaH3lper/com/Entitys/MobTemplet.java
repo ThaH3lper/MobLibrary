@@ -2,7 +2,6 @@ package me.ThaH3lper.com.Entitys;
 
 import java.util.List;
 
-import org.bukkit.entity.LivingEntity;
 
 public class MobTemplet {
 	public String cmdName;

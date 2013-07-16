@@ -4,14 +4,15 @@ import java.util.List;
 
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Skills.SkillHandler;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
-import org.bukkit.Bukkit;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.WitherSkull;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -48,10 +49,28 @@ public class EventListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModHit(EntityDamageByEntityEvent e)
 	{
-		if(e.getDamager() instanceof WitherSkull){
-			return;
+		if(e.getDamager() instanceof Arrow){
+			Arrow arrow = (Arrow)e.getEntity();
+			if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
+				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
+				e.setDamage((double)mt.damage/10);
+			}
 		}
-		if(e.getEntity() instanceof LivingEntity)
+		else if(e.getDamager() instanceof Snowball){
+			Snowball snowball = (Snowball)e.getEntity();
+			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
+				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
+				e.setDamage((double)mt.damage/10);
+			}
+		}
+		else if(e.getDamager() instanceof Fireball){
+			Fireball fireball = (Fireball)e.getEntity();
+			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
+				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
+				e.setDamage((double)mt.damage/10);
+			}
+		}
+		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
 			LivingEntity damager = (LivingEntity)e.getDamager();
@@ -66,30 +85,49 @@ public class EventListener implements Listener {
 			}
 			if(getMobTemplet(damager) != null)
 			{
-				MobTemplet mt = getMobTemplet(damager);
-				e.setDamage((double)mt.damage/10);
-				Bukkit.broadcastMessage("" + e.getDamage());
-			}
-		}
-		if(e.getEntity() instanceof Arrow){
-			Arrow arrow = (Arrow)e.getEntity();
-			if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
-				MobTemplet mt = getMobTemplet((LivingEntity)arrow.getShooter());
-				e.setDamage((double)mt.damage + e.getDamage()/10);
+				MobTemplet mt = getMobTempletFromSpawner(damager);
+				if(mt != null){
+					e.setDamage((double)mt.damage/10.0);
+				}
 			}
 		}
 	}
-	
+	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
+		for(SpawnerPlace sign:me.ThaH3lper.com.MobLibrary.spawnerList){
+			for(LivingEntity mob:sign.getMobsList()){
+				if(mob == l){
+					return getMobTempletFromCmdName(sign.getCmdMob());
+				}
+			}
+		}
+		return null;
+	}
 	public MobTemplet getMobTemplet(LivingEntity l)
 	{
 		for(MobTemplet mt : ml.mobTempletList)
 		{
 			String name = mt.display;
 			name = ChatColor.translateAlternateColorCodes('&', name);
-			name = name.replace("_", " ");
+			name = name.replace(" ", "_");
+
 			if(l.getCustomName() != null)
 			{
 				if(l.getCustomName().equals(name))
+				{
+					return mt;
+				}
+			}
+		}
+		return null;
+	}
+	public MobTemplet getMobTempletFromCmdName(String cmdName)
+	{
+		for(MobTemplet mt : ml.mobTempletList)
+		{
+			String name = mt.cmdName;
+			if(cmdName != null)
+			{
+				if(cmdName.equals(name))
 				{
 					return mt;
 				}
