@@ -6,13 +6,15 @@ import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
-
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -49,30 +51,63 @@ public class EventListener implements Listener {
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModHit(EntityDamageByEntityEvent e)
 	{
+		if(e.getDamager() instanceof CraftItem){
+			return;
+		}
+		if(e.getDamager() instanceof TNTPrimed){
+			return;
+		}
+		LivingEntity l = (LivingEntity) e.getEntity();
 		if(e.getDamager() instanceof Arrow){
-			Arrow arrow = (Arrow)e.getEntity();
+			Arrow arrow = (Arrow)e.getDamager();
+			if(ml.mobHandler.getSkills(l) != null)
+			{
+				try {
+					SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+				}
+			}
 			if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
 				e.setDamage((double)mt.damage/10);
 			}
 		}
 		else if(e.getDamager() instanceof Snowball){
-			Snowball snowball = (Snowball)e.getEntity();
+			Snowball snowball = (Snowball)e.getDamager();
 			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
+				if(ml.mobHandler.getSkills(l) != null)
+				{
+					try {
+						SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (Exception e1) {
+					}
+				}
 			}
 		}
 		else if(e.getDamager() instanceof Fireball){
-			Fireball fireball = (Fireball)e.getEntity();
+			Fireball fireball = (Fireball)e.getDamager();
 			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
+				if(ml.mobHandler.getSkills(l) != null)
+				{
+					try {
+						SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (Exception e1) {
+					}
+				}
 			}
 		}
 		else if(e.getDamager() instanceof LivingEntity)
 		{
-			LivingEntity l = (LivingEntity) e.getEntity();
 			LivingEntity damager = (LivingEntity)e.getDamager();
 			if(ml.mobHandler.getSkills(l) != null)
 			{
