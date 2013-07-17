@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -56,6 +57,19 @@ public class SkillHandler {
 				{
 					int radius = Integer.parseInt(parts[1]);
 					Tnt.playSkill(mob , radius);
+				}
+			}
+			if(parts[0].equals("spawn"))
+			{
+				String cmdName = parts[1];
+				Double life = Double.parseDouble(parts[2]);
+				Double chance = Double.parseDouble(parts[4]);
+				if(mob.getHealth() < life)
+				{
+					if(chance >= r.nextDouble()){
+						int amount = Integer.parseInt(parts[3]);
+						SpawnMobs.playSkill(mob , amount, cmdName);
+					}
 				}
 			}
 			if(parts[0].equals("potion"))
