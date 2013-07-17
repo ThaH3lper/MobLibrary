@@ -40,6 +40,7 @@ public class EventListener implements Listener
 				e.getDrops().add(s);
 			}
 		}
+		SkillHandler.clearFromSkillLists(l);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
