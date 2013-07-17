@@ -6,10 +6,7 @@ import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
-<<<<<<< HEAD
 
-=======
->>>>>>> Added a mob spawner skill
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
@@ -135,11 +132,9 @@ public class EventListener implements Listener
 		}
 		return null;
 	}
-<<<<<<< HEAD
-	
-=======
+
 	public static SpawnerPlace getSpawner(LivingEntity l){
-		for(SpawnerPlace sign:me.ThaH3lper.com.MobLibrary.spawnerList){
+		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList){
 			for(LivingEntity mob:sign.getMobsList()){
 				if(mob == l){
 					return sign;
@@ -148,7 +143,8 @@ public class EventListener implements Listener
 		}
 		return null;
 	}
->>>>>>> Added a mob spawner skill
+
+	
 	public MobTemplet getMobTemplet(LivingEntity l)
 	{
 		for(MobTemplet mt : MobsHandler.getMobTemplets())
