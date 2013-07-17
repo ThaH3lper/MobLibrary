@@ -8,7 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
@@ -22,14 +21,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.LivingEntity;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
-
-public class SaveLoad {
-		
+public class SaveLoad
+{
 	private FileConfiguration DataConfig = null;
 	private File data = null;
 	
@@ -49,7 +47,9 @@ public class SaveLoad {
 		reloadCustomConfig();
 		saveCustomConfig();
 	}
-	public void reloadCustomConfig() {
+	
+	public void reloadCustomConfig()
+	{
 	    if (data == null) 
 	    {
 	    	data = new File(mb.getDataFolder(), file);
@@ -69,37 +69,49 @@ public class SaveLoad {
 	    }
 	}
 
-	public FileConfiguration getCustomConfig() {
-	    if (DataConfig == null) {
+	public FileConfiguration getCustomConfig()
+	{
+	    if (DataConfig == null)
+	    {
 	        reloadCustomConfig();
 	    }
 	    return DataConfig;
 	}
 
-	public void saveCustomConfig() {
-	    if (DataConfig == null || data == null) {
-	    return;
+	public void saveCustomConfig()
+	{
+	    if (DataConfig == null || data == null)
+	    {
+	    	return;
 	    }
-	    try {
+	    try
+	    {
 	        getCustomConfig().save(data);
-	    } catch (IOException ex) {
+	    }
+	    catch(IOException ex)
+	    {
 	        mb.getLogger().log(Level.SEVERE, "Could not save config to " + data, ex);
 	    }
 	    
 	}
-	public static void readStoredData(String file){
+	
+	public static void readStoredData(String file)
+	{
 		String fileName = file;
 		File dir = new File(MobLibrary.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("%20", " ").replaceAll( ".jar", ""));
 		File actualFile = new File (dir, fileName);
 		// This will reference one line at a time
 		String line = null;
-		if(!MobLibrary.spawnerList.isEmpty()){
-			clearMobs();
+		if(!MobLibrary.plugin.spawnerList.isEmpty())
+		{
+			MobsHandler.clearMobs();
 		}
-		try {
+		try
+		{
 			FileReader fileReader = new FileReader(actualFile);
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			while((line = bufferedReader.readLine()) != null) {
+			while((line = bufferedReader.readLine()) != null)
+			{
 				boolean alreadyexist = false;
 				StringTokenizer st= new StringTokenizer(line, "/");
 				double x = Integer.parseInt(st.nextToken()),
@@ -111,11 +123,13 @@ public class SaveLoad {
 				int amount = Integer.parseInt(st.nextToken()),
 					interval = Integer.parseInt(st.nextToken()),
 					radius = Integer.parseInt(st.nextToken());
-				if(me.ThaH3lper.com.MobLibrary.spawnerList.isEmpty()){
-					me.ThaH3lper.com.MobLibrary.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, me.ThaH3lper.com.Spawner.SpawnerListener.ml));
+				if(MobLibrary.plugin.spawnerList.isEmpty())
+				{
+					MobLibrary.plugin.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
-					if(loc.getBlock().getType() != Material.SIGN){
+					if(loc.getBlock().getType() != Material.SIGN)
+					{
 						Block block = loc.getBlock();
 						block.setType(Material.SIGN_POST);
 					}
@@ -126,17 +140,21 @@ public class SaveLoad {
 					sign.setLine(3, amount + "i,"+ interval + "s");
 					sign.update();
 				}
-				for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
-					Location existing = MobLibrary.spawnerList.get(i).getLocation();
-					if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
+				for(int i = 0; i<= MobLibrary.plugin.spawnerList.size() - 1; i++)
+				{
+					Location existing = MobLibrary.plugin.spawnerList.get(i).getLocation();
+					if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ())
+					{
 						alreadyexist = true;
 					}
 				}
-				if(alreadyexist == false){
-					me.ThaH3lper.com.MobLibrary.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, me.ThaH3lper.com.Spawner.SpawnerListener.ml));
+				if(alreadyexist == false)
+				{
+					MobLibrary.plugin.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
-					if(loc.getBlock().getType() != Material.SIGN){
+					if(loc.getBlock().getType() != Material.SIGN)
+					{
 						Block block = loc.getBlock();
 						block.setType(Material.SIGN_POST);
 					}
@@ -147,64 +165,60 @@ public class SaveLoad {
 					sign.setLine(3, amount + "i,"+ interval + "s");
 					sign.update();
 				}
-				if(alreadyexist == true){
+				if(alreadyexist == true)
+				{
 					Bukkit.getLogger().info("TRIED TO LOAD SPAWNER THAT ALREADY EXISTED IGNORED");
 				}
 				alreadyexist = false;
 			}
 			bufferedReader.close();			
 		}
-		catch(FileNotFoundException ex) {
+		catch(FileNotFoundException ex)
+		{
 			Bukkit.getLogger().info("[SEVERE]:Unable to open file '" + actualFile + "'");				
 		}
-		catch(IOException ex) {
+		catch(IOException ex)
+		{
 			Bukkit.getLogger().info("[SEVERE]: Error reading file " + actualFile);
 		}
 	}
-	public static void storeData(String file){
+	
+	public static void storeData(String file)
+	{
 		// The name of the file to open change this later to allow filename to be file name.
 		//String filename = file;
 		String fileName = file;
 		File dir = new File(MobLibrary.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("%20", " ").replaceAll( ".jar", ""));
 		File actualFile = new File (dir, fileName);
-		try {
+		try
+		{
 			FileWriter fileWriter = new FileWriter(actualFile);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			for(SpawnerPlace sign: me.ThaH3lper.com.MobLibrary.spawnerList){
+			for(SpawnerPlace sign: MobLibrary.plugin.spawnerList)
+			{
 				fileWriter.write(sign.getLocation().getBlockX() + "/" + sign.getLocation().getBlockY() + "/" + sign.getLocation().getBlockZ() + "/" + sign.getLocation().getWorld().getName() +
 						"/" + sign.getCmdMob() + "/" + sign.getAmount() + "/" + sign.getInterval() + "/" + sign.getRadius() + "\n" );
 			}
 			bufferedWriter.close();			
 		}
-		catch(FileNotFoundException ex) {
+		catch(FileNotFoundException ex)
+		{
 			Bukkit.getLogger().info("[SEVERE]:Unable to write file '" + actualFile + "'");				
 		}
-		catch(IOException ex) {
+		catch(IOException ex)
+		{
 			Bukkit.getLogger().info("[SEVERE]: Error writing file " + actualFile);
 		}
 	}
-	public static void storeBackupData(){
+	
+	public static void storeBackupData()
+	{
 		storeData("StoredLocationsBackup.txt");
 	}
-	public static void restoreBackupData(){
-		MobLibrary.spawnerList.clear();
+	
+	public static void restoreBackupData()
+	{
+		MobLibrary.plugin.spawnerList.clear();
 		readStoredData("StoredLocationsBackup.txt");
-	}
-	public static void clearMobs(){
-		if(MobLibrary.spawnerList.isEmpty()){
-			return;
-		}
-		else{
-			for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
-				MobLibrary.spawnerList.get(i).setLocked();
-				List<LivingEntity> mobs = MobLibrary.spawnerList.get(i).getMobsList();
-				if(!mobs.isEmpty()){
-					for(LivingEntity mob:mobs){
-						mob.remove();
-					}
-				}
-			}
-			MobLibrary.spawnerList.clear();
-		}
 	}
 }

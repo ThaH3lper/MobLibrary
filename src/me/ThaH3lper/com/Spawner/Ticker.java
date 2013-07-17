@@ -12,8 +12,9 @@ public class Ticker implements Runnable{
 	}
 	
 	@Override
-	public void run() {
-		for(SpawnerPlace sp : MobLibrary.spawnerList)
+	public void run()
+	{
+		for(SpawnerPlace sp : ml.spawnerList)
 		{
 			sp.tick();
 		}	

@@ -19,22 +19,22 @@ import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class MobsHandler {
 
-	MobLibrary ml;
-	Random r;
+	private static MobLibrary ml;
+	private static List<MobTemplet> mobTemplets = new ArrayList<MobTemplet>();
 	
-	public MobsHandler(MobLibrary ml)
+	public static void load(MobLibrary instance)
 	{
-		this.ml = ml;
-		r = new Random();
-		LoadallMobs();
+		ml = instance;
+		loadAllMobs();
 	}
-	public void LoadallMobs()
+	
+	private static boolean loadAllMobs()
 	{
 		if(!ml.mobs.getCustomConfig().contains("Mobs"))
-			return;
+			return false;
 		for(String Name : ml.mobs.getCustomConfig().getConfigurationSection("Mobs").getKeys(false))
 		{
-			if(Check(Name))
+			if(check(Name))
 			{
 				String mob = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Mob");
 				String display = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Display");
@@ -47,16 +47,18 @@ public class MobsHandler {
 				List<String> drops = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
 				List<String> skills = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
 				
-				ml.mobTempletList.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills));
+				mobTemplets.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills));
 			}
 			else
 			{
 				ml.logger.warning(Name + " could not be loaded! Error in Mobs.yml!");
+				return false;
 			}
 		}
-
+		return true;
 	}
-	public LivingEntity SpawnAPI(String cmdName, Location loc, float multi)
+	
+	public static LivingEntity SpawnAPI(String cmdName, Location loc, float multi)
 	{
 		if(getTemplet(cmdName) == null)
 		{
@@ -64,7 +66,7 @@ public class MobsHandler {
 			return null;
 		}
 		MobTemplet mt = getTemplet(cmdName);
-		LivingEntity l = ml.allEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, multi);
+		LivingEntity l = AllEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, multi);
 		
 		String display = mt.display.replace("_", " ");
 		display = ChatColor.translateAlternateColorCodes('&', display);
@@ -77,7 +79,7 @@ public class MobsHandler {
 		return l;
 	}
 	
-	public List<ItemStack> getDrops(LivingEntity l, List<String> drops)
+	public static List<ItemStack> getDrops(LivingEntity l, List<String> drops)
 	{
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for(String s : drops)
@@ -85,9 +87,10 @@ public class MobsHandler {
 			String[] parts = s.split(" ");
 			if(s.contains(":"))
 			{
+				Random rand = new Random();
 				String[] splits = parts[0].split(":");
 				ItemStack stack = new ItemStack(Material.getMaterial(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
-				if(r.nextFloat() < Float.parseFloat(parts[1]))
+				if(rand.nextFloat() < Float.parseFloat(parts[1]))
 				{
 					items.add(stack);
 				}
@@ -96,8 +99,9 @@ public class MobsHandler {
 			{
 				if(ml.loadItems.getItem(parts[0]) != null)
 				{
+					Random rand = new Random();
 					ItemStack stack = ml.loadItems.getItem(parts[0]);
-					if(r.nextFloat() < Float.parseFloat(parts[1]))
+					if(rand.nextFloat() < Float.parseFloat(parts[1]))
 					{
 						items.add(stack);
 					}
@@ -106,7 +110,8 @@ public class MobsHandler {
 		}
 		return items;
 	}
-	public void setEquipment(LivingEntity l, List<String> items)
+	
+	public static void setEquipment(LivingEntity l, List<String> items)
 	{
 		for(String s : items)
 		{
@@ -139,18 +144,18 @@ public class MobsHandler {
 		}
 	}
 	
-	public MobTemplet getTemplet(String cmdName)
+	public static MobTemplet getTemplet(String cmdName)
 	{
-		for(MobTemplet mt : ml.mobTempletList)
+		for(MobTemplet mt : mobTemplets)
 		{
 			if(mt.cmdName.equals(cmdName))
 				return mt;
 		}
 		return null;
 	}
-	public MobTemplet getTempletDisplay(String display)
+	public static MobTemplet getTempletDisplay(String display)
 	{
-		for(MobTemplet mt : ml.mobTempletList)
+		for(MobTemplet mt : mobTemplets)
 		{
 			String d = mt.display.replace("_", " ");
 			d = ChatColor.translateAlternateColorCodes('&', d);
@@ -160,7 +165,7 @@ public class MobsHandler {
 		return null;
 	}
 	
-	public Boolean Check(String s)
+	private static boolean check(String s)
 	{
 		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Mob"))
 			return false;
@@ -182,8 +187,9 @@ public class MobsHandler {
 			return false;
 		return true;
 	}
-	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
-		for(SpawnerPlace sign:me.ThaH3lper.com.MobLibrary.spawnerList){
+	
+	public static MobTemplet getMobTempletFromSpawner(LivingEntity l){
+		for(SpawnerPlace sign: ml.spawnerList){
 			for(LivingEntity mob:sign.getMobsList()){
 				if(mob == l){
 					return getMobTempletFromCmdName(sign.getCmdMob());
@@ -192,9 +198,10 @@ public class MobsHandler {
 		}
 		return null;
 	}
-	public MobTemplet getMobTempletFromCmdName(String cmdName)
+	
+	public static MobTemplet getMobTempletFromCmdName(String cmdName)
 	{
-		for(MobTemplet mt : ml.mobTempletList)
+		for(MobTemplet mt : mobTemplets)
 		{
 			String name = mt.cmdName;
 			if(cmdName != null)
@@ -207,7 +214,8 @@ public class MobsHandler {
 		}
 		return null;
 	}
-	public List<String> getSkills(LivingEntity l)
+	
+	public static List<String> getSkills(LivingEntity l)
 	{
 		if(getMobTempletFromSpawner(l) != null)
 		{
@@ -216,6 +224,34 @@ public class MobsHandler {
 		}
 		
 		return null;
-
+	}
+	
+	public static List<MobTemplet> getMobTemplets()
+	{
+		return mobTemplets;
+	}
+	
+	public static void clearMobs()
+	{
+		if(MobLibrary.plugin.spawnerList.isEmpty())
+		{
+			return;
+		}
+		else
+		{
+			for(int i = 0; i<= MobLibrary.plugin.spawnerList.size() - 1; i++)
+			{
+				MobLibrary.plugin.spawnerList.get(i).setLocked();
+				List<LivingEntity> mobs = MobLibrary.plugin.spawnerList.get(i).getMobsList();
+				if(!mobs.isEmpty())
+				{
+					for(LivingEntity mob:mobs)
+					{
+						mob.remove();
+					}
+				}
+			}
+			MobLibrary.plugin.spawnerList.clear();
+		}
 	}
 }

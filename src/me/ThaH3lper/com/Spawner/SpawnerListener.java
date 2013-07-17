@@ -21,11 +21,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class SpawnerListener implements Listener{
 	
-	public static MobLibrary ml;
+	private MobLibrary ml;
 	
 	public SpawnerListener(MobLibrary ml)
 	{
-		SpawnerListener.ml = ml;
+		this.ml = ml;
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
@@ -59,7 +59,7 @@ public class SpawnerListener implements Listener{
 				s.setLine(0, ChatColor.GREEN + "[MobSpawner]");
 				s.update();
 				
-				MobLibrary.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
+				ml.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
 				SaveLoad.storeData("StoredLocations.txt");
 			}
 			else
@@ -78,6 +78,7 @@ public class SpawnerListener implements Listener{
 			block.setType(Material.AIR);
 		}
 	}
+	
 	@EventHandler
 	public void signDestroy(BlockBreakEvent e){
 		if(!(e.getBlock().getState() instanceof Sign)){
@@ -85,28 +86,29 @@ public class SpawnerListener implements Listener{
 		}
 		Sign s = (Sign) e.getBlock().getState();
 		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]")){
-			for(int i = 0; i<= MobLibrary.spawnerList.size() - 1; i++){
-				Location existing = MobLibrary.spawnerList.get(i).getLocation();
+			for(int i = 0; i<= ml.spawnerList.size() - 1; i++){
+				Location existing = ml.spawnerList.get(i).getLocation();
 				Location loc = s.getLocation();
 				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
-					List<LivingEntity> mobs = MobLibrary.spawnerList.get(i).getMobsList();
+					List<LivingEntity> mobs = ml.spawnerList.get(i).getMobsList();
 					for(LivingEntity mob:mobs){
 						mob.remove();
 					}
-					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + MobLibrary.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
-					MobLibrary.spawnerList.remove(i);
+					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + ml.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
+					ml.spawnerList.remove(i);
 					SaveLoad.storeData("StoredLocations.txt");
 				}
 			}
 		}
 	}
+	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void SignCreate(EntityDeathEvent e)
 	{
 		if(e.getEntity() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
-			for(SpawnerPlace sp : MobLibrary.spawnerList)
+			for(SpawnerPlace sp : ml.spawnerList)
 			{
 				sp.DeathMob(l);
 			}

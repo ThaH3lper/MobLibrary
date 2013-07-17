@@ -9,8 +9,11 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-public class DragIn {
-	public static FireWorkEffect fplayer = new FireWorkEffect();
+
+public class DragIn
+{
+	private static FireWorkEffect fplayer = new FireWorkEffect();
+	
 	public static void playSkill(LivingEntity entity, int r) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(r, entity);

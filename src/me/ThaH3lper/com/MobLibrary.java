@@ -1,15 +1,11 @@
 package me.ThaH3lper.com;
 
-//import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import me.ThaH3lper.com.Entitys.AllEntitys;
 import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Entitys.MobTemplet;
-//import me.ThaH3lper.com.Entitys.Custom.ModSkeleton;
-//import me.ThaH3lper.com.Entitys.Custom.ModZombie;
+
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Items.LoadItems;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
@@ -23,50 +19,50 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MobLibrary extends JavaPlugin{
 	
 	public final Logger logger = Logger.getLogger("Minecraft");
+	public static MobLibrary plugin;
 	
 	public SaveLoad items, mobs;
 	public LoadItems loadItems;
-	public MobsHandler mobHandler;
-	public AllEntitys allEntitys;
 	
-	public static List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
+	public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
 	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
-	public List<MobTemplet> mobTempletList = new ArrayList<MobTemplet>();
+	
 	@Override
-	public void onDisable() {
+	public void onDisable()
+	{
 		SaveLoad.storeData("StoredLocations.txt");
-		SaveLoad.clearMobs();
+		MobsHandler.clearMobs();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName() +  " Has Been Disabled!");
-		
-
 	}
+	
 	@Override
-	public void onEnable() {
+	public void onEnable()
+	{
+		plugin = this;
 		//Enable
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName()+ " " + pdfFile.getVersion() +  " Has Been Enabled!");
 		
-		Setup();
+		//Setup();
 		
 		items = new SaveLoad(this, "Items.yml");
 		mobs = new SaveLoad(this, "Mobs.yml");
 		loadItems = new LoadItems(this);
-		mobHandler = new MobsHandler(this);
-		allEntitys = new AllEntitys(this);
+		MobsHandler.load(this);
 				
 		getCommand("Library").setExecutor(new CommandHandler(this));
 		
 		PluginManager manager = this.getServer().getPluginManager();
-		manager.registerEvents(new EventListener(this), this);
+		manager.registerEvents(new EventListener(), this);
 		manager.registerEvents(new SpawnerListener(this), this);
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10l, 20l);
 		me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
 	}
 	
-	public void Setup()
-	{/*
+	/*public void Setup()
+	{
 	    try
 	    {
 	      Class[] args = new Class[3];
@@ -85,5 +81,5 @@ public class MobLibrary extends JavaPlugin{
 	      e.printStackTrace();
 	      setEnabled(false);
 	    }
-*/	}
+	}*/
 }

@@ -1,7 +1,5 @@
 package me.ThaH3lper.com.Entitys;
 
-//SYNCING!
-
 import org.bukkit.Location;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Blaze;
@@ -33,21 +31,12 @@ import org.bukkit.entity.Villager;
 import org.bukkit.entity.Witch;
 import org.bukkit.entity.Wither;
 import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Zombie;
 
-import me.ThaH3lper.com.MobLibrary;
-
-public class AllEntitys {
-
-	MobLibrary ml;
-	
-	public AllEntitys(MobLibrary ml)
-	{
-		this.ml = ml;
-	}
-	
-	public LivingEntity SpawnMob(String s, Location loc, double speed, int damage, int health, float aggro, float multi)
+public class AllEntitys
+{	
+	public static LivingEntity SpawnMob(String s, Location loc, double speed, int damage, int health, float aggro, float multi)
 	{
 		//spawnZombie
 		if(s.equals("zombie"))
@@ -458,16 +447,24 @@ public class AllEntitys {
 		}
 		return null;
 	}
-	public static void setMobMaxHealth(LivingEntity mob , double maxHealth){
+	
+	public static void setMobMaxHealth(LivingEntity mob , double maxHealth)
+	{
 		mob.setMaxHealth(maxHealth);
 	}
-	public static void setMobHealth(LivingEntity mob , double health){
+	
+	public static void setMobHealth(LivingEntity mob , double health)
+	{
 		mob.setHealth(health);
 	}
-	public static void setMobSpeed(LivingEntity mob , double speed){
+	
+	public static void setMobSpeed(LivingEntity mob , double speed)
+	{
 		//mob.setVelocity(mob.getVelocity().multiply(speed));
 	}
-	public static void setMobDamage(LivingEntity mob, double damage){
+	
+	public static void setMobDamage(LivingEntity mob, double damage)
+	{
 		//mob.setLastDamage(damage);
 	}
 //	public Zombie spawnZombie(Location loc, double speed, int damage, int health, float aggro, float multi)

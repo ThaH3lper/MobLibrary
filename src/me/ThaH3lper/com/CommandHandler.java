@@ -1,5 +1,9 @@
 package me.ThaH3lper.com;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
@@ -11,14 +15,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class CommandHandler implements CommandExecutor{
+public class CommandHandler implements CommandExecutor
+{
 	final String VERSION = ChatColor.RED + "Version 0.7 ALPHA";
 	
-	MobLibrary ml;
+	private MobLibrary ml;
 	
-	public String head = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
-	public String ihead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
-	public String mhead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " MOB LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	private String head = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	private String ihead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	private String mhead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " MOB LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	
 	public CommandHandler(MobLibrary ml)
 	{
 		this.ml = ml;
@@ -58,7 +64,8 @@ public class CommandHandler implements CommandExecutor{
 					p.sendMessage(mhead);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
 					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:");
-					getMobs(p);
+					for(String s : getMobs())
+						p.sendMessage(s);
 				}
 				else if(args[0].equalsIgnoreCase("load"))
 				{					
@@ -80,7 +87,8 @@ public class CommandHandler implements CommandExecutor{
 				else if(args[0].equalsIgnoreCase("locations"))
 				{					
 					p.sendMessage(ChatColor.GREEN + "Listing Mob Locations:");
-					getSignLocations(p);
+					for(String s : getSignLocations())
+						p.sendMessage(s);
 
 				}
 				else if(args[0].equalsIgnoreCase("backup"))
@@ -110,7 +118,7 @@ public class CommandHandler implements CommandExecutor{
 				}
 				if(args[0].equalsIgnoreCase("mob"))
 				{
-					LivingEntity spawned = ml.mobHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
+					LivingEntity spawned = MobsHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
 					if(spawned == null)
 					{
 						p.sendMessage(ChatColor.RED + "There is no mob with that name!");
@@ -137,35 +145,40 @@ public class CommandHandler implements CommandExecutor{
 		return s;
 	}
 	
-	public void getMobs(Player player)
+	public List<String> getMobs()
 	{
 		String s = " ";
 		int count = 0;
-		for(MobTemplet mt : ml.mobTempletList)
+		List<String> mobs = new ArrayList<String>();
+		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
 			count++;
 			s += ChatColor.LIGHT_PURPLE + mt.cmdName + ChatColor.DARK_GREEN + ", ";
-			if(count == 5){
+			if(count == 5)
+			{
 				count = 0;
-				player.sendMessage(s);
-				s = " ";
+				mobs.add(s);
 			}
 		}
+		return mobs;
 	}
-	public void getSignLocations(Player player)
+	
+	public List<String> getSignLocations()
 	{
 		String s = " ";
 		int count = 0;
-		for(SpawnerPlace sign : MobLibrary.spawnerList)
+		List<String> locations = new ArrayList<String>();
+		for(SpawnerPlace sign : ml.spawnerList)
 		{
 			count++;
 			s += ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";
-			if(count == 1){
+			if(count == 1)
+			{
 				count = 0;
-				player.sendMessage(s);
-				s = " ";
+				locations.add(s);
 			}
 		}
+		return locations;
 	}
 
 }

@@ -5,21 +5,23 @@ import java.util.List;
 import java.util.Random;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
-public class SpawnerPlace {
-	public boolean locked = false;
-	public Location loc;
-	public String cmdMob;
-	public int Amount, interval, radious;
-	MobLibrary ml;
+public class SpawnerPlace
+{
+	private boolean locked = false;
+	private Location loc;
+	private String cmdMob;
+	private int Amount, interval, radious;
+	private MobLibrary ml;
 	
-	List<LivingEntity> mobs = new ArrayList<LivingEntity>();
-	int tick = 0;
-	Random r = new Random();
+	private List<LivingEntity> mobs = new ArrayList<LivingEntity>();
+	private int tick = 0;
+	private Random r = new Random();
 	
 	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
 	{
@@ -43,13 +45,14 @@ public class SpawnerPlace {
 				return;
 			else
 				spawnMob();
-				
 		}
-		if(tick > 1000000){
+		if(tick > 1000000)
+		{
 			tick = 1;
 		}
         String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
-		for(LivingEntity mob:mobs){
+		for(LivingEntity mob:mobs)
+		{
 			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
 		}
 	}
@@ -57,7 +60,7 @@ public class SpawnerPlace {
 	public void spawnMob()
 	{
 		Location l = getMobSpawnLocation();
-		LivingEntity entity = ml.mobHandler.SpawnAPI(cmdMob, l, 1f);
+		LivingEntity entity = MobsHandler.SpawnAPI(cmdMob, l, 1f);
 		mobs.add(entity);
 	}
 	
@@ -69,27 +72,42 @@ public class SpawnerPlace {
 		Location l = new Location(loc.getWorld(), x, loc.getY() + 2, z);
 		return l;
 	}
-	public Location getLocation(){
+	
+	public Location getLocation()
+	{
 		return this.loc;
 	}
-	public String getCmdMob(){
+	
+	public String getCmdMob()
+	{
 		return this.cmdMob;
 	}
-	public int getAmount(){
+	
+	public int getAmount()
+	{
 		return this.Amount;
 	}
-	public int getInterval(){
+	
+	public int getInterval()
+	{
 		return this.interval;
 	}
-	public int getRadius(){
+	
+	public int getRadius()
+	{
 		return this.radious;
 	}
-	public void setLocked(){
+	
+	public void setLocked()
+	{
 		locked = true;
 	}
-	public List<LivingEntity> getMobsList(){
+	
+	public List<LivingEntity> getMobsList()
+	{
 		return this.mobs;
 	}
+	
 	public void DeathMob(LivingEntity l)
 	{
 		if(!mobs.contains(l))

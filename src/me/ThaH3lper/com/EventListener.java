@@ -3,10 +3,10 @@ package me.ThaH3lper.com;
 import java.util.List;
 
 import me.ThaH3lper.com.Entitys.MobTemplet;
+import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
@@ -24,14 +24,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class EventListener implements Listener {
-			
-	MobLibrary ml;
-	public EventListener(MobLibrary ml)
-	{
-		this.ml = ml;
-	}
-			
+public class EventListener implements Listener 
+{			
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModDeath(EntityDeathEvent e)
 	{
@@ -40,7 +34,7 @@ public class EventListener implements Listener {
 		{
 			e.getDrops().clear();
 			MobTemplet mt = getMobTemplet(l);
-			List<ItemStack> items = ml.mobHandler.getDrops(l, mt.drops);
+			List<ItemStack> items = MobsHandler.getDrops(l, mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
@@ -60,10 +54,10 @@ public class EventListener implements Listener {
 		LivingEntity l = (LivingEntity) e.getEntity();
 		if(e.getDamager() instanceof Arrow){
 			Arrow arrow = (Arrow)e.getDamager();
-			if(ml.mobHandler.getSkills(l) != null)
+			if(MobsHandler.getSkills(l) != null)
 			{
 				try {
-					SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+					SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
 				} catch (IllegalArgumentException e1) {
 					e1.printStackTrace();
 				} catch (Exception e1) {
@@ -79,10 +73,10 @@ public class EventListener implements Listener {
 			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(ml.mobHandler.getSkills(l) != null)
+				if(MobsHandler.getSkills(l) != null)
 				{
 					try {
-						SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+						SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
 					} catch (IllegalArgumentException e1) {
 						e1.printStackTrace();
 					} catch (Exception e1) {
@@ -95,10 +89,10 @@ public class EventListener implements Listener {
 			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(ml.mobHandler.getSkills(l) != null)
+				if(MobsHandler.getSkills(l) != null)
 				{
 					try {
-						SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+						SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
 					} catch (IllegalArgumentException e1) {
 						e1.printStackTrace();
 					} catch (Exception e1) {
@@ -109,10 +103,10 @@ public class EventListener implements Listener {
 		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity damager = (LivingEntity)e.getDamager();
-			if(ml.mobHandler.getSkills(l) != null)
+			if(MobsHandler.getSkills(l) != null)
 			{
 				try {
-					SkillHandler.executeSkills(ml.mobHandler.getSkills(l), l);
+					SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
 				} catch (IllegalArgumentException e1) {
 					e1.printStackTrace();
 				} catch (Exception e1) {
@@ -127,8 +121,9 @@ public class EventListener implements Listener {
 			}
 		}
 	}
+	
 	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
-		for(SpawnerPlace sign:me.ThaH3lper.com.MobLibrary.spawnerList){
+		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList){
 			for(LivingEntity mob:sign.getMobsList()){
 				if(mob == l){
 					return getMobTempletFromCmdName(sign.getCmdMob());
@@ -137,9 +132,10 @@ public class EventListener implements Listener {
 		}
 		return null;
 	}
+	
 	public MobTemplet getMobTemplet(LivingEntity l)
 	{
-		for(MobTemplet mt : ml.mobTempletList)
+		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
 			String name = mt.display;
 			name = ChatColor.translateAlternateColorCodes('&', name);
@@ -155,9 +151,10 @@ public class EventListener implements Listener {
 		}
 		return null;
 	}
+	
 	public MobTemplet getMobTempletFromCmdName(String cmdName)
 	{
-		for(MobTemplet mt : ml.mobTempletList)
+		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
 			String name = mt.cmdName;
 			if(cmdName != null)
@@ -170,6 +167,7 @@ public class EventListener implements Listener {
 		}
 		return null;
 	}
+	
 	@EventHandler
 	public void entityTnTDamage(EntityDamageEvent event){
 		if(event.getEntity() instanceof Player){
