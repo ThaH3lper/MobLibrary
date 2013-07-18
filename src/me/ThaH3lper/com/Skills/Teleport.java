@@ -20,8 +20,8 @@ public class Teleport {
 		{
 			Random ran = new Random();
 			Player p = list.get(ran.nextInt(list.size()));
-			fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.RED).flicker(true).with(Type.BURST).build());
-			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.RED).flicker(true).with(Type.BURST).build());
+			fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.PURPLE).flicker(true).withFade(Color.FUCHSIA).with(Type.BURST).build());
+			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.PURPLE).flicker(true).with(Type.BURST).build());
 			entity.teleport(p.getLocation());
 		}
 	}

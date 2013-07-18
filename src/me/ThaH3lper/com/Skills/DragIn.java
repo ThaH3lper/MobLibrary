@@ -21,10 +21,10 @@ public class DragIn
 		{
 			for(Player p : list)
 			{
-				fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.FUCHSIA).withFade(Color.TEAL).with(Type.BURST).build());
+				fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
 				p.teleport(entity.getLocation());
 			}
-			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.FUCHSIA).withFade(Color.TEAL).with(Type.BURST).build());
+			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
 		}
 	}
 }
