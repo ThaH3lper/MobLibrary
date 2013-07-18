@@ -95,11 +95,12 @@ public class SkillHandler {
 			}
 			else if(parts[0].equals("toss"))
 			{
-				Double chance = Double.parseDouble(parts[2]);
+				Double chance = Double.parseDouble(parts[3]);
 				if(chance >= r.nextDouble())
 				{
+					int power = Integer.parseInt(parts[2]);
 					int radius = Integer.parseInt(parts[1]);
-					Toss.playSkill(mob , radius);
+					Toss.playSkill(mob , radius, power);
 				}
 			}
 		}
