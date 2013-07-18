@@ -34,10 +34,19 @@ public class EventListener implements Listener
 		{
 			e.getDrops().clear();
 			MobTemplet mt = getMobTemplet(l);
-			List<ItemStack> items = MobsHandler.getDrops(l, mt.drops);
+			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
+			}
+		}
+		if(MobsHandler.getSkills(l) != null)
+		{
+			try {
+				SkillHandler.executeSkillsOnDeath(MobsHandler.getSkills(l), e);
+			} catch (IllegalArgumentException e1) {
+				e1.printStackTrace();
+			} catch (Exception e1) {
 			}
 		}
 		SkillHandler.clearFromSkillLists(l);
@@ -146,7 +155,7 @@ public class EventListener implements Listener
 	}
 
 	
-	public MobTemplet getMobTemplet(LivingEntity l)
+	public static MobTemplet getMobTemplet(LivingEntity l)
 	{
 		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
@@ -165,7 +174,7 @@ public class EventListener implements Listener
 		return null;
 	}
 	
-	public MobTemplet getMobTempletFromCmdName(String cmdName)
+	public static MobTemplet getMobTempletFromCmdName(String cmdName)
 	{
 		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{

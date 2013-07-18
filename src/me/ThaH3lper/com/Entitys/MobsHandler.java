@@ -79,7 +79,7 @@ public class MobsHandler {
 		return l;
 	}
 	
-	public static List<ItemStack> getDrops(LivingEntity l, List<String> drops)
+	public static List<ItemStack> getDrops(List<String> drops)
 	{
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for(String s : drops)
