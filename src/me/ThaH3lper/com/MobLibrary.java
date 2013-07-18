@@ -50,7 +50,7 @@ public class MobLibrary extends JavaPlugin{
 		mobs = new SaveLoad(this, "Mobs.yml");
 		loadItems = new LoadItems(this);
 		MobsHandler.load(this);
-
+				
 		getCommand("Library").setExecutor(new CommandHandler(this));
 		
 		PluginManager manager = this.getServer().getPluginManager();

@@ -11,20 +11,9 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 
-public class Potion extends Skill
-{
-	private FireWorkEffect fplayer = new FireWorkEffect();
-	private int r;
-	private PotionEffect pe;
-	
-	public Potion(double chance, int r, PotionEffect pe)
-	{
-		super(chance);
-		this.r = r;
-		this.pe = pe;
-	}
-	
-	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
+public class Potion {
+	public static FireWorkEffect fplayer = new FireWorkEffect();
+	public static void playSkill(LivingEntity entity, int r, PotionEffect pe) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(r, entity);
 		if(!list.isEmpty())

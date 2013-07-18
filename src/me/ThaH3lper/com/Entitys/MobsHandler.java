@@ -21,7 +21,6 @@ public class MobsHandler {
 
 	private static MobLibrary ml;
 	private static List<MobTemplet> mobTemplets = new ArrayList<MobTemplet>();
-	private static List<Mob> mobs = new ArrayList<Mob>(); 
 	
 	public static void load(MobLibrary instance)
 	{
@@ -77,7 +76,6 @@ public class MobsHandler {
 		l.setRemoveWhenFarAway(mt.despawn);
 		
 		setEquipment(l, mt.equip);
-		mobs.add(new Mob(l,mt.skills));
 		return l;
 	}
 	
@@ -190,14 +188,10 @@ public class MobsHandler {
 		return true;
 	}
 	
-	public static MobTemplet getMobTempletFromSpawner(LivingEntity l)
-	{
-		for(SpawnerPlace sign: ml.spawnerList)
-		{
-			for(LivingEntity mob:sign.getMobsList())
-			{
-				if(mob == l)
-				{
+	public static MobTemplet getMobTempletFromSpawner(LivingEntity l){
+		for(SpawnerPlace sign: ml.spawnerList){
+			for(LivingEntity mob:sign.getMobsList()){
+				if(mob == l){
 					return getMobTempletFromCmdName(sign.getCmdMob());
 				}
 			}
@@ -228,6 +222,7 @@ public class MobsHandler {
 			MobTemplet mt = getMobTempletFromSpawner(l);
 			return mt.skills;
 		}
+		
 		return null;
 	}
 	
@@ -238,7 +233,6 @@ public class MobsHandler {
 	
 	public static void clearMobs()
 	{
-		mobs.clear();
 		if(MobLibrary.plugin.spawnerList.isEmpty())
 		{
 			return;
@@ -259,30 +253,5 @@ public class MobsHandler {
 			}
 			MobLibrary.plugin.spawnerList.clear();
 		}
-	}
-	
-	public static boolean addMob(Mob m)
-	{
-		return mobs.add(m);
-	}
-	
-	public static Mob getMob(LivingEntity le)
-	{
-		for(Mob mob : mobs)
-		{
-			if(mob.getEntity().equals(le))
-				return mob;
-		}
-		return null;
-	}
-	
-	public static boolean removeMob(LivingEntity le)
-	{
-		for(Mob mob : mobs)
-		{
-			if(mob.getEntity().equals(le))
-				return mobs.remove(mob);
-		}
-		return false;
 	}
 }

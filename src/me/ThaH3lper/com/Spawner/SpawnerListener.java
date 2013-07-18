@@ -3,7 +3,6 @@ package me.ThaH3lper.com.Spawner;
 import java.util.List;
 
 import me.ThaH3lper.com.MobLibrary;
-import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 
 import org.bukkit.ChatColor;
@@ -104,7 +103,7 @@ public class SpawnerListener implements Listener{
 	}
 	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void onEntityDeathEvent(EntityDeathEvent e)
+	public void SignCreate(EntityDeathEvent e)
 	{
 		if(e.getEntity() instanceof LivingEntity)
 		{
@@ -113,7 +112,6 @@ public class SpawnerListener implements Listener{
 			{
 				sp.DeathMob(l);
 			}
-			MobsHandler.removeMob(l);
 		}
 	}
 

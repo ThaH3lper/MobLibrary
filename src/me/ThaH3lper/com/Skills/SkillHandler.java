@@ -2,13 +2,16 @@ package me.ThaH3lper.com.Skills;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-public class SkillHandler
-{
+public class SkillHandler {
+	private static Random r = new Random();
 	public static List<Player> getPlayers(int radius, LivingEntity mob)
 	{
 		List<Player> list = new ArrayList<Player>();
@@ -22,7 +25,7 @@ public class SkillHandler
 		}
 		return list;
 	}
-	/*public static void clearFromSkillLists(LivingEntity mob){
+	public static void clearFromSkillLists(LivingEntity mob){
 		if(SpawnMobs.usedSkill.contains(mob)){
 			SpawnMobs.usedSkill.remove(mob);
 		}
@@ -81,6 +84,6 @@ public class SkillHandler
 				}
 			}
 		}
-	}*/
+	}
 
 }

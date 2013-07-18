@@ -2,9 +2,9 @@ package me.ThaH3lper.com;
 
 import java.util.List;
 
-import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.ChatColor;
@@ -40,6 +40,7 @@ public class EventListener implements Listener
 				e.getDrops().add(s);
 			}
 		}
+		SkillHandler.clearFromSkillLists(l);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -54,10 +55,14 @@ public class EventListener implements Listener
 		LivingEntity l = (LivingEntity) e.getEntity();
 		if(e.getDamager() instanceof Arrow){
 			Arrow arrow = (Arrow)e.getDamager();
-			Mob mob = MobsHandler.getMob(l);
-			if(mob != null)
+			if(MobsHandler.getSkills(l) != null)
 			{
-				mob.executeSkills();
+				try {
+					SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+				}
 			}
 			if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
@@ -69,10 +74,14 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				Mob mob = MobsHandler.getMob(l);
-				if(mob != null)
+				if(MobsHandler.getSkills(l) != null)
 				{
-					mob.executeSkills();
+					try {
+						SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (Exception e1) {
+					}
 				}
 			}
 		}
@@ -81,20 +90,28 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				Mob mob = MobsHandler.getMob(l);
-				if(mob != null)
+				if(MobsHandler.getSkills(l) != null)
 				{
-					mob.executeSkills();
+					try {
+						SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
+					} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+					} catch (Exception e1) {
+					}
 				}
 			}
 		}
 		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity damager = (LivingEntity)e.getDamager();
-			Mob mob = MobsHandler.getMob(l);
-			if(mob != null)
+			if(MobsHandler.getSkills(l) != null)
 			{
-				mob.executeSkills();
+				try {
+					SkillHandler.executeSkills(MobsHandler.getSkills(l), l);
+				} catch (IllegalArgumentException e1) {
+					e1.printStackTrace();
+				} catch (Exception e1) {
+				}
 			}
 			if(getMobTemplet(damager) != null)
 			{

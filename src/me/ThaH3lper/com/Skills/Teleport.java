@@ -11,18 +11,9 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Teleport extends Skill
-{
-	private FireWorkEffect fplayer = new FireWorkEffect();
-	private int r;
-	
-	public Teleport(double chance, int r)
-	{
-		super(chance);
-		this.r = r;
-	}
-	
-	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
+public class Teleport {
+	public static FireWorkEffect fplayer = new FireWorkEffect();
+	public static void playSkill(LivingEntity entity, int r) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(r, entity);
 		if(!list.isEmpty())
