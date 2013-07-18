@@ -11,9 +11,18 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Tnt {
-	public static FireWorkEffect fplayer = new FireWorkEffect();
-	public static void playSkill(LivingEntity entity, int radius) throws IllegalArgumentException, Exception
+public class Tnt extends Skill
+{
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	private int radius;
+	
+	public Tnt(double chance, int radius)
+	{
+		super(chance);
+		this.radius = radius;
+	}
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(radius, entity);
 		if(!list.isEmpty())

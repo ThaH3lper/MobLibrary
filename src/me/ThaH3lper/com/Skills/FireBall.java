@@ -6,9 +6,14 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-public class FireBall {
+public class FireBall extends Skill
+{
+	public FireBall(double chance)
+	{
+		super(chance);
+	}
 	
-	public static void playEffect(LivingEntity entity)
+	public void playSkill(LivingEntity entity)
 	{
 		spawnFire(entity, new Vector(10, 0, 0));
 		spawnFire(entity, new Vector(0.5, 0, 0.5));
@@ -19,7 +24,7 @@ public class FireBall {
 		spawnFire(entity, new Vector(-1, 0, 0));
 		spawnFire(entity, new Vector(-0.5, 0, 0.5));
 	}
-	public static void spawnFire(LivingEntity entity, Vector vector)
+	public void spawnFire(LivingEntity entity, Vector vector)
 	{
 		Location l = entity.getLocation();
 		l.setX(l.getX() + (vector.getX()*10));

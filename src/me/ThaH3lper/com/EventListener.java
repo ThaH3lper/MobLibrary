@@ -2,9 +2,9 @@ package me.ThaH3lper.com;
 
 import java.util.List;
 
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.ChatColor;
@@ -35,13 +35,13 @@ public class EventListener implements Listener
 		{
 			e.getDrops().clear();
 			MobTemplet mt = getMobTemplet(l);
-			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
+			List<ItemStack> items = MobsHandler.getDrops(l, mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
 			}
 		}
-		if(MobsHandler.getSkills(l) != null)
+		/*if(MobsHandler.getSkills(l) != null)
 		{
 			try {
 				SkillHandler.executeSkillsOnDeath(MobsHandler.getSkills(l), e);
@@ -49,8 +49,7 @@ public class EventListener implements Listener
 				e1.printStackTrace();
 			} catch (Exception e1) {
 			}
-		}
-		SkillHandler.clearFromSkillLists(l);
+		}*/
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -64,19 +63,17 @@ public class EventListener implements Listener
 		}
 
 		Entity l = e.getEntity();
-		if(e.getDamager() instanceof Arrow){
+		if(e.getDamager() instanceof Arrow)
+		{
 			Arrow arrow = (Arrow)e.getDamager();
-			if(l instanceof LivingEntity && l != null){
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
+			if(l instanceof LivingEntity && l != null)
+			{
+				Mob mob = MobsHandler.getMob((LivingEntity)l);
+				if(mob != null)
+					mob.executeSkills();
+				
+				if(getMobTemplet((LivingEntity)arrow.getShooter()) != null)
 				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
-					}
-				}
-				if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
 					MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
 					e.setDamage((double)mt.damage/10);
 				}
@@ -87,15 +84,10 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
-				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
-					}
-				}
+				
+				Mob mob = MobsHandler.getMob((LivingEntity)l);
+				if(mob != null)
+					mob.executeSkills();
 			}
 		}
 		else if(e.getDamager() instanceof Fireball){
@@ -103,29 +95,20 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
-				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
-					}
-				}
+				
+				Mob mob = MobsHandler.getMob((LivingEntity)l);
+				if(mob != null)
+					mob.executeSkills();
 			}
 		}
 		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity damager = (LivingEntity)e.getDamager();
-			if(MobsHandler.getSkills((LivingEntity)l) != null)
-			{
-				try {
-					SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-				} catch (IllegalArgumentException e1) {
-					e1.printStackTrace();
-				} catch (Exception e1) {
-				}
-			}
+			
+			Mob mob = MobsHandler.getMob((LivingEntity)l);
+			if(mob != null)
+				mob.executeSkills();
+			
 			if(getMobTemplet(damager) != null)
 			{
 				MobTemplet mt = getMobTempletFromSpawner(damager);

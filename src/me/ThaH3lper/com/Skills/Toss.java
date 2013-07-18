@@ -11,9 +11,20 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class Toss {
-	public static FireWorkEffect fplayer = new FireWorkEffect();
-	public static void playSkill(LivingEntity entity, int radius, int power) throws IllegalArgumentException, Exception
+public class Toss extends Skill
+{
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	private int radius;
+	private int power;
+	
+	public Toss(double chance, int radius, int power)
+	{
+		super(chance);
+		this.radius = radius;
+		this.power = power;
+	}
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(radius, entity);
 		fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.BLACK).with(Type.BALL_LARGE).build());

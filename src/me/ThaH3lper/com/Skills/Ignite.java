@@ -10,20 +10,30 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Ignite {
-		public static FireWorkEffect fplayer = new FireWorkEffect();
-		public static void playSkill(LivingEntity entity, int radius, int duration) throws IllegalArgumentException, Exception
+public class Ignite extends Skill
+{
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	private int radius;
+	private int duration;
+	
+	public Ignite(double chance, int radius, int duration)
+	{
+		super(chance);
+		this.radius = radius;
+		this.duration = duration;
+	}
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
+	{
+		List<Player> list = SkillHandler.getPlayers(radius, entity);
+		if(!list.isEmpty())
 		{
-			List<Player> list = SkillHandler.getPlayers(radius, entity);
-			if(!list.isEmpty())
+			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.YELLOW).with(Type.BURST).build());
+			for(Player p : list)
 			{
-				fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.YELLOW).with(Type.BURST).build());
-				for(Player p : list)
-				{
-					p.setFireTicks(duration);
-					fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.ORANGE).withColor(Color.RED).with(Type.BURST).flicker(true).build());
-
-				}
+				p.setFireTicks(duration);
+				fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.ORANGE).withColor(Color.RED).with(Type.BURST).flicker(true).build());
 			}
 		}
 	}
+}
