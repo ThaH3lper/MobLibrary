@@ -25,11 +25,6 @@ public class SkillHandler {
 		}
 		return list;
 	}
-	public static void clearFromSkillLists(LivingEntity mob){
-		if(SpawnMobs.usedSkill.contains(mob)){
-			SpawnMobs.usedSkill.remove(mob);
-		}
-	}
 	
 	public static void executeSkills(List<String> list, LivingEntity mob) throws IllegalArgumentException, Exception
 	{
@@ -67,9 +62,13 @@ public class SkillHandler {
 			{
 				String cmdName = parts[1];
 				Double life = Double.parseDouble(parts[2]);
-				if(mob.getHealth() < life){
+				Double chance = Double.parseDouble(parts[4]);
+				if(mob.getHealth() < life)
+				{
+					if(chance >= r.nextDouble()){
 						int amount = Integer.parseInt(parts[3]);
 						SpawnMobs.playSkill(mob , amount, cmdName);
+					}
 				}
 			}
 			if(parts[0].equals("potion"))
