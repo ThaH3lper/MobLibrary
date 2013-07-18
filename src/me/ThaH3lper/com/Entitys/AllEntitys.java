@@ -36,7 +36,7 @@ import org.bukkit.entity.Zombie;
 
 public class AllEntitys
 {	
-	public static LivingEntity SpawnMob(String s, Location loc, double speed, int damage, int health, float aggro, float multi)
+	protected static LivingEntity SpawnMob(String s, Location loc, double speed, int damage, int health, float aggro, float multi)
 	{
 		//spawnZombie
 		if(s.equals("zombie"))

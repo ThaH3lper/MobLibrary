@@ -203,7 +203,7 @@ public class SaveLoad
 		}
 		catch(FileNotFoundException ex)
 		{
-			Bukkit.getLogger().info("[SEVERE]:Unable to write file '" + actualFile + "'");				
+			Bukkit.getLogger().info("[SEVERE]: Unable to write file '" + actualFile + "'");				
 		}
 		catch(IOException ex)
 		{

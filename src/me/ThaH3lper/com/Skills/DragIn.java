@@ -10,11 +10,18 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class DragIn
+public class DragIn extends Skill
 {
-	private static FireWorkEffect fplayer = new FireWorkEffect();
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	private int r;
 	
-	public static void playSkill(LivingEntity entity, int r) throws IllegalArgumentException, Exception
+	public DragIn(double chance, int r)
+	{
+		super(chance);
+		this.r = r;
+	}
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
 	{
 		List<Player> list = SkillHandler.getPlayers(r, entity);
 		if(!list.isEmpty())

@@ -10,9 +10,20 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Ignite {
-		public static FireWorkEffect fplayer = new FireWorkEffect();
-		public static void playSkill(LivingEntity entity, int r, int dur) throws IllegalArgumentException, Exception
+public class Ignite extends Skill
+{
+		private FireWorkEffect fplayer = new FireWorkEffect();
+		private int r;
+		private int dur;
+		
+		public Ignite(double chance, int r, int dur)
+		{
+			super(chance);
+			this.r = r;
+			this.dur = dur;
+		}
+		
+		public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
 		{
 			List<Player> list = SkillHandler.getPlayers(r, entity);
 			if(!list.isEmpty())
