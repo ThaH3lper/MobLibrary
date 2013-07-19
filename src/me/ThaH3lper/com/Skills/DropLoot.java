@@ -2,25 +2,33 @@ package me.ThaH3lper.com.Skills;
 
 import java.util.List;
 
-import me.ThaH3lper.com.EventListener;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
-import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
-public class DropLoot
+public class DropLoot extends DeathSkill
 {
-	/*public static void playSkill(String cmdName, EntityDeathEvent e) throws IllegalArgumentException, Exception
+	private String cmdName;
+	
+	public DropLoot(String cmdName)
 	{
-		if(EventListener.getMobTempletFromCmdName(cmdName) != null)
+		this.cmdName = cmdName;
+	}
+	
+	@Override
+	public void playSkill(LivingEntity le) throws IllegalArgumentException, Exception
+	{
+		if(SpawnerHandler.getMobTempletFromCmdName(cmdName) != null)
 		{
-			MobTemplet mt = EventListener.getMobTempletFromCmdName(cmdName);
+			MobTemplet mt = SpawnerHandler.getMobTempletFromCmdName(cmdName);
 			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
-			for(ItemStack s : items)
+			for(ItemStack is : items)
 			{
-				e.getDrops().add(s);
+				le.getWorld().dropItemNaturally(le.getLocation(), is);
 			}
 		}
-	}*/	
+	}
 }

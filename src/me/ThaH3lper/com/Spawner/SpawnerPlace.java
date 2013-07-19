@@ -16,21 +16,21 @@ public class SpawnerPlace
 	private boolean locked = false;
 	private Location loc;
 	private String cmdMob;
-	private int Amount, interval, radious;
+	private int amount, interval, radius;
 	private MobLibrary ml;
 	
 	private List<LivingEntity> mobs = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
 	
-	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
+	public SpawnerPlace(Location location, String cmdMob, int amount, int interval, int radius, MobLibrary ml)
 	{
 		this.loc = location;
 		this.cmdMob = cmdMob;
-		this.Amount = Amount;
+		this.amount = amount;
 		this.interval = interval;
 		this.ml = ml;
-		this.radious = radious;
+		this.radius = radius;
 		this.locked = false;
 		spawnMob();
 	}
@@ -38,10 +38,10 @@ public class SpawnerPlace
 	public void tick()
 	{
 		tick++;
-		if(tick >= interval && locked == false)
+		if(tick >= interval && !locked)
 		{
 			tick = 0;
-			if(mobs.size() >= Amount)
+			if(mobs.size() >= amount)
 				return;
 			else
 				spawnMob();
@@ -50,10 +50,10 @@ public class SpawnerPlace
 		{
 			tick = 1;
 		}
-        String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
-		for(LivingEntity mob:mobs)
+        String display = ml.getMobConfig().getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
+		for(LivingEntity mob : mobs)
 		{
-			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
+			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display) + "");
 		}
 	}
 	
@@ -66,8 +66,8 @@ public class SpawnerPlace
 	
 	public Location getMobSpawnLocation()
 	{
-		double x = (loc.getX()-radious) +(r.nextInt((int) ((loc.getX()+radious)-(loc.getX()-radious))));
-		double z = (loc.getZ()-radious) +(r.nextInt((int) ((loc.getZ()+radious)-(loc.getZ()-radious))));
+		double x = (loc.getX()-radius) +(r.nextInt((int) ((loc.getX()+radius)-(loc.getX()-radius))));
+		double z = (loc.getZ()-radius) +(r.nextInt((int) ((loc.getZ()+radius)-(loc.getZ()-radius))));
 		
 		Location l = new Location(loc.getWorld(), x, loc.getY() + 2, z);
 		return l;
@@ -85,7 +85,7 @@ public class SpawnerPlace
 	
 	public int getAmount()
 	{
-		return this.Amount;
+		return this.amount;
 	}
 	
 	public int getInterval()
@@ -95,7 +95,7 @@ public class SpawnerPlace
 	
 	public int getRadius()
 	{
-		return this.radious;
+		return this.radius;
 	}
 	
 	public void setLocked()

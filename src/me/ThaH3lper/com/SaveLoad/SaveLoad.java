@@ -24,6 +24,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class SaveLoad
@@ -102,7 +103,7 @@ public class SaveLoad
 		File actualFile = new File (dir, fileName);
 		// This will reference one line at a time
 		String line = null;
-		if(!MobLibrary.plugin.spawnerList.isEmpty())
+		if(!SpawnerHandler.getSpawners().isEmpty())
 		{
 			MobsHandler.clearMobs();
 		}
@@ -123,9 +124,9 @@ public class SaveLoad
 				int amount = Integer.parseInt(st.nextToken()),
 					interval = Integer.parseInt(st.nextToken()),
 					radius = Integer.parseInt(st.nextToken());
-				if(MobLibrary.plugin.spawnerList.isEmpty())
+				if(SpawnerHandler.getSpawners().isEmpty())
 				{
-					MobLibrary.plugin.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
+					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
 					if(loc.getBlock().getType() != Material.SIGN)
@@ -140,9 +141,9 @@ public class SaveLoad
 					sign.setLine(3, amount + "i,"+ interval + "s");
 					sign.update();
 				}
-				for(int i = 0; i<= MobLibrary.plugin.spawnerList.size() - 1; i++)
+				for(SpawnerPlace sp : SpawnerHandler.getSpawners())
 				{
-					Location existing = MobLibrary.plugin.spawnerList.get(i).getLocation();
+					Location existing = sp.getLocation();
 					if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ())
 					{
 						alreadyexist = true;
@@ -150,7 +151,7 @@ public class SaveLoad
 				}
 				if(alreadyexist == false)
 				{
-					MobLibrary.plugin.spawnerList.add(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
+					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
 					if(loc.getBlock().getType() != Material.SIGN)
@@ -194,7 +195,7 @@ public class SaveLoad
 		{
 			FileWriter fileWriter = new FileWriter(actualFile);
 			BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-			for(SpawnerPlace sign: MobLibrary.plugin.spawnerList)
+			for(SpawnerPlace sign: SpawnerHandler.getSpawners())
 			{
 				fileWriter.write(sign.getLocation().getBlockX() + "/" + sign.getLocation().getBlockY() + "/" + sign.getLocation().getBlockZ() + "/" + sign.getLocation().getWorld().getName() +
 						"/" + sign.getCmdMob() + "/" + sign.getAmount() + "/" + sign.getInterval() + "/" + sign.getRadius() + "\n" );
@@ -218,7 +219,7 @@ public class SaveLoad
 	
 	public static void restoreBackupData()
 	{
-		MobLibrary.plugin.spawnerList.clear();
+		SpawnerHandler.clear();
 		readStoredData("StoredLocationsBackup.txt");
 	}
 }

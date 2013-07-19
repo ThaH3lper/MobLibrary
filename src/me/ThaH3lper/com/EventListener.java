@@ -5,9 +5,8 @@ import java.util.List;
 import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
-import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -31,11 +30,11 @@ public class EventListener implements Listener
 	public void ModDeath(EntityDeathEvent e)
 	{
 		LivingEntity l = e.getEntity();
-		if(getMobTemplet(l) != null)
+		if(SpawnerHandler.getMobTemplet(l) != null)
 		{
 			e.getDrops().clear();
-			MobTemplet mt = getMobTemplet(l);
-			List<ItemStack> items = MobsHandler.getDrops(l, mt.drops);
+			MobTemplet mt = SpawnerHandler.getMobTemplet(l);
+			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
@@ -55,10 +54,12 @@ public class EventListener implements Listener
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void ModHit(EntityDamageByEntityEvent e)
 	{
-		if(e.getDamager() instanceof CraftItem){
+		if(e.getDamager() instanceof CraftItem)
+		{
 			return;
 		}
-		if(e.getDamager() instanceof TNTPrimed){
+		if(e.getDamager() instanceof TNTPrimed)
+		{
 			return;
 		}
 
@@ -72,17 +73,19 @@ public class EventListener implements Listener
 				if(mob != null)
 					mob.executeSkills();
 				
-				if(getMobTemplet((LivingEntity)arrow.getShooter()) != null)
+				if(SpawnerHandler.getMobTemplet((LivingEntity)arrow.getShooter()) != null)
 				{
-					MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
+					MobTemplet mt = SpawnerHandler.getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
 					e.setDamage((double)mt.damage/10);
 				}
 			}
 		}
-		else if(e.getDamager() instanceof Snowball){
+		else if(e.getDamager() instanceof Snowball)
+		{
 			Snowball snowball = (Snowball)e.getDamager();
-			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
-				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
+			if(SpawnerHandler.getMobTemplet((LivingEntity)snowball.getShooter()) != null)
+			{
+				MobTemplet mt = SpawnerHandler.getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
 				
 				Mob mob = MobsHandler.getMob((LivingEntity)l);
@@ -90,10 +93,12 @@ public class EventListener implements Listener
 					mob.executeSkills();
 			}
 		}
-		else if(e.getDamager() instanceof Fireball){
+		else if(e.getDamager() instanceof Fireball)
+		{
 			Fireball fireball = (Fireball)e.getDamager();
-			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
-				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
+			if(SpawnerHandler.getMobTemplet((LivingEntity)fireball.getShooter()) != null)
+			{
+				MobTemplet mt = SpawnerHandler.getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
 				
 				Mob mob = MobsHandler.getMob((LivingEntity)l);
@@ -109,17 +114,18 @@ public class EventListener implements Listener
 			if(mob != null)
 				mob.executeSkills();
 			
-			if(getMobTemplet(damager) != null)
+			if(SpawnerHandler.getMobTemplet(damager) != null)
 			{
-				MobTemplet mt = getMobTempletFromSpawner(damager);
-				if(mt != null){
+				MobTemplet mt = SpawnerHandler.getMobTempletFromSpawner(damager);
+				if(mt != null)
+				{
 					e.setDamage((double)mt.damage/10.0);
 				}
 			}
 		}
 	}
 	
-	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
+	/*public MobTemplet getMobTempletFromSpawner(LivingEntity l){
 		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList){
 			for(LivingEntity mob:sign.getMobsList()){
 				if(mob == l){
@@ -175,7 +181,7 @@ public class EventListener implements Listener
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	@EventHandler
 	public void entityTnTDamage(EntityDamageEvent event){

@@ -3,7 +3,9 @@ package me.ThaH3lper.com.Entitys;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ThaH3lper.com.Skills.DeathSkill;
 import me.ThaH3lper.com.Skills.DragIn;
+import me.ThaH3lper.com.Skills.DropLoot;
 import me.ThaH3lper.com.Skills.Ignite;
 import me.ThaH3lper.com.Skills.Potion;
 import me.ThaH3lper.com.Skills.Skill;
@@ -20,6 +22,7 @@ public class Mob
 {
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
+	private List<DeathSkill> deathSkills = new ArrayList<DeathSkill>();
 	
 	public Mob(LivingEntity le, List<String> skills)
 	{
@@ -43,7 +46,7 @@ public class Mob
 			}
 			else if(parts[0].equals("spawn"))
 			{
-				this.skills.add(new SpawnMobs(Double.valueOf(parts[2]), Integer.valueOf(parts[3]), parts[1]));
+				this.skills.add(new SpawnMobs(Double.valueOf(parts[3]), Integer.valueOf(parts[2]), parts[1]));
 			}
 			else if(parts[0].equals("potion"))
 			{
@@ -59,6 +62,10 @@ public class Mob
 			{
 				this.skills.add(new Toss(Double.valueOf(parts[3]), Integer.valueOf(parts[1]), Integer.valueOf(parts[2])));
 			}
+			else if(parts[0].equals("droploot"))
+			{
+				this.deathSkills.add(new DropLoot(parts[1]));
+			}
 		}
 	}
 	
@@ -73,6 +80,21 @@ public class Mob
 		{
 			if(Math.random() >= skill.getChance())
 				continue;
+			try
+			{
+				skill.playSkill(entity);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void executeDeathSkills()
+	{
+		for(DeathSkill skill : deathSkills)
+		{
 			try
 			{
 				skill.playSkill(entity);

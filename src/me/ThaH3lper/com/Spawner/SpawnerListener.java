@@ -3,6 +3,7 @@ package me.ThaH3lper.com.Spawner;
 import java.util.List;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 
@@ -20,8 +21,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SpawnerListener implements Listener{
-	
+public class SpawnerListener implements Listener
+{
 	private MobLibrary ml;
 	
 	public SpawnerListener(MobLibrary ml)
@@ -42,7 +43,7 @@ public class SpawnerListener implements Listener{
 		{			
 			int inteval = 0;
 			int amount = 0;
-			int radious = 0;
+			int radius = 0;
 			String cmdname = s.getLine(2);
 			
 			String str = s.getLine(3);
@@ -52,21 +53,21 @@ public class SpawnerListener implements Listener{
 			
 			amount = Integer.parseInt(parts[0]);
 			inteval = Integer.parseInt(parts[1]);
-			radious = Integer.parseInt(s.getLine(1));
+			radius = Integer.parseInt(s.getLine(1));
 			
-			if(inteval != 0 && amount != 0 && radious != 0 && ml.mobs.getCustomConfig().contains("Mobs." + cmdname))
+			if(inteval != 0 && amount != 0 && radius != 0 && ml.getMobConfig().getCustomConfig().contains("Mobs." + cmdname))
 			{
 				e.getPlayer().sendMessage(ChatColor.GREEN + "Spawner Created");
 				s.setLine(0, ChatColor.GREEN + "[MobSpawner]");
 				s.update();
 				
-				ml.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
+				SpawnerHandler.addSpawner(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radius, ml));
 				SaveLoad.storeData("StoredLocations.txt");
 			}
 			else
 			{
 				e.getPlayer().sendMessage(ChatColor.RED + "Spawner Creation Failed!"  + parts[0] + " : " + parts[1] + " : " + inteval + " : " + amount);
-				if(!ml.mobs.getCustomConfig().contains("Mobs." + cmdname)){
+				if(!ml.getMobConfig().getCustomConfig().contains("Mobs." + cmdname)){
 					e.getPlayer().sendMessage(ChatColor.RED + "Spawner Creation Failed: "+ cmdname + " Doesn't Exist in config canceling sign");
 				}
 				Block block = s.getBlock();
@@ -81,22 +82,28 @@ public class SpawnerListener implements Listener{
 	}
 	
 	@EventHandler
-	public void signDestroy(BlockBreakEvent e){
-		if(!(e.getBlock().getState() instanceof Sign)){
+	public void signDestroy(BlockBreakEvent e)
+	{
+		if(!(e.getBlock().getState() instanceof Sign))
+		{
 			return;
 		}
 		Sign s = (Sign) e.getBlock().getState();
-		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]")){
-			for(int i = 0; i<= ml.spawnerList.size() - 1; i++){
-				Location existing = ml.spawnerList.get(i).getLocation();
+		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]"))
+		{
+			for(SpawnerPlace sp : SpawnerHandler.getSpawners())
+			{
+				Location existing = sp.getLocation();
 				Location loc = s.getLocation();
-				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
-					List<LivingEntity> mobs = ml.spawnerList.get(i).getMobsList();
-					for(LivingEntity mob:mobs){
+				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ())
+				{
+					List<LivingEntity> mobs = sp.getMobsList();
+					for(LivingEntity mob:mobs)
+					{
 						mob.remove();
 					}
-					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + ml.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
-					ml.spawnerList.remove(i);
+					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + sp.getCmdMob() + ChatColor.RED + " Removed!");
+					SpawnerHandler.removeSpawner(sp);
 					SaveLoad.storeData("StoredLocations.txt");
 				}
 			}
@@ -109,10 +116,14 @@ public class SpawnerListener implements Listener{
 		if(e.getEntity() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
-			for(SpawnerPlace sp : ml.spawnerList)
+			for(SpawnerPlace sp : SpawnerHandler.getSpawners())
 			{
 				sp.DeathMob(l);
 			}
+			Mob mob = MobsHandler.getMob(l);
+			if(mob == null)
+				return;
+			mob.executeDeathSkills();
 			MobsHandler.removeMob(l);
 		}
 	}

@@ -15,6 +15,9 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.plugin.Plugin;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Items.ItemHandler;
+import me.ThaH3lper.com.SaveLoad.SaveLoad;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class MobsHandler {
@@ -31,22 +34,23 @@ public class MobsHandler {
 	
 	private static boolean loadAllMobs()
 	{
-		if(!ml.mobs.getCustomConfig().contains("Mobs"))
+		SaveLoad mobs = ml.getMobConfig();
+		if(!mobs.getCustomConfig().contains("Mobs"))
 			return false;
-		for(String Name : ml.mobs.getCustomConfig().getConfigurationSection("Mobs").getKeys(false))
+		for(String Name : mobs.getCustomConfig().getConfigurationSection("Mobs").getKeys(false))
 		{
 			if(check(Name))
 			{
-				String mob = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Mob");
-				String display = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Display");
-				double speed = ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Speed");
-				int health = ml.mobs.getCustomConfig().getInt("Mobs." + Name + ".Health");
-				int damage = ml.mobs.getCustomConfig().getInt("Mobs." + Name + ".Damage");
-				float aggro = (float)ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Aggro");
-				boolean despawn = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".Despawn");
-				List<String> equip = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Equipment");
-				List<String> drops = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
-				List<String> skills = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
+				String mob = mobs.getCustomConfig().getString("Mobs." + Name + ".Mob");
+				String display = mobs.getCustomConfig().getString("Mobs." + Name + ".Display");
+				double speed = mobs.getCustomConfig().getDouble("Mobs." + Name + ".Speed");
+				int health = mobs.getCustomConfig().getInt("Mobs." + Name + ".Health");
+				int damage = mobs.getCustomConfig().getInt("Mobs." + Name + ".Damage");
+				float aggro = (float)mobs.getCustomConfig().getDouble("Mobs." + Name + ".Aggro");
+				boolean despawn = mobs.getCustomConfig().getBoolean("Mobs." + Name + ".Despawn");
+				List<String> equip = mobs.getCustomConfig().getStringList("Mobs." + Name + ".Equipment");
+				List<String> drops = mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
+				List<String> skills = mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
 				
 				mobTemplets.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills));
 			}
@@ -81,7 +85,7 @@ public class MobsHandler {
 		return l;
 	}
 	
-	public static List<ItemStack> getDrops(LivingEntity l, List<String> drops)
+	public static List<ItemStack> getDrops(List<String> drops)
 	{
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for(String s : drops)
@@ -99,10 +103,10 @@ public class MobsHandler {
 			}
 			else
 			{
-				if(ml.loadItems.getItem(parts[0]) != null)
+				if(ItemHandler.getItem(parts[0]) != null)
 				{
 					Random rand = new Random();
-					ItemStack stack = ml.loadItems.getItem(parts[0]);
+					ItemStack stack = ItemHandler.getItem(parts[0]);
 					if(rand.nextFloat() < Float.parseFloat(parts[1]))
 					{
 						items.add(stack);
@@ -120,27 +124,27 @@ public class MobsHandler {
 			String[] splits = s.split(" ");
 			if(splits[1].equals("0"))
 			{
-				l.getEquipment().setItemInHand(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setItemInHand(ItemHandler.getItem(splits[0]));
 				l.getEquipment().setItemInHandDropChance(0f);
 			}
 			else if(splits[1].equals("4"))
 			{
-				l.getEquipment().setHelmet(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setHelmet(ItemHandler.getItem(splits[0]));
 				l.getEquipment().setHelmetDropChance(0f);
 			}
 			else if(splits[1].equals("3"))
 			{
-				l.getEquipment().setChestplate(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setChestplate(ItemHandler.getItem(splits[0]));
 				l.getEquipment().setChestplateDropChance(0f);
 			}
 			else if(splits[1].equals("2"))
 			{
-				l.getEquipment().setLeggings(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setLeggings(ItemHandler.getItem(splits[0]));
 				l.getEquipment().setLeggingsDropChance(0f);
 			}
 			else if(splits[1].equals("1"))
 			{
-				l.getEquipment().setBoots(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setBoots(ItemHandler.getItem(splits[0]));
 				l.getEquipment().setBootsDropChance(0f);
 			}
 		}
@@ -169,30 +173,31 @@ public class MobsHandler {
 	
 	private static boolean check(String s)
 	{
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Mob"))
+		SaveLoad mobs = ml.getMobConfig();
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Mob"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Display"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Display"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Speed"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Speed"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Health"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Health"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Damage"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Damage"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Aggro"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Aggro"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Despawn"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Despawn"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Equipment"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Equipment"))
 			return false;
-		if(!ml.mobs.getCustomConfig().contains("Mobs." + s + ".Drops"))
+		if(!mobs.getCustomConfig().contains("Mobs." + s + ".Drops"))
 			return false;
 		return true;
 	}
 	
 	public static MobTemplet getMobTempletFromSpawner(LivingEntity l)
 	{
-		for(SpawnerPlace sign: ml.spawnerList)
+		for(SpawnerPlace sign : SpawnerHandler.getSpawners())
 		{
 			for(LivingEntity mob:sign.getMobsList())
 			{
@@ -239,25 +244,38 @@ public class MobsHandler {
 	public static void clearMobs()
 	{
 		mobs.clear();
-		if(MobLibrary.plugin.spawnerList.isEmpty())
+		if(SpawnerHandler.getSpawners().isEmpty())
 		{
 			return;
 		}
 		else
 		{
-			for(int i = 0; i<= MobLibrary.plugin.spawnerList.size() - 1; i++)
+			for(SpawnerPlace sp : SpawnerHandler.getSpawners())
 			{
-				MobLibrary.plugin.spawnerList.get(i).setLocked();
-				List<LivingEntity> mobs = MobLibrary.plugin.spawnerList.get(i).getMobsList();
+				sp.setLocked();
+				List<LivingEntity> mobs = sp.getMobsList();
 				if(!mobs.isEmpty())
 				{
 					for(LivingEntity mob:mobs)
 					{
 						mob.remove();
+						mob = null;
 					}
 				}
 			}
-			MobLibrary.plugin.spawnerList.clear();
+			
+			SpawnerHandler.clear();
+			
+			for(Mob mob : mobs)
+			{
+				if(mob == null)
+					continue;
+				if(mob.getEntity() == null)
+					continue;
+				mob.getEntity().remove();
+				mob = null;
+			}
+			mobs.clear();
 		}
 	}
 	

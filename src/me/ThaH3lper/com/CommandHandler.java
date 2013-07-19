@@ -5,7 +5,8 @@ import java.util.List;
 
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Entitys.MobTemplet;
-import me.ThaH3lper.com.Items.ItemsObject;
+import me.ThaH3lper.com.Items.ItemHandler;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.ChatColor;
@@ -17,20 +18,14 @@ import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor
 {
-	final String VERSION = ChatColor.RED + "Version 0.7 ALPHA";
+	final String VERSION = ChatColor.RED + "Version 0.8 ALPHA";
 	
-	private MobLibrary ml;
+	public final String HEAD = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	public final String ITEM_HEAD = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
+	public final String MOB_HEAD = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " MOB LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
 	
-	private String head = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
-	private String ihead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
-	private String mhead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " MOB LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
-	
-	public CommandHandler(MobLibrary ml)
+	public boolean onCommand(CommandSender sender, Command cmd, String commandlabel, String[] args)
 	{
-		this.ml = ml;
-	}
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String commandlabel, String[] args){
 		if(sender instanceof Player)
 		{			
 			Player p = (Player) sender;
@@ -40,7 +35,7 @@ public class CommandHandler implements CommandExecutor
 			}
 			if(args.length == 0)
 			{
-				p.sendMessage(head);
+				p.sendMessage(HEAD);
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item" + ChatColor.DARK_GREEN + " to go to Item Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib locations" + ChatColor.DARK_GREEN + " Mob spawner locations");
@@ -55,13 +50,13 @@ public class CommandHandler implements CommandExecutor
 			{
 				if(args[0].equalsIgnoreCase("item"))
 				{
-					p.sendMessage(ihead);
+					p.sendMessage(ITEM_HEAD);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item [name] [amount]" + ChatColor.DARK_GREEN + " to get item");
-					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Items:" + getList());
+					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Items:" + ItemHandler.getList());
 				}
 				else if(args[0].equalsIgnoreCase("mob"))
 				{
-					p.sendMessage(mhead);
+					p.sendMessage(MOB_HEAD);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
 					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Mobs:");
 					for(String s : getMobs())
@@ -107,10 +102,10 @@ public class CommandHandler implements CommandExecutor
 			{
 				if(args[0].equalsIgnoreCase("item"))
 				{
-					if(ml.loadItems.getItem(args[1]) != null)
+					if(ItemHandler.getItem(args[1]) != null)
 					{
 						for(int i = 0; i < Integer.parseInt(args[2]); i++)
-							p.getInventory().addItem(ml.loadItems.getItem(args[1]));
+							p.getInventory().addItem(ItemHandler.getItem(args[1]));
 						p.sendMessage(ChatColor.DARK_GREEN + "ItemStack Added!");
 					}
 					else
@@ -133,16 +128,6 @@ public class CommandHandler implements CommandExecutor
 			sender.sendMessage("Only Ingame! sorry");
 		}
 		return false;	
-	}
-	
-	public String getList()
-	{
-		String s = " ";
-		for(ItemsObject io : ml.itemList)
-		{
-			s += ChatColor.LIGHT_PURPLE +io.name + ChatColor.DARK_GREEN + ", ";
-		}
-		return s;
 	}
 	
 	public List<String> getMobs()
@@ -168,7 +153,7 @@ public class CommandHandler implements CommandExecutor
 		String s = " ";
 		int count = 0;
 		List<String> locations = new ArrayList<String>();
-		for(SpawnerPlace sign : ml.spawnerList)
+		for(SpawnerPlace sign : SpawnerHandler.getSpawners())
 		{
 			count++;
 			s += ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";

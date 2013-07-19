@@ -1,11 +1,12 @@
 package me.ThaH3lper.com.Skills;
 
 import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.entity.LivingEntity;
 
-public class SpawnMobs extends Skill
+public class SpawnMobs extends Skill implements UsableOnce
 {
 	private int amount;
 	private String cmdName;
@@ -21,15 +22,27 @@ public class SpawnMobs extends Skill
 	
 	public void playSkill(LivingEntity mob)
 	{
-		if(used)
+		if(isUsed())
 			return;
-		for(int count = amount; count >= 0; count--)
+		for(int i=0; i < amount; ++i)
 		{
 			LivingEntity add = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
-			SpawnerPlace spawner = me.ThaH3lper.com.EventListener.getSpawner(mob);
+			SpawnerPlace spawner = SpawnerHandler.getSpawner(mob);
 			spawner.getMobsList().add(add);
 		}
-		used = true;
+		setUsed(true);
+	}
+
+	@Override
+	public boolean isUsed()
+	{
+		return used;
+	}
+
+	@Override
+	public void setUsed(boolean value)
+	{
+		used = value;
 	}
 
 }
