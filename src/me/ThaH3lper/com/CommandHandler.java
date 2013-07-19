@@ -6,6 +6,7 @@ import java.util.List;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemHandler;
+import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
@@ -65,13 +66,14 @@ public class CommandHandler implements CommandExecutor
 				else if(args[0].equalsIgnoreCase("load"))
 				{					
 					p.sendMessage(ChatColor.GREEN + "===READING DATA FROM DATA FILE===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
-
+					//me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
+					SpawnerHandler.load();
 				}
 				else if(args[0].equalsIgnoreCase("save"))
 				{					
 					p.sendMessage(ChatColor.GREEN + "===WRITING SIGN DATA TO FILE===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+					//me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+					SaveLoad.saveSpawners();
 
 				}
 				else if(args[0].equalsIgnoreCase("ver"))

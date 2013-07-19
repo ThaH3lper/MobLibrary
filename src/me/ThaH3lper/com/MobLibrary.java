@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.Ticker;
 
@@ -16,13 +17,14 @@ public class MobLibrary extends JavaPlugin
 {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public static MobLibrary plugin;
-	
-	private SaveLoad items, mobs;
+	private SaveLoad items;
+	private SaveLoad mobs;
+	private SaveLoad saves;
 	
 	@Override
 	public void onDisable()
 	{
-		SaveLoad.storeData("StoredLocations.txt");
+		SaveLoad.saveSpawners();
 		MobsHandler.clearMobs();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName() +  " Has Been Disabled!");
@@ -38,6 +40,7 @@ public class MobLibrary extends JavaPlugin
 		
 		items = new SaveLoad(this, "Items.yml");
 		mobs = new SaveLoad(this, "Mobs.yml");
+		saves = new SaveLoad(this, "Save.yml");
 		ItemHandler.Load();
 		MobsHandler.load(this);
 
@@ -48,7 +51,7 @@ public class MobLibrary extends JavaPlugin
 		manager.registerEvents(new SpawnerListener(this), this);
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10L, 20L);
-		SaveLoad.readStoredData("StoredLocations.txt");
+		SpawnerHandler.load();
 	}
 	
 	public SaveLoad getItemConfig()
@@ -59,5 +62,10 @@ public class MobLibrary extends JavaPlugin
 	public SaveLoad getMobConfig()
 	{
 		return mobs;
+	}
+	
+	public SaveLoad getSavesConfig()
+	{
+		return saves;
 	}
 }

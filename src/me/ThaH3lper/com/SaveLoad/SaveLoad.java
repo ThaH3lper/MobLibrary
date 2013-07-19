@@ -8,6 +8,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
@@ -96,6 +98,7 @@ public class SaveLoad
 	    
 	}
 	
+	@Deprecated
 	public static void readStoredData(String file)
 	{
 		String fileName = file;
@@ -184,6 +187,7 @@ public class SaveLoad
 		}
 	}
 	
+	@Deprecated
 	public static void storeData(String file)
 	{
 		// The name of the file to open change this later to allow filename to be file name.
@@ -212,14 +216,28 @@ public class SaveLoad
 		}
 	}
 	
+	@Deprecated
 	public static void storeBackupData()
 	{
 		storeData("StoredLocationsBackup.txt");
 	}
 	
+	@Deprecated
 	public static void restoreBackupData()
 	{
 		SpawnerHandler.clear();
 		readStoredData("StoredLocationsBackup.txt");
+	}
+	
+	public static void saveSpawners()
+	{
+		List<String> saves = new ArrayList<String>();
+		for(SpawnerPlace sign: SpawnerHandler.getSpawners())
+		{
+			saves.add(sign.getLocation().getBlockX() + "," + sign.getLocation().getBlockY() + "," + sign.getLocation().getBlockZ() + "," + sign.getLocation().getWorld().getName() +
+					"," + sign.getCmdMob() + "," + sign.getAmount() + "," + sign.getInterval() + "," + sign.getRadius());
+		}
+		MobLibrary.plugin.getSavesConfig().getCustomConfig().set("Spawners", saves);
+		MobLibrary.plugin.getSavesConfig().saveCustomConfig();
 	}
 }

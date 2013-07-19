@@ -3,10 +3,18 @@ package me.ThaH3lper.com.Spawner;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Sign;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.LivingEntity;
 
 public class SpawnerHandler
@@ -81,6 +89,34 @@ public class SpawnerHandler
 			}
 		}
 		return null;
+	}
+	
+	public static void load()
+	{
+		FileConfiguration config = MobLibrary.plugin.getSavesConfig().getCustomConfig();
+		List<String> savedSpawners = config.getStringList("Spawners");
+		for(String s : savedSpawners)
+		{
+			String[] split = s.split(",");
+			if(split.length != 8)
+				continue;
+			Location loc = new Location(Bukkit.getWorld(split[3]), Integer.valueOf(split[0]),Integer.valueOf(split[1]),Integer.valueOf(split[2]));
+			SpawnerPlace sp = new SpawnerPlace(loc, split[4], Integer.valueOf(split[5]), Integer.valueOf(split[6]), Integer.valueOf(split[7]), MobLibrary.plugin);
+			Chunk chunk = loc.getChunk();
+			chunk.load(true);
+			if(loc.getBlock().getType() != Material.SIGN)
+			{
+				Block block = loc.getBlock();
+				block.setType(Material.SIGN_POST);
+			}
+			Sign sign = (Sign)loc.getBlock().getState();
+			sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
+			sign.setLine(1, "" + sp.getRadius());
+			sign.setLine(2, sp.getCmdMob());
+			sign.setLine(3, sp.getAmount() + "i,"+ sp.getInterval() + "s");
+			sign.update();
+			spawners.add(sp);
+		}
 	}
 	
 	public static List<SpawnerPlace> getSpawners()

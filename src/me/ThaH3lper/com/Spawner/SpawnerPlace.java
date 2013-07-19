@@ -114,4 +114,13 @@ public class SpawnerPlace
 			return;
 		mobs.remove(l);
 	}
+	
+	public void save()
+	{
+		List<String> saves = MobLibrary.plugin.getSavesConfig().getCustomConfig().getStringList("Spawners");
+		saves.add(getLocation().getBlockX() + "," + getLocation().getBlockY() + "," + getLocation().getBlockZ() + "," + getLocation().getWorld().getName() +
+					"," + getCmdMob() + "," + getAmount() + "," + getInterval() + "," + getRadius());
+		MobLibrary.plugin.getSavesConfig().getCustomConfig().set("Spawners", saves);
+		MobLibrary.plugin.getSavesConfig().saveCustomConfig();
+	}
 }
