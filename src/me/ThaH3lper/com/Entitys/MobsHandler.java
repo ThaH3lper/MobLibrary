@@ -81,11 +81,33 @@ public class MobsHandler {
 		l.setRemoveWhenFarAway(mt.despawn);
 		
 		setEquipment(l, mt.equip);
-		mobs.add(new Mob(l,mt.skills));
+		mobs.add(new Mob(l,mt.skills, mt.damage, mt.drops));
 		return l;
 	}
 	
-	public static List<ItemStack> getDrops(List<String> drops)
+	public static LivingEntity SpawnAPI(String cmdName, Location loc)
+	{
+		if(getTemplet(cmdName) == null)
+		{
+			Bukkit.broadcastMessage("NULL:" + cmdName);
+			return null;
+		}
+		MobTemplet mt = getTemplet(cmdName);
+		LivingEntity l = AllEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, 1F);
+		
+		String display = mt.display.replace("_", " ");
+		display = ChatColor.translateAlternateColorCodes('&', display);
+		l.setCustomName(display);
+		l.setCustomNameVisible(true);
+		
+		l.setRemoveWhenFarAway(mt.despawn);
+		
+		setEquipment(l, mt.equip);
+		mobs.add(new Mob(l,mt.skills, mt.damage, mt.drops));
+		return l;
+	}
+	
+	public static List<ItemStack> getDrops(List<String> drops) //TODO might need deprecation!
 	{
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for(String s : drops)

@@ -1,7 +1,5 @@
 package me.ThaH3lper.com;
 
-import java.util.List;
-
 import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
@@ -22,7 +20,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class EventListener implements Listener 
 {			
@@ -30,15 +27,17 @@ public class EventListener implements Listener
 	public void ModDeath(EntityDeathEvent e)
 	{
 		LivingEntity l = e.getEntity();
-		if(SpawnerHandler.getMobTemplet(l) != null)
+		Mob mob = MobsHandler.getMob(l);
+		if(mob != null)
 		{
 			e.getDrops().clear();
-			MobTemplet mt = SpawnerHandler.getMobTemplet(l);
+			mob.dropLoot();
+			/*MobTemplet mt = SpawnerHandler.getMobTemplet(l);
 			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
-			}
+			}*/
 		}
 		/*if(MobsHandler.getSkills(l) != null)
 		{

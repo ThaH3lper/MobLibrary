@@ -3,6 +3,7 @@ package me.ThaH3lper.com.Entitys;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.Skills.DeathSkill;
 import me.ThaH3lper.com.Skills.DragIn;
 import me.ThaH3lper.com.Skills.DropLoot;
@@ -14,7 +15,9 @@ import me.ThaH3lper.com.Skills.Teleport;
 import me.ThaH3lper.com.Skills.Tnt;
 import me.ThaH3lper.com.Skills.Toss;
 
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -23,8 +26,10 @@ public class Mob
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<DeathSkill> deathSkills = new ArrayList<DeathSkill>();
+	private int damage;
+	private List<String> drops = new ArrayList<String>();
 	
-	public Mob(LivingEntity le, List<String> skills)
+	public Mob(LivingEntity le, List<String> skills, int damage, List<String> drop)
 	{
 		entity = le;
 		for(String s : skills)
@@ -67,11 +72,24 @@ public class Mob
 				this.deathSkills.add(new DropLoot(parts[1]));
 			}
 		}
+		
+		this.damage = damage;
+		drops = drop;
 	}
 	
 	public LivingEntity getEntity()
 	{
 		return entity;
+	}
+	
+	public void setDamage(int damage)
+	{
+		this.damage = damage;
+	}
+	
+	public int getDamage()
+	{
+		return damage;
 	}
 	
 	public void executeSkills()
@@ -104,5 +122,37 @@ public class Mob
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public List<ItemStack> dropLoot()
+	{
+		List<ItemStack> items = new ArrayList<ItemStack>();
+		for(String s : drops)
+		{
+			String[] parts = s.split(" ");
+			if(s.contains(":"))
+			{
+				String[] splits = parts[0].split(":");
+				ItemStack stack = new ItemStack(Material.getMaterial(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
+				if(Math.random() <= Double.valueOf(parts[1]))
+				{
+					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+					items.add(stack);
+				}
+			}
+			else
+			{
+				if(ItemHandler.getItem(parts[0]) != null)
+				{
+					ItemStack stack = ItemHandler.getItem(parts[0]);
+					if(Math.random() <= Double.valueOf(parts[1]))
+					{
+						entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+						items.add(stack);
+					}
+				}
+			}
+		}
+		return items;
 	}
 }

@@ -26,9 +26,9 @@ public class SpawnMobs extends Skill implements UsableOnce
 			return;
 		for(int i=0; i < amount; ++i)
 		{
-			LivingEntity add = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
+			LivingEntity le = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
 			SpawnerPlace spawner = SpawnerHandler.getSpawner(mob);
-			spawner.getMobsList().add(add);
+			spawner.getMobsList().add(le);
 		}
 		setUsed(true);
 	}
