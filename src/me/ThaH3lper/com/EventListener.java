@@ -31,22 +31,23 @@ public class EventListener implements Listener
 	public void ModDeath(EntityDeathEvent e)
 	{
 		LivingEntity l = e.getEntity();
-		if(getMobTemplet(l) != null)
+		if(MobsHandler.getSpawnerFromMob(l) != null)
 		{
+			SpawnerPlace sign = MobsHandler.getSpawnerFromMob(l);
 			e.getDrops().clear();
-			MobTemplet mt = getMobTemplet(l);
+			MobTemplet mt = MobsHandler.getMobTempletFromCmdName(sign.getCmdMob());
 			List<ItemStack> items = MobsHandler.getDrops(mt.drops);
 			for(ItemStack s : items)
 			{
 				e.getDrops().add(s);
 			}
-		}
-		if(MobsHandler.getSpawnerFromMob(l).adds.isEmpty() == false){
-			if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true){
-				MobsHandler.getSpawnerFromMob(l).adds.remove(l);
-				e.getDrops().clear();
-				MobsHandler.clearFromSkillLists(l);
-				return;
+			if(sign.adds.size() > 0){
+				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true){
+					MobsHandler.getSpawnerFromMob(l).adds.remove(l);
+					e.getDrops().clear();
+					MobsHandler.clearFromSkillLists(l);
+					return;
+				}
 			}
 		}
 		if(MobsHandler.getSkills(l) != null)
@@ -58,7 +59,6 @@ public class EventListener implements Listener
 			} catch (Exception e1) {
 			}
 		}
-		MobsHandler.clearFromSkillLists(l);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
