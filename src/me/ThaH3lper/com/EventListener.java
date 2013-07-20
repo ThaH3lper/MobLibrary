@@ -41,6 +41,14 @@ public class EventListener implements Listener
 				e.getDrops().add(s);
 			}
 		}
+		if(MobsHandler.getSpawnerFromMob(l).adds.isEmpty() == false){
+			if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true){
+				MobsHandler.getSpawnerFromMob(l).adds.remove(l);
+				e.getDrops().clear();
+				MobsHandler.clearFromSkillLists(l);
+				return;
+			}
+		}
 		if(MobsHandler.getSkills(l) != null)
 		{
 			try {
@@ -50,7 +58,7 @@ public class EventListener implements Listener
 			} catch (Exception e1) {
 			}
 		}
-		SkillHandler.clearFromSkillLists(l);
+		MobsHandler.clearFromSkillLists(l);
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)

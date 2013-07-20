@@ -15,12 +15,16 @@ public class SpawnMobs
 	public static void playSkill(LivingEntity mob, int amount, String cmdName)
 	{
 		if(!(usedSkill.contains(mob))){
+			SpawnerPlace spawner = me.ThaH3lper.com.EventListener.getSpawner(mob);
 			for(int count = amount; count >= 0; count--)
 			{
-				LivingEntity add = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
-				SpawnerPlace spawner = me.ThaH3lper.com.EventListener.getSpawner(mob);
-				spawner.getMobsList().add(add);
+				if(spawner.AlreadySpawnedAdds() == false){
+					LivingEntity add = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
+					spawner.getMobsList().add(add);
+					spawner.adds.add(add);
+				}
 			}
+			spawner.setAlreadySpawnedAdds(true);
 			usedSkill.add(mob);
 		}
 		

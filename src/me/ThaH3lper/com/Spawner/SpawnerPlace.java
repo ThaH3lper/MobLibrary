@@ -18,8 +18,10 @@ public class SpawnerPlace
 	private String cmdMob;
 	private int Amount, interval, radious;
 	private MobLibrary ml;
+	private boolean AlreadySpawnedAdds;
 	
 	private List<LivingEntity> mobs = new ArrayList<LivingEntity>();
+	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
 	
@@ -32,6 +34,7 @@ public class SpawnerPlace
 		this.ml = ml;
 		this.radious = radious;
 		this.locked = false;
+		this.AlreadySpawnedAdds = false;
 		spawnMob();
 	}
 	
@@ -41,14 +44,13 @@ public class SpawnerPlace
 		if(tick >= interval && locked == false)
 		{
 			tick = 0;
-			if(mobs.size() >= Amount)
+			if(mobs.size() >= Amount){
 				return;
-			else
+			}
+			else{
 				spawnMob();
-		}
-		if(tick > 1000000)
-		{
-			tick = 1;
+				this.setAlreadySpawnedAdds(false);
+			}
 		}
         String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		for(LivingEntity mob:mobs)
@@ -113,5 +115,14 @@ public class SpawnerPlace
 		if(!mobs.contains(l))
 			return;
 		mobs.remove(l);
+	}
+	public boolean AlreadySpawnedAdds(){
+		return this.AlreadySpawnedAdds;
+	}
+	public void setAlreadySpawnedAdds(boolean alreadySpawnedAdds){
+		this.AlreadySpawnedAdds = alreadySpawnedAdds;
+	}
+	public int getTick(){
+		return this.tick;
 	}
 }

@@ -26,11 +26,6 @@ public class SkillHandler {
 		}
 		return list;
 	}
-	public static void clearFromSkillLists(LivingEntity mob){
-		if(SpawnMobs.usedSkill.contains(mob)){
-			SpawnMobs.usedSkill.remove(mob);
-		}
-	}
 	
 	public static void executeSkills(List<String> list, LivingEntity mob) throws IllegalArgumentException, Exception
 	{

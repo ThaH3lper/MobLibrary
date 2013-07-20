@@ -41,25 +41,26 @@ public class CommandHandler implements CommandExecutor
 			if(args.length == 0)
 			{
 				p.sendMessage(head);
-				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
-				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item" + ChatColor.DARK_GREEN + " to go to Item Libaray");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib ver" + ChatColor.DARK_GREEN + " Version Info");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mobs" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib items" + ChatColor.DARK_GREEN + " to go to Item Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib locations" + ChatColor.DARK_GREEN + " Mob spawner locations");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mobtimers" + ChatColor.DARK_GREEN + " get boss spawn timer info");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib load" + ChatColor.DARK_GREEN + " to read sign locations from memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib restore" + ChatColor.DARK_GREEN + " to restore signs from backup file");
-				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib ver" + ChatColor.DARK_GREEN + " Version Info");
 
 			}
 			if(args.length == 1)
 			{
-				if(args[0].equalsIgnoreCase("item"))
+				if(args[0].equalsIgnoreCase("items"))
 				{
 					p.sendMessage(ihead);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib item [name] [amount]" + ChatColor.DARK_GREEN + " to get item");
 					p.sendMessage(ChatColor.DARK_GREEN + "Loaded Items:" + getList());
 				}
-				else if(args[0].equalsIgnoreCase("mob"))
+				else if(args[0].equalsIgnoreCase("mobs"))
 				{
 					p.sendMessage(mhead);
 					p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [mobname] [boost]" + ChatColor.DARK_GREEN + " to spawn mob! (boost ex: 1.3)");
@@ -86,8 +87,15 @@ public class CommandHandler implements CommandExecutor
 				}
 				else if(args[0].equalsIgnoreCase("locations"))
 				{					
-					p.sendMessage(ChatColor.GREEN + "Listing Mob Locations:");
+					p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD +  "Listing Mob Locations:");
 					for(String s : getSignLocations())
+						p.sendMessage(s);
+
+				}
+				else if(args[0].equalsIgnoreCase("mobtimers"))
+				{					
+					p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Listing Mob Timers:");
+					for(String s : getMobTimers())
 						p.sendMessage(s);
 
 				}
@@ -105,7 +113,7 @@ public class CommandHandler implements CommandExecutor
 			}
 			if(args.length == 3)
 			{
-				if(args[0].equalsIgnoreCase("item"))
+				if(args[0].equalsIgnoreCase("items"))
 				{
 					if(ml.loadItems.getItem(args[1]) != null)
 					{
@@ -116,7 +124,7 @@ public class CommandHandler implements CommandExecutor
 					else
 						p.sendMessage(ChatColor.RED + "There is no item like that!");
 				}
-				if(args[0].equalsIgnoreCase("mob"))
+				if(args[0].equalsIgnoreCase("mobs"))
 				{
 					LivingEntity spawned = MobsHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
 					if(spawned == null)
@@ -166,19 +174,23 @@ public class CommandHandler implements CommandExecutor
 	public List<String> getSignLocations()
 	{
 		String s = " ";
-		int count = 0;
 		List<String> locations = new ArrayList<String>();
 		for(SpawnerPlace sign : ml.spawnerList)
 		{
-			count++;
-			s += ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";
-			if(count == 1)
-			{
-				count = 0;
-				locations.add(s);
-			}
+			s = ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";
+			locations.add(s);
 		}
 		return locations;
+	}
+	public List<String> getMobTimers()
+	{
+		String s = " ";
+		List<String> mobTimers = new ArrayList<String>();
+		for(SpawnerPlace sign : ml.spawnerList){
+			s = ChatColor.LIGHT_PURPLE + "MobName: " + ChatColor.YELLOW + "" + sign.getCmdMob() + " " + ChatColor.LIGHT_PURPLE + "TICKS :" + ChatColor.RED + sign.getTick() + ChatColor.LIGHT_PURPLE + " of " + ChatColor.GREEN + sign.getInterval() + "" + ChatColor.LIGHT_PURPLE + "Amount: " + ChatColor.RED + sign.getAmount() + "" + ChatColor.LIGHT_PURPLE + " Adds: " + ChatColor.RED + "" + sign.adds.size();
+			mobTimers.add(s);
+		}
+		return mobTimers;
 	}
 
 }

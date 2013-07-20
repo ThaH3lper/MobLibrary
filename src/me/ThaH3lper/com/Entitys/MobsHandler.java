@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.plugin.Plugin;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Skills.SpawnMobs;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 public class MobsHandler {
@@ -252,6 +253,24 @@ public class MobsHandler {
 				}
 			}
 			MobLibrary.plugin.spawnerList.clear();
+		}
+	}
+	public static SpawnerPlace getSpawnerFromMob(LivingEntity l){
+		for(SpawnerPlace sign: ml.spawnerList){
+			for(LivingEntity mob:sign.getMobsList()){
+				if(mob == l){
+					return sign;
+				}
+			}
+		}
+		return null;
+	}
+	public static void clearFromSkillLists(LivingEntity mob){
+		if(SpawnMobs.usedSkill.contains(mob)){
+			SpawnMobs.usedSkill.remove(mob);
+		}
+		if(MobsHandler.getSpawnerFromMob(mob).adds.contains(mob)){
+			MobsHandler.getSpawnerFromMob(mob).adds.remove(mob);
 		}
 	}
 }
