@@ -20,7 +20,7 @@ public class SpawnerPlace
 	private MobLibrary ml;
 	private boolean AlreadySpawnedAdds;
 	
-	private List<LivingEntity> mobs = new ArrayList<LivingEntity>();
+	public List<LivingEntity> mobs = new ArrayList<LivingEntity>();
 	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
@@ -124,5 +124,17 @@ public class SpawnerPlace
 	}
 	public int getTick(){
 		return this.tick;
+	}
+	public void reset(){
+		for(LivingEntity mobs:this.adds){
+			mobs.remove();
+		}
+		this.adds.clear();
+		for(LivingEntity mobs:this.mobs){
+			mobs.remove();
+		}
+		this.mobs.clear();
+		this.setAlreadySpawnedAdds(false);
+		this.tick = 0;
 	}
 }

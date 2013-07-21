@@ -49,6 +49,7 @@ public class EventListener implements Listener
 					return;
 				}
 			}
+			sign.reset();
 		}
 		if(MobsHandler.getSkills(l) != null)
 		{
