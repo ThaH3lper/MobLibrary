@@ -11,11 +11,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Wolf;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -23,6 +25,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class EventListener implements Listener 
@@ -213,7 +216,16 @@ public class EventListener implements Listener
 				event.setCancelled(true);
 			}
 		}
-		
+	}
+	public void tameEvent(EntityTameEvent event){
+		LivingEntity tameTarget = event.getEntity();
+		if(MobsHandler.getSpawnerFromMob(tameTarget) != null){
+			event.setCancelled(true);
+			if(tameTarget.getType() == EntityType.WOLF){
+				Wolf wolf = (Wolf)event.getEntity();
+				wolf.setAngry(true);
+			}
+		}
 	}
 }
 
