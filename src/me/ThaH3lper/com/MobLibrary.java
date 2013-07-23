@@ -8,7 +8,6 @@ import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Items.LoadItems;
-import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 import me.ThaH3lper.com.Spawner.Ticker;
@@ -58,7 +57,7 @@ public class MobLibrary extends JavaPlugin{
 		manager.registerEvents(new SpawnerListener(this), this);
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10l, 20l);
-		me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
+		SaveLoad.readStoredData("StoredLocations.txt");
 	}
 	
 	/*public void Setup()

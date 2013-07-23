@@ -71,13 +71,13 @@ public class CommandHandler implements CommandExecutor
 				else if(args[0].equalsIgnoreCase("load"))
 				{					
 					p.sendMessage(ChatColor.GREEN + "===READING DATA FROM DATA FILE===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.readStoredData("StoredLocations.txt");
+					SaveLoad.readStoredData("StoredLocations.txt");
 
 				}
 				else if(args[0].equalsIgnoreCase("save"))
 				{					
 					p.sendMessage(ChatColor.GREEN + "===WRITING SIGN DATA TO FILE===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+					SaveLoad.storeData("StoredLocations.txt");
 
 				}
 				else if(args[0].equalsIgnoreCase("ver"))
@@ -102,12 +102,12 @@ public class CommandHandler implements CommandExecutor
 				else if(args[0].equalsIgnoreCase("backup"))
 				{					
 					p.sendMessage(ChatColor.YELLOW + "===WRITING SIGN DATA TO BACKUP FILE===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.storeBackupData();
+					SaveLoad.storeBackupData();
 				}
 				else if(args[0].equalsIgnoreCase("restore"))
 				{					
 					p.sendMessage(ChatColor.YELLOW + "===LOADING SIGN DATA FROM BACKUP===");
-					me.ThaH3lper.com.SaveLoad.SaveLoad.restoreBackupData();
+					SaveLoad.restoreBackupData();
 
 				}
 			}
