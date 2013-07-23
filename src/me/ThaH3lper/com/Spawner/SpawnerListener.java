@@ -18,6 +18,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
 public class SpawnerListener implements Listener{
 	
@@ -27,7 +28,17 @@ public class SpawnerListener implements Listener{
 	{
 		this.ml = ml;
 	}
-	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void chunkUnload(ChunkUnloadEvent event){
+		for(SpawnerPlace sign : ml.spawnerList){
+			if(sign.getLocation().getChunk().equals(event.getChunk())){
+				event.setCancelled(true);
+			}
+			if(sign.getLocation().getChunk() == event.getChunk()){
+				event.setCancelled(true);
+			}
+		}
+	}
 	@EventHandler(priority = EventPriority.HIGH)
 	public void SignCreate(PlayerInteractEvent e)
 	{
