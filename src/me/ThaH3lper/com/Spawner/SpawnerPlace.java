@@ -8,6 +8,7 @@ import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 
@@ -40,6 +41,22 @@ public class SpawnerPlace
 	
 	public void tick()
 	{
+		for(LivingEntity mob : this.mobs){
+			if(mob == null){
+				mobs.remove(mob);
+			}
+			if(mob.getHealth() < 1){
+				mobs.remove(mob);
+			}
+		}
+		for(LivingEntity mob: this.adds){
+			if(mob == null){
+				mobs.remove(mob);
+			}
+			if(mob.getHealth() < 1){
+				mobs.remove(mob);
+			}
+		}
 		if(this.loc.getChunk().isLoaded() == false){
 			this.loc.getChunk().load();
 		}
@@ -65,6 +82,8 @@ public class SpawnerPlace
 	public void spawnMob()
 	{
 		Location l = getMobSpawnLocation();
+		Chunk chunk = l.getChunk();
+		chunk.load();
 		LivingEntity entity = MobsHandler.SpawnAPI(cmdMob, l, 1f);
 		mobs.add(entity);
 	}
