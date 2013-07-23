@@ -40,6 +40,9 @@ public class SpawnerPlace
 	
 	public void tick()
 	{
+		if(this.loc.getChunk().isLoaded() == false){
+			this.loc.getChunk().load();
+		}
 		tick++;
 		if(tick >= interval && locked == false)
 		{
