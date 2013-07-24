@@ -45,8 +45,10 @@ public class SpawnerPlace
 			if(mob == null){
 				mobs.remove(mob);
 			}
-			if(mob.getHealth() < 1){
-				mobs.remove(mob);
+			if(this.mobs.isEmpty() == false){
+				if(mob.getHealth() < 1){
+					mobs.remove(mob);
+				}
 			}
 		}
 		for(LivingEntity mob: this.adds){
