@@ -85,7 +85,6 @@ public class EventListener implements Listener
 					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
 					if(sign.canCast == true){
 						try {
-							Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
 							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 						} catch (IllegalArgumentException e1) {
 						e1.printStackTrace();
@@ -112,7 +111,6 @@ public class EventListener implements Listener
 						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
 						if(sign.canCast == true){
 							try {
-								Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
 								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 							} catch (IllegalArgumentException e1) {
 							e1.printStackTrace();
@@ -140,7 +138,6 @@ public class EventListener implements Listener
 						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
 						if(sign.canCast == true){
 							try {
-								Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
 								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 							} catch (IllegalArgumentException e1) {
 							e1.printStackTrace();
@@ -166,7 +163,6 @@ public class EventListener implements Listener
 					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
 					if(sign.canCast == true){
 						try {
-							Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
 							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 						} catch (IllegalArgumentException e1) {
 						e1.printStackTrace();
