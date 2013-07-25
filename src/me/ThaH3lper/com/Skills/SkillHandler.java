@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Spawner.SpawnerPlace;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -37,6 +40,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[2]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					int radius = Integer.parseInt(parts[1]);
 					Teleport.playSkill(mob, radius);
 				}
@@ -46,6 +51,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[2]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					int radius = Integer.parseInt(parts[1]);
 					DragIn.playSkill(mob, radius);
 				}
@@ -55,6 +62,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[2]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					int radius = Integer.parseInt(parts[1]);
 					Tnt.playSkill(mob , radius);
 				}
@@ -64,8 +73,10 @@ public class SkillHandler {
 				String cmdName = parts[1];
 				Double life = Double.parseDouble(parts[2]);
 				if(mob.getHealth() < life){
-						int amount = Integer.parseInt(parts[3]);
-						SpawnMobs.playSkill(mob , amount, cmdName);
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
+					int amount = Integer.parseInt(parts[3]);
+					SpawnMobs.playSkill(mob , amount, cmdName);
 				}
 			}
 			else if(parts[0].equals("potion"))
@@ -73,6 +84,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[2]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					String[] data = parts[1].split(":");
 					int radius = Integer.parseInt(data[3]);
 					PotionEffect potion = new PotionEffect(PotionEffectType.getByName(data[0]), Integer.parseInt(data[1]) * 20, Integer.parseInt(data[2]) - 1);
@@ -85,6 +98,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[3]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					int radius = Integer.parseInt(parts[1]);
 					Ignite.playSkill(mob , radius, duration);
 				}
@@ -94,6 +109,8 @@ public class SkillHandler {
 				Double chance = Double.parseDouble(parts[3]);
 				if(chance >= r.nextDouble())
 				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob(mob);
+					sign.setTimeSinceLastSpell(3);
 					int power = Integer.parseInt(parts[2]);
 					int radius = Integer.parseInt(parts[1]);
 					Toss.playSkill(mob , radius, power);

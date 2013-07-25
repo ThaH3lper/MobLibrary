@@ -7,7 +7,6 @@ import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
@@ -78,7 +77,6 @@ public class EventListener implements Listener
 
 		Entity l = e.getEntity();
 		if(e.getDamager() instanceof Arrow){
-			Arrow arrow = (Arrow)e.getDamager();
 			if(l instanceof LivingEntity && l != null){
 				if(MobsHandler.getSkills((LivingEntity)l) != null )
 				{
@@ -90,13 +88,8 @@ public class EventListener implements Listener
 						e1.printStackTrace();
 						} catch (Exception e1) {
 						}
-						sign.setTimeSinceLastSpell(1);
 					}
 
-				}
-				if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
-					MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
-					e.setDamage((double)mt.damage/10);
 				}
 			}
 		}
@@ -116,13 +109,8 @@ public class EventListener implements Listener
 							e1.printStackTrace();
 							} catch (Exception e1) {
 							}
-							sign.setTimeSinceLastSpell(1);
 						}
 
-					}
-					if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
-						MobTemplet mt2 = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
-						e.setDamage((double)mt2.damage/10);
 					}
 				}
 			}
@@ -143,13 +131,8 @@ public class EventListener implements Listener
 							e1.printStackTrace();
 							} catch (Exception e1) {
 							}
-							sign.setTimeSinceLastSpell(1);
 						}
 
-					}
-					if(getMobTemplet((LivingEntity)((Fireball) e.getEntity())) != null){
-						MobTemplet mt3 = getMobTempletFromSpawner((LivingEntity)((Fireball) e.getEntity()).getShooter());
-						e.setDamage((double)mt3.damage/10);
 					}
 				}
 			}
@@ -168,7 +151,6 @@ public class EventListener implements Listener
 						e1.printStackTrace();
 						} catch (Exception e1) {
 						}
-						sign.setTimeSinceLastSpell(1);
 					}
 
 				}
