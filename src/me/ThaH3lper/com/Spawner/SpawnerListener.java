@@ -70,7 +70,7 @@ public class SpawnerListener implements Listener{
 				s.update();
 				
 				ml.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
-				me.ThaH3lper.com.SaveLoad.storeData("StoredLocations.txt");
+				me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
 			}
 			else
 			{
@@ -106,7 +106,7 @@ public class SpawnerListener implements Listener{
 					}
 					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + ml.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
 					ml.spawnerList.remove(i);
-					me.ThaH3lper.com.SaveLoad.storeData("StoredLocations.txt");
+					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
 				}
 			}
 		}
