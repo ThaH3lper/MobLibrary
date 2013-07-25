@@ -188,7 +188,7 @@ public class CommandHandler implements CommandExecutor
 		String s = " ";
 		List<String> mobTimers = new ArrayList<String>();
 		for(SpawnerPlace sign : ml.spawnerList){
-			s = ChatColor.LIGHT_PURPLE + "MobName: " + ChatColor.YELLOW + "" + sign.getCmdMob() + " " + ChatColor.LIGHT_PURPLE + "TICKS :" + ChatColor.RED + sign.getTick() + ChatColor.LIGHT_PURPLE + " of " + ChatColor.GREEN + sign.getInterval() + "" + ChatColor.LIGHT_PURPLE + "Amt: " + ChatColor.RED + (sign.mobs.size()-sign.adds.size()) + " of " + sign.getAmount() + "" + ChatColor.LIGHT_PURPLE + " Adds: " + ChatColor.RED + "" + sign.adds.size();
+			s = ChatColor.LIGHT_PURPLE + "Name: " + ChatColor.YELLOW + "" + sign.getCmdMob() + " " + ChatColor.LIGHT_PURPLE + "Ticks:" + ChatColor.RED + sign.getTick() + ChatColor.LIGHT_PURPLE + " of " + ChatColor.GREEN + sign.getInterval() + "" + ChatColor.LIGHT_PURPLE + "Amt: " + ChatColor.RED + (sign.mobs.size()-sign.adds.size()) + " of " + sign.getAmount() + "" + ChatColor.LIGHT_PURPLE + " Adds: " + ChatColor.RED + "" + sign.adds.size() + " Spawns:" + sign.getTimesSpawned();
 			mobTimers.add(s);
 		}
 		return mobTimers;

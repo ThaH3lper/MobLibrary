@@ -25,6 +25,7 @@ public class SpawnerPlace
 	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
+	private int timesSpawned;
 	
 	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
 	{
@@ -36,31 +37,38 @@ public class SpawnerPlace
 		this.radious = radious;
 		this.locked = false;
 		this.AlreadySpawnedAdds = false;
+		this.timesSpawned = 0;
 		spawnMob();
 	}
 	
 	public void tick()
 	{
-		for(LivingEntity mob : this.mobs){
-			if(mob == null){
-				mobs.remove(mob);
+		if(this.loc.getChunk().isLoaded() == false){
+			this.loc.getChunk().load();
+		}
+		if(!(this.mobs.isEmpty())){
+			for(int i = 0; i >= mobs.size(); i++){
+				LivingEntity mob = mobs.get(i);
+				if(mob == null){
+					mobs.remove(mob);
+				}
+				if(this.mobs.isEmpty() == false){
+					if(mob.getHealth() < 1){
+						mobs.remove(mob);
+					}
+				}
 			}
-			if(this.mobs.isEmpty() == false){
+		}
+		if(!(this.adds.isEmpty())){
+			for(int i = 0; i >= adds.size(); i++){
+				LivingEntity mob = adds.get(i);
+				if(mob == null){
+					mobs.remove(mob);
+				}
 				if(mob.getHealth() < 1){
 					mobs.remove(mob);
 				}
 			}
-		}
-		for(LivingEntity mob: this.adds){
-			if(mob == null){
-				mobs.remove(mob);
-			}
-			if(mob.getHealth() < 1){
-				mobs.remove(mob);
-			}
-		}
-		if(this.loc.getChunk().isLoaded() == false){
-			this.loc.getChunk().load();
 		}
 		tick++;
 		if(tick >= interval && locked == false)
@@ -83,6 +91,7 @@ public class SpawnerPlace
 	
 	public void spawnMob()
 	{
+		this.timesSpawned++;
 		Location l = getMobSpawnLocation();
 		Chunk chunk = l.getChunk();
 		chunk.load();
@@ -107,6 +116,10 @@ public class SpawnerPlace
 	public String getCmdMob()
 	{
 		return this.cmdMob;
+	}
+	public int getTimesSpawned()
+	{
+		return this.timesSpawned;
 	}
 	
 	public int getAmount()

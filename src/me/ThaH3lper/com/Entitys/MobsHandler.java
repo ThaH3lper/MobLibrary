@@ -248,7 +248,10 @@ public class MobsHandler {
 				{
 					for(LivingEntity mob:mobs)
 					{
-						mob.remove();
+						if(mob != null){
+							mob.remove();
+						}
+						
 					}
 				}
 			}
