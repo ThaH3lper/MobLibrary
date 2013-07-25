@@ -7,6 +7,7 @@ import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
@@ -79,14 +80,20 @@ public class EventListener implements Listener
 		if(e.getDamager() instanceof Arrow){
 			Arrow arrow = (Arrow)e.getDamager();
 			if(l instanceof LivingEntity && l != null){
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
+				if(MobsHandler.getSkills((LivingEntity)l) != null )
 				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+					if(sign.canCast == true){
+						try {
+							Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
+							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
+						} catch (IllegalArgumentException e1) {
 						e1.printStackTrace();
-					} catch (Exception e1) {
+						} catch (Exception e1) {
+						}
+						sign.setTimeSinceLastSpell(1);
 					}
+
 				}
 				if(getMobTemplet((LivingEntity)arrow.getShooter()) != null){
 					MobTemplet mt = getMobTempletFromSpawner((LivingEntity)arrow.getShooter());
@@ -99,13 +106,25 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
-				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
+				if(l instanceof LivingEntity && l != null){
+					if(MobsHandler.getSkills((LivingEntity)l) != null )
+					{
+						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+						if(sign.canCast == true){
+							try {
+								Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
+								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
+							} catch (IllegalArgumentException e1) {
+							e1.printStackTrace();
+							} catch (Exception e1) {
+							}
+							sign.setTimeSinceLastSpell(1);
+						}
+
+					}
+					if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
+						MobTemplet mt2 = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
+						e.setDamage((double)mt2.damage/10);
 					}
 				}
 			}
@@ -115,13 +134,25 @@ public class EventListener implements Listener
 			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(MobsHandler.getSkills((LivingEntity)l) != null)
-				{
-					try {
-						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-					} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-					} catch (Exception e1) {
+				if(l instanceof LivingEntity && l != null){
+					if(MobsHandler.getSkills((LivingEntity)l) != null )
+					{
+						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+						if(sign.canCast == true){
+							try {
+								Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
+								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
+							} catch (IllegalArgumentException e1) {
+							e1.printStackTrace();
+							} catch (Exception e1) {
+							}
+							sign.setTimeSinceLastSpell(1);
+						}
+
+					}
+					if(getMobTemplet((LivingEntity)((Fireball) e.getEntity())) != null){
+						MobTemplet mt3 = getMobTempletFromSpawner((LivingEntity)((Fireball) e.getEntity()).getShooter());
+						e.setDamage((double)mt3.damage/10);
 					}
 				}
 			}
@@ -129,13 +160,21 @@ public class EventListener implements Listener
 		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity damager = (LivingEntity)e.getDamager();
-			if(MobsHandler.getSkills((LivingEntity)l) != null)
-			{
-				try {
-					SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-				} catch (IllegalArgumentException e1) {
-					e1.printStackTrace();
-				} catch (Exception e1) {
+			if(l instanceof LivingEntity && l != null){
+				if(MobsHandler.getSkills((LivingEntity)l) != null )
+				{
+					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+					if(sign.canCast == true){
+						try {
+							Bukkit.broadcastMessage("CANCAST = " + sign.canCast + "Spell TIMER: " + sign.getTimeSinceLastSpell());
+							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
+						} catch (IllegalArgumentException e1) {
+						e1.printStackTrace();
+						} catch (Exception e1) {
+						}
+						sign.setTimeSinceLastSpell(1);
+					}
+
 				}
 			}
 			if(getMobTemplet(damager) != null)

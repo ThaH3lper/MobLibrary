@@ -20,12 +20,14 @@ public class SpawnerPlace
 	private int Amount, interval, radious;
 	private MobLibrary ml;
 	private boolean AlreadySpawnedAdds;
+	private int timeSinceLastSpell;
 	
 	public List<LivingEntity> mobs = new ArrayList<LivingEntity>();
 	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
 	private int timesSpawned;
+	public boolean canCast;
 	
 	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
 	{
@@ -38,11 +40,20 @@ public class SpawnerPlace
 		this.locked = false;
 		this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
+		this.timeSinceLastSpell = 0;
 		spawnMob();
 	}
 	
 	public void tick()
-	{
+	{	
+		if(this.timeSinceLastSpell <= 0){
+			this.canCast = true;
+		}
+		if(this.timeSinceLastSpell > 0){
+			this.timeSinceLastSpell--;
+			this.canCast = false;
+		}
+
 		if(this.loc.getChunk().isLoaded() == false){
 			this.loc.getChunk().load();
 		}
@@ -112,7 +123,9 @@ public class SpawnerPlace
 	{
 		return this.loc;
 	}
-	
+	public int getTimeSinceLastSpell(){
+		return this.timeSinceLastSpell;
+	}
 	public String getCmdMob()
 	{
 		return this.cmdMob;
@@ -136,7 +149,9 @@ public class SpawnerPlace
 	{
 		return this.radious;
 	}
-	
+	public void setTimeSinceLastSpell(int timeTillCanCast){
+		this.timeSinceLastSpell = timeTillCanCast;
+	}
 	public void setLocked()
 	{
 		locked = true;
