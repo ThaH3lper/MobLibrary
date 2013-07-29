@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -63,7 +62,6 @@ public class MobsHandler {
 	{
 		if(getTemplet(cmdName) == null)
 		{
-			Bukkit.broadcastMessage("NULL:" + cmdName);
 			return null;
 		}
 		MobTemplet mt = getTemplet(cmdName);

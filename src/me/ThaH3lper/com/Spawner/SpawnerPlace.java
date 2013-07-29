@@ -57,16 +57,20 @@ public class SpawnerPlace
 		if(this.loc.getChunk().isLoaded() == false){
 			this.loc.getChunk().load();
 		}
-		if(!(this.mobs.isEmpty())){
-			for(int i = 0; i >= mobs.size(); i++){
-				LivingEntity mob = mobs.get(i);
+		if(this.mobs.isEmpty() == false){
+			for(LivingEntity mob:mobs){
 				if(mob == null){
 					mobs.remove(mob);
+					return;
 				}
-				if(this.mobs.isEmpty() == false){
-					if(mob.getHealth() < 1){
-						mobs.remove(mob);
-					}
+				else if(mob.getHealth() < 1){
+					mobs.remove(mob);
+				}
+				else if(mob.isDead() == true){
+					mobs.remove(mob);
+				}				
+				else if(mob.isValid() == false){
+					mobs.remove(mob);
 				}
 			}
 		}
