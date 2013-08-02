@@ -56,22 +56,9 @@ public class SpawnerPlace
 
 		if(this.loc.getChunk().isLoaded() == false){
 			this.loc.getChunk().load();
-		}
-		if(this.mobs.isEmpty() == false){
 			for(LivingEntity mob:mobs){
-				if(mob.isDead() == true){
-					mobs.remove(mob);
-				}
-			}
-		}
-		if(!(this.adds.isEmpty())){
-			for(int i = 0; i >= adds.size(); i++){
-				LivingEntity mob = adds.get(i);
-				if(mob == null){
-					mobs.remove(mob);
-				}
-				if(mob.getHealth() < 1){
-					mobs.remove(mob);
+				if(mob.getLocation().getChunk().isLoaded() == false){
+					mob.getLocation().getChunk().load();
 				}
 			}
 		}
@@ -91,6 +78,33 @@ public class SpawnerPlace
 		for(LivingEntity mob:mobs)
 		{
 			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
+		}
+		if(this.mobs.isEmpty() == false){
+			for(LivingEntity mob:mobs){
+				if(mob.isDead() == true){
+					mobs.remove(mob);
+				}
+				else if(mob.getHealth() < 1){
+					mobs.remove(mob);
+				}
+				else if(mob.getKiller() != null){
+					mobs.remove(mob);
+				}
+			}
+		}
+		if(!(this.adds.isEmpty())){
+			for(int i = 0; i >= adds.size(); i++){
+				LivingEntity mob = adds.get(i);
+				if(mob == null){
+					mobs.remove(mob);
+				}
+				else if(mob.getHealth() < 1){
+					mobs.remove(mob);
+				}
+				else if(mob.getKiller() != null){
+					mobs.remove(mob);
+				}
+			}
 		}
 	}
 	

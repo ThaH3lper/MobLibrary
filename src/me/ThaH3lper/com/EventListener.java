@@ -44,15 +44,25 @@ public class EventListener implements Listener
 			{
 				e.getDrops().add(s);
 			}
+			if(sign.adds.size() >= 0 && sign.mobs.size() > 0){
+				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == false && MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true){
+					sign.reset();
+				}
+			}
 			if(sign.adds.size() > 0){
 				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true){
 					MobsHandler.getSpawnerFromMob(l).adds.remove(l);
 					e.getDrops().clear();
 					MobsHandler.clearFromSkillLists(l);
-					return;
 				}
 			}
-			sign.reset();
+			if(sign.mobs.size() > 0){
+				if(MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true){
+					MobsHandler.getSpawnerFromMob(l).mobs.remove(l);
+					e.getDrops().clear();
+					MobsHandler.clearFromSkillLists(l);
+				}
+			}
 		}
 		if(MobsHandler.getSkills(l) != null)
 		{
