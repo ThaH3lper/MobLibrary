@@ -21,6 +21,7 @@ public class SpawnerPlace
 	private MobLibrary ml;
 	private boolean AlreadySpawnedAdds;
 	private int timeSinceLastSpell;
+    private String display;
 	
 	public List<LivingEntity> mobs = new ArrayList<LivingEntity>();
 	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
@@ -41,6 +42,7 @@ public class SpawnerPlace
 		this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
 		this.timeSinceLastSpell = 0;
+        display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		spawnMob();
 	}
 	
@@ -74,7 +76,6 @@ public class SpawnerPlace
 				this.setAlreadySpawnedAdds(false);
 			}
 		}
-        String display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		for(LivingEntity mob:mobs)
 		{
 			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
