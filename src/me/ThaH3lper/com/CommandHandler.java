@@ -1,19 +1,21 @@
 package me.ThaH3lper.com;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class CommandHandler implements CommandExecutor
@@ -127,7 +129,7 @@ public class CommandHandler implements CommandExecutor
 				}
 				if(args[0].equalsIgnoreCase("mobs"))
 				{
-					LivingEntity spawned = MobsHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
+					Mob spawned = MobsHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
 					if(spawned == null)
 					{
 						p.sendMessage(ChatColor.RED + "There is no mob with that name!");
@@ -176,19 +178,25 @@ public class CommandHandler implements CommandExecutor
 	{
 		String s = " ";
 		List<String> locations = new ArrayList<String>();
-		for(SpawnerPlace sign : ml.spawnerList)
+		Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
+		while(itr.hasNext())
 		{
-			s = ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sign.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sign.getInterval() + ChatColor.AQUA + " || ";
+			SpawnerPlace sp = itr.next();
+			s = ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sp.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sp.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sp.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "W:" + ChatColor.RED + sp.getLocation().getWorld().getName() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sp.getCmdMob() + ChatColor.LIGHT_PURPLE + " Time: " + ChatColor.RED + sp.getInterval() + ChatColor.AQUA + " || ";
 			locations.add(s);
 		}
 		return locations;
 	}
+	
 	public List<String> getMobTimers()
 	{
 		String s = " ";
 		List<String> mobTimers = new ArrayList<String>();
-		for(SpawnerPlace sign : ml.spawnerList){
-			s = ChatColor.LIGHT_PURPLE + "Name: " + ChatColor.YELLOW + "" + sign.getCmdMob() + " " + ChatColor.LIGHT_PURPLE + "Ticks:" + ChatColor.RED + sign.getTick() + ChatColor.LIGHT_PURPLE + " of " + ChatColor.GREEN + sign.getInterval() + "" + ChatColor.LIGHT_PURPLE + "Amt: " + ChatColor.RED + (sign.mobs.size()-sign.adds.size()) + " of " + sign.getAmount() + "" + ChatColor.LIGHT_PURPLE + " Adds: " + ChatColor.RED + "" + sign.adds.size() + " Spawns:" + sign.getTimesSpawned();
+		Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
+		while(itr.hasNext())
+		{
+			SpawnerPlace sp = itr.next();
+			s = ChatColor.LIGHT_PURPLE + "Name: " + ChatColor.YELLOW + "" + sp.getCmdMob() + " " + ChatColor.LIGHT_PURPLE + "Ticks:" + ChatColor.RED + sp.getTick() + ChatColor.LIGHT_PURPLE + " of " + ChatColor.GREEN + sp.getInterval() + "" + ChatColor.LIGHT_PURPLE + "Amt: " + ChatColor.RED + (sp.getAmoutOfMobs()) + " of " + sp.getAmount() + "" + ChatColor.LIGHT_PURPLE + ChatColor.RED + " Spawns:" + sp.getTimesSpawned();
 			mobTimers.add(s);
 		}
 		return mobTimers;

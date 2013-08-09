@@ -4,33 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-public class SkillHandler {
+public class SkillHandler
+{
 	private static Random r = new Random();
+	
 	public static List<Player> getPlayers(int radius, LivingEntity mob)
 	{
 		List<Player> list = new ArrayList<Player>();
 		List<Entity> near = mob.getNearbyEntities(radius, radius, radius);
-		for(Entity check:near){
-			if(check instanceof Player){
-				{
-					list.add((Player) check);
-				}
+		for(Entity check : near)
+		{
+			if(check instanceof Player)
+			{
+				list.add((Player) check);
 			}
 		}
 		return list;
 	}
 	
-	public static void executeSkills(List<String> list, LivingEntity mob) throws IllegalArgumentException, Exception
+	/*public static void executeSkills(List<String> list, LivingEntity mob) throws IllegalArgumentException, Exception
 	{
 		for(String s: list)
 		{
@@ -117,7 +114,8 @@ public class SkillHandler {
 				}
 			}
 		}
-	}
+	}*/
+	
 	public static void executeSkillsOnDeath(List<String> list, EntityDeathEvent event) throws IllegalArgumentException, Exception
 	{
 		for(String s: list)

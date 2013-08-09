@@ -12,13 +12,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-public class Potion
+public class Potion extends Skill
 {
+	private int radius;
+	private PotionEffect pe;
 	
-	public static void playSkill(LivingEntity entity, int r, PotionEffect pe) throws IllegalArgumentException, Exception
+	public Potion(double chance, int radius, PotionEffect pe)
+	{
+		super(chance);
+		this.radius = radius;
+		this.pe = pe;
+	}
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
 	{
 		FireWorkEffect fplayer = new FireWorkEffect();
-		List<Player> list = SkillHandler.getPlayers(r, entity);
+		List<Player> list = SkillHandler.getPlayers(radius, entity);
 		if(!list.isEmpty())
 		{
 			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(getPotionColor(pe)).with(Type.BALL_LARGE).build());
@@ -29,62 +38,80 @@ public class Potion
 			}
 		}
 	}
-	public static FireworkEffect getPotionFirework(PotionEffect pe){
-		if(pe.getType() == PotionEffectType.POISON){
+	
+	private FireworkEffect getPotionFirework(PotionEffect pe)
+	{
+		if(pe.getType() == PotionEffectType.POISON)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.GREEN).withColor(Color.LIME).with(Type.BURST).withFlicker().withTrail().build();
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.WITHER){
+		else if(pe.getType() == PotionEffectType.WITHER)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.GRAY).withColor(Color.BLACK).with(Type.CREEPER).withFade(Color.BLACK).build();
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.BLINDNESS){
+		else if(pe.getType() == PotionEffectType.BLINDNESS)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.BLACK).withColor(Color.BLACK).with(Type.STAR).withFade(Color.BLACK).flicker(true).trail(true).build();
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.CONFUSION){
+		else if(pe.getType() == PotionEffectType.CONFUSION)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.GREEN).withColor(Color.BLACK).with(Type.CREEPER).withFade(Color.LIME).build();
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.WEAKNESS){
+		else if(pe.getType() == PotionEffectType.WEAKNESS)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.BLACK).withColor(Color.BLUE).with(Type.BURST).flicker(true).trail(true).withFade(Color.NAVY).build();
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.HARM){
+		else if(pe.getType() == PotionEffectType.HARM)
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.RED).withColor(Color.BLUE).with(Type.STAR).withFade(Color.LIME).build();
 			return potion;
 		}
-		else{
+		else
+		{
 			FireworkEffect potion = FireworkEffect.builder().withColor(Color.GRAY).with(Type.BURST).build();
 			return potion;
 		}
 	}
-	public static Color getPotionColor(PotionEffect pe){
-		if(pe.getType() == PotionEffectType.POISON){
+	
+	private Color getPotionColor(PotionEffect pe)
+	{
+		if(pe.getType() == PotionEffectType.POISON)
+		{
 			Color potion = Color.GREEN;
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.WITHER){
+		else if(pe.getType() == PotionEffectType.WITHER)
+		{
 			Color potion = Color.BLACK;
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.BLINDNESS){
+		else if(pe.getType() == PotionEffectType.BLINDNESS)
+		{
 			Color potion = Color.GRAY;
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.CONFUSION){
+		else if(pe.getType() == PotionEffectType.CONFUSION)
+		{
 			Color potion = Color.LIME;
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.WEAKNESS){
+		else if(pe.getType() == PotionEffectType.WEAKNESS)
+		{
 			Color potion = Color.NAVY;
 			return potion;
 		}
-		else if(pe.getType() == PotionEffectType.HARM){
+		else if(pe.getType() == PotionEffectType.HARM)
+		{
 			Color potion = Color.RED;
 			return potion;
 		}
-		else{
+		else
+		{
 			Color potion = Color.GRAY;
 			return potion;
 		}

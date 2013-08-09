@@ -1,24 +1,38 @@
 package me.ThaH3lper.com.Skills;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
 import org.bukkit.entity.LivingEntity;
 
-public class SpawnMobs
+public class SpawnMobs extends Skill implements UsableOnce, HealthDepend
 {
-	public static List<LivingEntity> usedSkill = new ArrayList<LivingEntity>();
-
-	public static void playSkill(LivingEntity mob, int amount, String cmdName)
+	private String cmdName;
+	private int amount;
+	private boolean used = false;
+	private int healthNeededToCast;
+	
+	public SpawnMobs(double chance, String cmdName, int amount, int healthNeededToCast)
 	{
-		if(!(usedSkill.contains(mob))){
+		super(chance);
+		this.cmdName = cmdName;
+		this.amount = amount;
+		this.healthNeededToCast = healthNeededToCast;
+	}
+	
+	public void playSkill(LivingEntity mob)
+	{
+		for(int i = 0;i < amount; ++i)
+		{
+			MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
+		}
+		setUsed(true);
+		/*if(!(usedSkill.contains(mob)))
+		{
 			SpawnerPlace spawner = me.ThaH3lper.com.EventListener.getSpawner(mob);
 			for(int count = amount; count >= 0; count--)
 			{
-				if(spawner.AlreadySpawnedAdds() == false){
+				if(spawner.AlreadySpawnedAdds() == false)
+				{
 					LivingEntity add = MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
 					spawner.getMobsList().add(add);
 					spawner.adds.add(add);
@@ -26,8 +40,22 @@ public class SpawnMobs
 			}
 			spawner.setAlreadySpawnedAdds(true);
 			usedSkill.add(mob);
-		}
-		
+		}*/
 	}
-
+	
+	public void setUsed(boolean value)
+	{
+		used = value;
+	}
+	
+	public boolean hasUsed()
+	{
+		return used;
+	}
+	
+	@Override
+	public int getHealthNeedToCast()
+	{
+		return healthNeededToCast;
+	}
 }

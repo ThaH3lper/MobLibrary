@@ -1,11 +1,9 @@
 package me.ThaH3lper.com;
 
-import java.util.List;
-
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
-import me.ThaH3lper.com.Skills.SkillHandler;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
@@ -26,7 +24,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class EventListener implements Listener 
 {			
@@ -34,7 +31,13 @@ public class EventListener implements Listener
 	public void ModDeath(EntityDeathEvent e)
 	{
 		LivingEntity l = e.getEntity();
-		if(MobsHandler.getSpawnerFromMob(l) != null)
+		Mob mob = MobsHandler.getMob(l);
+		if(mob == null)
+			return;
+		e.getDrops().clear();
+		mob.dropLoot();
+		
+		/*if(MobsHandler.getSpawnerFromMob(l) != null)
 		{
 			SpawnerPlace sign = MobsHandler.getSpawnerFromMob(l);
 			e.getDrops().clear();
@@ -44,20 +47,26 @@ public class EventListener implements Listener
 			{
 				e.getDrops().add(s);
 			}
-			if(sign.adds.size() >= 0 && sign.mobs.size() > 0){
-				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == false && MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true){
+			if(sign.adds.size() >= 0 && sign.mobs.size() > 0)
+			{
+				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == false && MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true)
+				{
 					sign.reset();
 				}
 			}
-			if(sign.adds.size() > 0){
-				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true){
+			if(sign.adds.size() > 0)
+			{
+				if(MobsHandler.getSpawnerFromMob(l).adds.contains(l) == true)
+				{
 					MobsHandler.getSpawnerFromMob(l).adds.remove(l);
 					e.getDrops().clear();
 					MobsHandler.clearFromSkillLists(l);
 				}
 			}
-			if(sign.mobs.size() > 0){
-				if(MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true){
+			if(sign.mobs.size() > 0)
+			{
+				if(MobsHandler.getSpawnerFromMob(l).mobs.contains(l) == true)
+				{
 					MobsHandler.getSpawnerFromMob(l).mobs.remove(l);
 					e.getDrops().clear();
 					MobsHandler.clearFromSkillLists(l);
@@ -66,13 +75,15 @@ public class EventListener implements Listener
 		}
 		if(MobsHandler.getSkills(l) != null)
 		{
-			try {
+			try
+			{
 				SkillHandler.executeSkillsOnDeath(MobsHandler.getSkills(l), e);
-			} catch (IllegalArgumentException e1) {
-				e1.printStackTrace();
-			} catch (Exception e1) {
 			}
-		}
+			catch (Exception e1)
+			{
+				e1.printStackTrace();
+			}
+		}*/
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -86,116 +97,194 @@ public class EventListener implements Listener
 		}
 
 		Entity l = e.getEntity();
-		if(e.getDamager() instanceof Arrow){
-			if(l instanceof LivingEntity && l != null){
-				if(MobsHandler.getSkills((LivingEntity)l) != null )
+		if(e.getDamager() instanceof Arrow)
+		{
+			if(l == null)
+				return;
+			if(!(l instanceof LivingEntity))
+				return;
+			Mob mob = MobsHandler.getMob((LivingEntity)l);
+			if(mob == null)
+				return;
+			if(mob.hasSkills())
+				mob.executeSkills();
+			/*if(MobsHandler.getSkills((LivingEntity)l) != null)
+			{
+				SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+				if(sign.canCast == true)
 				{
-					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
-					if(sign.canCast == true){
-						try {
-							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-						} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-						} catch (Exception e1) {
-						}
+					try
+					{
+						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 					}
-
+					catch (Exception e1)
+					{
+						e1.printStackTrace();
+					}
 				}
-			}
+			}*/
 		}
-		else if(e.getDamager() instanceof Snowball){
+		else if(e.getDamager() instanceof Snowball)
+		{
 			Snowball snowball = (Snowball)e.getDamager();
-			if(getMobTemplet((LivingEntity)snowball.getShooter()) != null){
+			
+			LivingEntity shooter = (LivingEntity)snowball.getShooter();
+			if(shooter == null)
+				return;
+			Mob mDamager = MobsHandler.getMob(shooter);
+			if(mDamager == null)
+				return;
+			e.setDamage(mDamager.getDamage()/10);
+			if(l == null)
+				return;
+			if(!(l instanceof LivingEntity))
+				return;
+			Mob mob = MobsHandler.getMob((LivingEntity)l);
+			if(mob == null)
+				return;
+			if(mob.hasSkills())
+				mob.executeSkills();
+			/*if(getMobTemplet((LivingEntity)snowball.getShooter()) != null)
+			{
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(l instanceof LivingEntity && l != null){
-					if(MobsHandler.getSkills((LivingEntity)l) != null )
+				if(l instanceof LivingEntity && l != null)
+				{
+					if(MobsHandler.getSkills((LivingEntity)l) != null)
 					{
 						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
-						if(sign.canCast == true){
-							try {
+						if(sign.canCast == true)
+						{
+							try
+							{
 								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-							} catch (IllegalArgumentException e1) {
-							e1.printStackTrace();
-							} catch (Exception e1) {
+							}
+							catch (Exception e1)
+							{
+								e1.printStackTrace();
 							}
 						}
-
 					}
 				}
-			}
+			}*/
 		}
-		else if(e.getDamager() instanceof Fireball){
+		else if(e.getDamager() instanceof Fireball)
+		{
 			Fireball fireball = (Fireball)e.getDamager();
-			if(getMobTemplet((LivingEntity)fireball.getShooter()) != null){
+			LivingEntity shooter = (LivingEntity)fireball.getShooter();
+			if(shooter == null)
+				return;
+			Mob mDamager = MobsHandler.getMob(shooter);
+			if(mDamager == null)
+				return;
+			e.setDamage(mDamager.getDamage()/10);
+			if(l == null)
+				return;
+			if(!(l instanceof LivingEntity))
+				return;
+			Mob mob = MobsHandler.getMob((LivingEntity)l);
+			if(mob == null)
+				return;
+			if(mob.hasSkills())
+				mob.executeSkills();
+			/*if(getMobTemplet((LivingEntity)fireball.getShooter()) != null)
+			{
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
 				e.setDamage((double)mt.damage/10);
-				if(l instanceof LivingEntity && l != null){
-					if(MobsHandler.getSkills((LivingEntity)l) != null )
+				if(l instanceof LivingEntity && l != null)
+				{
+					if(MobsHandler.getSkills((LivingEntity)l) != null)
 					{
 						SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
-						if(sign.canCast == true){
-							try {
+						if(sign.canCast == true)
+						{
+							try
+							{
 								SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-							} catch (IllegalArgumentException e1) {
-							e1.printStackTrace();
-							} catch (Exception e1) {
+							}
+							catch (Exception e1)
+							{
+								e1.printStackTrace();
 							}
 						}
-
 					}
 				}
-			}
+			}*/
 		}
 		else if(e.getDamager() instanceof LivingEntity)
 		{
 			LivingEntity damager = (LivingEntity)e.getDamager();
-			if(l instanceof LivingEntity && l != null){
-				if(MobsHandler.getSkills((LivingEntity)l) != null )
+			if(l == null)
+				return;
+			if(!(l instanceof LivingEntity))
+				return;
+			Mob mob = MobsHandler.getMob((LivingEntity)l);
+			if(mob != null)
+			{
+				if(mob.hasSkills())
 				{
-					SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
-					if(sign.canCast == true){
-						try {
-							SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
-						} catch (IllegalArgumentException e1) {
-						e1.printStackTrace();
-						} catch (Exception e1) {
-						}
+					mob.executeSkills();
+				}
+			}
+			Mob mDamager = MobsHandler.getMob(damager);
+			if(mDamager == null)
+				return;
+			e.setDamage(mDamager.getDamage()/10);
+			/*if(MobsHandler.getSkills((LivingEntity)l) != null)
+			{
+				SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
+				if(sign.canCast == true)
+				{
+					try
+					{
+						SkillHandler.executeSkills(MobsHandler.getSkills((LivingEntity)l), (LivingEntity)l);
 					}
-
+					catch (Exception e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 			}
 			if(getMobTemplet(damager) != null)
 			{
 				MobTemplet mt = getMobTempletFromSpawner(damager);
-				if(mt != null){
+				if(mt != null)
+				{
 					e.setDamage((double)mt.damage/10.0);
 				}
-			}
+			}*/
 		}
 	}
 	
-	public MobTemplet getMobTempletFromSpawner(LivingEntity l){
-		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList){
-			for(LivingEntity mob:sign.getMobsList()){
-				if(mob == l){
+	/*public MobTemplet getMobTempletFromSpawner(LivingEntity l)
+	{
+		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList)
+		{
+			for(LivingEntity mob : sign.getMobsList())
+			{
+				if(mob == l)
+				{
 					return getMobTempletFromCmdName(sign.getCmdMob());
 				}
 			}
 		}
 		return null;
-	}
+	}*/
 
-	public static SpawnerPlace getSpawner(LivingEntity l){
-		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList){
-			for(LivingEntity mob:sign.getMobsList()){
-				if(mob == l){
+	/*public static SpawnerPlace getSpawner(LivingEntity l)
+	{
+		for(SpawnerPlace sign: MobLibrary.plugin.spawnerList)
+		{
+			for(LivingEntity mob:sign.getMobsList())
+			{
+				if(mob == l)
+				{
 					return sign;
 				}
 			}
 		}
 		return null;
-	}
+	}*/
 
 	
 	public static MobTemplet getMobTemplet(LivingEntity l)
@@ -244,11 +333,14 @@ public class EventListener implements Listener
 			}
 		}
 	}
-	public void tameEvent(EntityTameEvent event){
+	public void tameEvent(EntityTameEvent event)
+	{
 		LivingEntity tameTarget = event.getEntity();
-		if(MobsHandler.getSpawnerFromMob(tameTarget) != null){
+		if(SpawnerHandler.getSpawner(tameTarget) != null)
+		{
 			event.setCancelled(true);
-			if(tameTarget.getType() == EntityType.WOLF){
+			if(tameTarget.getType() == EntityType.WOLF)
+			{
 				Wolf wolf = (Wolf)event.getEntity();
 				wolf.setAngry(true);
 			}

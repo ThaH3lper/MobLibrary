@@ -2,8 +2,8 @@ package me.ThaH3lper.com.Spawner;
 
 import me.ThaH3lper.com.MobLibrary;
 
-public class Ticker implements Runnable{
-
+public class Ticker implements Runnable
+{
 	MobLibrary ml;
 	
 	public Ticker(MobLibrary ml)
@@ -14,10 +14,6 @@ public class Ticker implements Runnable{
 	@Override
 	public void run()
 	{
-		for(SpawnerPlace sp : ml.spawnerList)
-		{
-			sp.tick();
-		}	
+		SpawnerHandler.tick();	
 	}
-
 }

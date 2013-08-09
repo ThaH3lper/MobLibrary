@@ -11,11 +11,21 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class Teleport {
-	public static FireWorkEffect fplayer = new FireWorkEffect();
-	public static void playSkill(LivingEntity entity, int r) throws IllegalArgumentException, Exception
+public class Teleport extends Skill
+{
+	private int radius;
+	
+	public Teleport(double chance, int radius)
 	{
-		List<Player> list = SkillHandler.getPlayers(r, entity);
+		super(chance);
+		this.radius = radius;
+	}
+	
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
+	{
+		List<Player> list = SkillHandler.getPlayers(radius, entity);
 		if(!list.isEmpty())
 		{
 			Random ran = new Random();

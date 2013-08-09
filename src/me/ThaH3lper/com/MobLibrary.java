@@ -9,8 +9,8 @@ import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Items.ItemsObject;
 import me.ThaH3lper.com.Items.LoadItems;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
+import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
 import me.ThaH3lper.com.Spawner.Ticker;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
@@ -24,13 +24,14 @@ public class MobLibrary extends JavaPlugin{
 	public SaveLoad items, mobs;
 	public LoadItems loadItems;
 	
-	public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
+	//public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
 	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
 	
 	@Override
 	public void onDisable()
 	{
 		SaveLoad.storeData("StoredLocations.txt");
+		SpawnerHandler.clear();
 		MobsHandler.clearMobs();
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName() +  " Has Been Disabled!");

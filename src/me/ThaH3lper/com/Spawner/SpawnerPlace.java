@@ -1,15 +1,19 @@
 package me.ThaH3lper.com.Spawner;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 
 public class SpawnerPlace
@@ -18,17 +22,16 @@ public class SpawnerPlace
 	private Location loc;
 	private String cmdMob;
 	private int Amount, interval, radious;
-	private MobLibrary ml;
 	private boolean AlreadySpawnedAdds;
-	private int timeSinceLastSpell;
+	//private int timeSinceLastSpell;
     private String display;
 	
-	public List<LivingEntity> mobs = new ArrayList<LivingEntity>();
-	public List<LivingEntity> adds = new ArrayList<LivingEntity>();
+	private List<Mob> mobs = new ArrayList<Mob>();
+	//public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
 	private int timesSpawned;
-	public boolean canCast;
+	//public boolean canCast;
 	
 	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
 	{
@@ -36,64 +39,82 @@ public class SpawnerPlace
 		this.cmdMob = cmdMob;
 		this.Amount = Amount;
 		this.interval = interval;
-		this.ml = ml;
 		this.radious = radious;
 		this.locked = false;
 		this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
-		this.timeSinceLastSpell = 0;
+		//this.timeSinceLastSpell = 0;
         display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		spawnMob();
 	}
 	
 	public void tick()
 	{	
-		if(this.timeSinceLastSpell <= 0){
+		/*if(this.timeSinceLastSpell <= 0)
+		{
 			this.canCast = true;
 		}
-		if(this.timeSinceLastSpell > 0){
+		if(this.timeSinceLastSpell > 0)
+		{
 			this.timeSinceLastSpell--;
 			this.canCast = false;
-		}
+		}*/
 
-		if(this.loc.getChunk().isLoaded() == false){
+		if(!this.loc.getChunk().isLoaded())
+		{
 			this.loc.getChunk().load();
-			for(LivingEntity mob:mobs){
-				if(mob.getLocation().getChunk().isLoaded() == false){
-					mob.getLocation().getChunk().load();
-				}
+			Iterator<Mob> itr = mobs.iterator();
+			while(itr.hasNext())
+			{
+				itr.next().loadChunk();
 			}
 		}
 		tick++;
 		if(tick >= interval && locked == false)
 		{
 			tick = 0;
-			if(mobs.size() >= Amount){
+			if(mobs.size() >= Amount)
 				return;
-			}
-			else{
-				spawnMob();
-				this.setAlreadySpawnedAdds(false);
-			}
+			spawnMob();
+			this.setAlreadySpawnedAdds(false);
 		}
-		for(LivingEntity mob:mobs)
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
 		{
+			Mob mob = itr.next();
+			if(mob == null)
+			{
+				itr.remove();
+				continue;
+			}
+			if(mob.isDead())
+			{
+				itr.remove();
+				continue;
+			}
 			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
 		}
-		if(this.mobs.isEmpty() == false){
-			for(LivingEntity mob:mobs){
-				if(mob.isDead() == true){
+		/*if(!this.mobs.isEmpty())
+		{
+			itr = mobs.iterator();
+			while(itr.hasNext())
+			{
+				Mob mob = itr.next();
+				if(mob.isDead())
+				{
 					mobs.remove(mob);
 				}
-				else if(mob.getHealth() < 1){
+				else if(mob.getHealth() <= 0)
+				{
 					mobs.remove(mob);
 				}
-				else if(mob.getKiller() != null){
+				else if(mob.getKiller() != null)
+				{
 					mobs.remove(mob);
 				}
 			}
-		}
-		if(!(this.adds.isEmpty())){
+		}*/
+		/*if(!(this.adds.isEmpty())){
 			for(int i = 0; i >= adds.size(); i++){
 				LivingEntity mob = adds.get(i);
 				if(mob == null){
@@ -106,7 +127,7 @@ public class SpawnerPlace
 					mobs.remove(mob);
 				}
 			}
-		}
+		}*/
 	}
 	
 	public void spawnMob()
@@ -115,30 +136,43 @@ public class SpawnerPlace
 		Location l = getMobSpawnLocation();
 		Chunk chunk = l.getChunk();
 		chunk.load();
-		LivingEntity entity = MobsHandler.SpawnAPI(cmdMob, l, 1f);
-		mobs.add(entity);
+		Mob mob = MobsHandler.SpawnAPI(cmdMob, l, 1f);
+		mobs.add(mob);
 	}
 	
 	public Location getMobSpawnLocation()
 	{
+
 		double x = (loc.getX()-radious) +(r.nextInt((int) ((loc.getX()+radious)-(loc.getX()-radious))));
 		double z = (loc.getZ()-radious) +(r.nextInt((int) ((loc.getZ()+radious)-(loc.getZ()-radious))));
-		
+			
 		Location l = new Location(loc.getWorld(), x, loc.getY() + 2, z);
-		return l;
+		while(true)
+		{
+			Block b = l.getBlock();
+			if(isSpawnableBlock(b))
+			{
+				if(isSpawnableBlock(l.clone().add(0,1,0).getBlock()))
+				{
+					return l;
+				}
+			}
+			l.add(0,1,0);
+		}
 	}
 	
 	public Location getLocation()
 	{
 		return this.loc;
 	}
-	public int getTimeSinceLastSpell(){
+	/*public int getTimeSinceLastSpell(){
 		return this.timeSinceLastSpell;
-	}
+	}*/
 	public String getCmdMob()
 	{
 		return this.cmdMob;
 	}
+	
 	public int getTimesSpawned()
 	{
 		return this.timesSpawned;
@@ -158,15 +192,15 @@ public class SpawnerPlace
 	{
 		return this.radious;
 	}
-	public void setTimeSinceLastSpell(int timeTillCanCast){
+	/*public void setTimeSinceLastSpell(int timeTillCanCast){
 		this.timeSinceLastSpell = timeTillCanCast;
-	}
+	}*/
 	public void setLocked()
 	{
 		locked = true;
 	}
 	
-	public List<LivingEntity> getMobsList()
+	public List<Mob> getMobsList()
 	{
 		return this.mobs;
 	}
@@ -177,25 +211,93 @@ public class SpawnerPlace
 			return;
 		mobs.remove(l);
 	}
-	public boolean AlreadySpawnedAdds(){
+	
+	public boolean AlreadySpawnedAdds()
+	{
 		return this.AlreadySpawnedAdds;
 	}
-	public void setAlreadySpawnedAdds(boolean alreadySpawnedAdds){
+	
+	public int getAmoutOfMobs()
+	{
+		return mobs.size();
+	}
+	
+	public void setAlreadySpawnedAdds(boolean alreadySpawnedAdds)
+	{
 		this.AlreadySpawnedAdds = alreadySpawnedAdds;
 	}
-	public int getTick(){
+	
+	public int getTick()
+	{
 		return this.tick;
 	}
-	public void reset(){
-		for(LivingEntity mobs:this.adds){
+	
+	public void clear()
+	{
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			Mob temp = itr.next();
+			temp.remove();
+		}
+		mobs.clear();
+	}
+	
+	public void reset()
+	{
+		/*for(LivingEntity mobs:this.adds)
+		{
 			mobs.remove();
 		}
 		this.adds.clear();
-		for(LivingEntity mobs:this.mobs){
+		for(LivingEntity mobs:this.mobs)
+		{
 			mobs.remove();
+		}*/
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			itr.next().remove();
 		}
+		
 		this.mobs.clear();
 		this.setAlreadySpawnedAdds(false);
 		this.tick = 0;
+	}
+	
+	private boolean isSpawnableBlock(Block b)
+	{
+		if(b.getType().equals(Material.AIR) || b.getType().equals(Material.WATER) || b.getType().equals(Material.WEB) || b.getType().equals(Material.CROPS) || b.getType().equals(Material.DEAD_BUSH))
+			return true;
+		return false;
+	}
+	
+	public boolean removeMob(LivingEntity le)
+	{
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			Mob temp = itr.next();
+			if(temp.getEntity().equals(le))
+			{
+				itr.remove();
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean contains(LivingEntity le)
+	{
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			Mob temp = itr.next();
+			if(temp.getEntity().equals(le))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

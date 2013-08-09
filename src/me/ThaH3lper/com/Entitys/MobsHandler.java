@@ -1,6 +1,7 @@
 package me.ThaH3lper.com.Entitys;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -14,13 +15,13 @@ import org.bukkit.inventory.ItemStack;
 //import org.bukkit.plugin.Plugin;
 
 import me.ThaH3lper.com.MobLibrary;
-import me.ThaH3lper.com.Skills.SpawnMobs;
-import me.ThaH3lper.com.Spawner.SpawnerPlace;
+import me.frodenkvist.armoreditor.Store;
 
-public class MobsHandler {
-
+public class MobsHandler
+{
 	private static MobLibrary ml;
 	private static List<MobTemplet> mobTemplets = new ArrayList<MobTemplet>();
+	private static List<Mob> mobs = new ArrayList<Mob>();
 	
 	public static void load(MobLibrary instance)
 	{
@@ -58,7 +59,7 @@ public class MobsHandler {
 		return true;
 	}
 	
-	public static LivingEntity SpawnAPI(String cmdName, Location loc, float multi)
+	public static Mob SpawnAPI(String cmdName, Location loc, float multi)
 	{
 		if(getTemplet(cmdName) == null)
 		{
@@ -75,7 +76,10 @@ public class MobsHandler {
 		l.setRemoveWhenFarAway(mt.despawn);
 		
 		setEquipment(l, mt.equip);
-		return l;
+		
+		Mob mob = new Mob(l, mt.damage, mt.drops, mt.skills);
+		mobs.add(mob);
+		return mob;
 	}
 	
 	public static List<ItemStack> getDrops(List<String> drops)
@@ -112,32 +116,53 @@ public class MobsHandler {
 	
 	public static void setEquipment(LivingEntity l, List<String> items)
 	{
-		for(String s : items)
+		Iterator<String> itr = items.iterator();
+		while(itr.hasNext())
 		{
-			String[] splits = s.split(" ");
-			if(splits[1].equals("0"))
+			ItemStack is = null;
+			String s = itr.next();
+			String[] split = s.split(" ");
+			if(s.contains(":"))
 			{
-				l.getEquipment().setItemInHand(ml.loadItems.getItem(splits[0]));
+				String[] parts = split[0].split(":");
+				is = new ItemStack(Integer.valueOf(parts[0]),0,Short.valueOf(parts[1]));
+			}
+			else
+			{
+				if(isInteger(split[0]))
+				{
+					is = new ItemStack(Integer.valueOf(split[0]));
+				}
+				else
+				{
+					is = ml.loadItems.getItem(split[0]);
+					if(is == null)
+						is = Store.getItem(split[0]);
+				}
+			}
+			if(split[1].equals("0"))
+			{
+				l.getEquipment().setItemInHand(is);
 				l.getEquipment().setItemInHandDropChance(0f);
 			}
-			else if(splits[1].equals("4"))
+			else if(split[1].equals("4"))
 			{
-				l.getEquipment().setHelmet(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setHelmet(is);
 				l.getEquipment().setHelmetDropChance(0f);
 			}
-			else if(splits[1].equals("3"))
+			else if(split[1].equals("3"))
 			{
-				l.getEquipment().setChestplate(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setChestplate(is);
 				l.getEquipment().setChestplateDropChance(0f);
 			}
-			else if(splits[1].equals("2"))
+			else if(split[1].equals("2"))
 			{
-				l.getEquipment().setLeggings(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setLeggings(is);
 				l.getEquipment().setLeggingsDropChance(0f);
 			}
-			else if(splits[1].equals("1"))
+			else if(split[1].equals("1"))
 			{
-				l.getEquipment().setBoots(ml.loadItems.getItem(splits[0]));
+				l.getEquipment().setBoots(is);
 				l.getEquipment().setBootsDropChance(0f);
 			}
 		}
@@ -187,16 +212,20 @@ public class MobsHandler {
 		return true;
 	}
 	
-	public static MobTemplet getMobTempletFromSpawner(LivingEntity l){
-		for(SpawnerPlace sign: ml.spawnerList){
-			for(LivingEntity mob:sign.getMobsList()){
-				if(mob == l){
+	/*public static MobTemplet getMobTempletFromSpawner(LivingEntity l)
+	{
+		for(SpawnerPlace sign: ml.spawnerList)
+		{
+			for(LivingEntity mob:sign.getMobsList())
+			{
+				if(mob == l)
+				{
 					return getMobTempletFromCmdName(sign.getCmdMob());
 				}
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	public static MobTemplet getMobTempletFromCmdName(String cmdName)
 	{
@@ -214,7 +243,7 @@ public class MobsHandler {
 		return null;
 	}
 	
-	public static List<String> getSkills(LivingEntity l)
+	/*public static List<String> getSkills(LivingEntity l)
 	{
 		if(getMobTempletFromSpawner(l) != null)
 		{
@@ -223,7 +252,7 @@ public class MobsHandler {
 		}
 		
 		return null;
-	}
+	}*/
 	
 	public static List<MobTemplet> getMobTemplets()
 	{
@@ -232,7 +261,13 @@ public class MobsHandler {
 	
 	public static void clearMobs()
 	{
-		if(MobLibrary.plugin.spawnerList.isEmpty())
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			itr.next().remove();
+		}
+		mobs.clear();
+		/*if(MobLibrary.plugin.spawnerList.isEmpty())
 		{
 			return;
 		}
@@ -254,24 +289,58 @@ public class MobsHandler {
 				}
 			}
 			MobLibrary.plugin.spawnerList.clear();
-		}
+		}*/
 	}
-	public static SpawnerPlace getSpawnerFromMob(LivingEntity l){
-		for(SpawnerPlace sign: ml.spawnerList){
-			for(LivingEntity mob:sign.getMobsList()){
-				if(mob == l){
+	
+	/*public static SpawnerPlace getSpawnerFromMob(LivingEntity l)
+	{
+		for(SpawnerPlace sign: ml.spawnerList)
+		{
+			for(LivingEntity mob:sign.getMobsList())
+			{
+				if(mob == l)
+				{
 					return sign;
 				}
 			}
 		}
 		return null;
-	}
-	public static void clearFromSkillLists(LivingEntity mob){
-		if(SpawnMobs.usedSkill.contains(mob)){
+	}*/
+	
+	/*public static void clearFromSkillLists(LivingEntity mob)
+	{
+		if(SpawnMobs.usedSkill.contains(mob))
+		{
 			SpawnMobs.usedSkill.remove(mob);
 		}
-		if(MobsHandler.getSpawnerFromMob(mob).adds.contains(mob)){
+		if(MobsHandler.getSpawnerFromMob(mob).adds.contains(mob))
+		{
 			MobsHandler.getSpawnerFromMob(mob).adds.remove(mob);
+		}
+	}*/
+	
+	public static Mob getMob(LivingEntity le)
+	{
+		Iterator<Mob> itr = mobs.iterator();
+		while(itr.hasNext())
+		{
+			Mob temp = itr.next();
+			if(temp.getEntity().equals(le))
+				return temp;
+		}
+		return null;
+	}
+	
+	private static boolean isInteger(String s)
+	{
+		try
+		{
+			Integer.valueOf(s);
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
 		}
 	}
 }

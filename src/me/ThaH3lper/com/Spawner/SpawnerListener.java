@@ -1,11 +1,9 @@
 package me.ThaH3lper.com.Spawner;
 
-import java.util.List;
-
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.SaveLoad.SaveLoad;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -27,17 +25,17 @@ public class SpawnerListener implements Listener{
 	{
 		this.ml = ml;
 	}
+	
 	@EventHandler(priority = EventPriority.HIGH)
-	public void chunkUnload(ChunkUnloadEvent event){
-		for(SpawnerPlace sign : ml.spawnerList){
-			if(sign.getLocation().getChunk().equals(event.getChunk())){
-				event.setCancelled(true);
-			}
-			if(sign.getLocation().getChunk() == event.getChunk()){
-				event.setCancelled(true);
-			}
+	public void chunkUnload(ChunkUnloadEvent event)
+	{
+		if(SpawnerHandler.isSpawnerInChunk(event.getChunk()))
+		{
+			event.setCancelled(true);
+			return;
 		}
 	}
+	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void SignCreate(PlayerInteractEvent e)
 	{
@@ -69,8 +67,8 @@ public class SpawnerListener implements Listener{
 				s.setLine(0, ChatColor.GREEN + "[MobSpawner]");
 				s.update();
 				
-				ml.spawnerList.add(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
-				me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+				SpawnerHandler.addSpawner(new SpawnerPlace(e.getClickedBlock().getLocation(), cmdname, amount, inteval, radious, ml));
+				SaveLoad.storeData("StoredLocations.txt");
 			}
 			else
 			{
@@ -83,32 +81,47 @@ public class SpawnerListener implements Listener{
 			}
 			
 		}
-		else if(s.getLine(0).equalsIgnoreCase("[mobs]")){
+		else if(s.getLine(0).equalsIgnoreCase("[mobs]"))
+		{
 			Block block = s.getBlock();
 			block.setType(Material.AIR);
 		}
 	}
 	
 	@EventHandler
-	public void signDestroy(BlockBreakEvent e){
-		if(!(e.getBlock().getState() instanceof Sign)){
+	public void signDestroy(BlockBreakEvent e)
+	{
+		if(!(e.getBlock().getState() instanceof Sign))
+		{
 			return;
 		}
+		
 		Sign s = (Sign) e.getBlock().getState();
-		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]")){
-			for(int i = 0; i<= ml.spawnerList.size() - 1; i++){
+		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]"))
+		{
+			SpawnerPlace sp = SpawnerHandler.getSpawner(s.getLocation());
+			if(sp == null)
+				return;
+			sp.clear();
+			SpawnerHandler.removeSpawner(sp.getLocation());
+			e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + sp.getCmdMob() + ChatColor.RED + " Removed!");
+			SaveLoad.storeData("StoredLocations.txt");
+			/*for(int i = 0; i<= ml.spawnerList.size() - 1; i++)
+			{
 				Location existing = ml.spawnerList.get(i).getLocation();
 				Location loc = s.getLocation();
-				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ()){
+				if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ())
+				{
 					List<LivingEntity> mobs = ml.spawnerList.get(i).getMobsList();
-					for(LivingEntity mob:mobs){
+					for(LivingEntity mob:mobs)
+					{
 						mob.remove();
 					}
 					e.getPlayer().sendMessage(ChatColor.GREEN + "[MOBS]: " + ChatColor.RED + "Spawner for " + ChatColor.LIGHT_PURPLE + ml.spawnerList.get(i).getCmdMob() + ChatColor.RED + " Removed!");
 					ml.spawnerList.remove(i);
-					me.ThaH3lper.com.SaveLoad.SaveLoad.storeData("StoredLocations.txt");
+					SaveLoad.storeData("StoredLocations.txt");
 				}
-			}
+			}*/
 		}
 	}
 	
@@ -118,11 +131,11 @@ public class SpawnerListener implements Listener{
 		if(e.getEntity() instanceof LivingEntity)
 		{
 			LivingEntity l = (LivingEntity) e.getEntity();
-			for(SpawnerPlace sp : ml.spawnerList)
+			SpawnerHandler.removeMob(l);
+			/*for(SpawnerPlace sp : ml.spawnerList)
 			{
 				sp.DeathMob(l);
-			}
+			}*/
 		}
 	}
-
 }

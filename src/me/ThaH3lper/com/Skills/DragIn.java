@@ -10,21 +10,29 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class DragIn
+public class DragIn extends Skill
 {
-	private static FireWorkEffect fplayer = new FireWorkEffect();
+	private int radius;
 	
-	public static void playSkill(LivingEntity entity, int r) throws IllegalArgumentException, Exception
+	public DragIn(double chance, int radius)
 	{
-		List<Player> list = SkillHandler.getPlayers(r, entity);
-		if(!list.isEmpty())
+		super(chance);
+		this.radius = radius;
+	}
+	
+	private FireWorkEffect fplayer = new FireWorkEffect();
+	
+	public void playSkill(LivingEntity entity) throws IllegalArgumentException, Exception
+	{
+		List<Player> list = SkillHandler.getPlayers(radius, entity);
+		if(list.isEmpty())
+			return;
+
+		for(Player p : list)
 		{
-			for(Player p : list)
-			{
-				fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
-				p.teleport(entity.getLocation());
-			}
-			fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
+			fplayer.playFirework(p.getWorld(), p.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
+			p.teleport(entity.getLocation());
 		}
+		fplayer.playFirework(entity.getWorld(), entity.getLocation(), FireworkEffect.builder().withColor(Color.BLUE).withFade(Color.FUCHSIA).with(Type.BURST).build());
 	}
 }

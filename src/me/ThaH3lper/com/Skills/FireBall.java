@@ -6,8 +6,8 @@ import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.util.Vector;
 
-public class FireBall {
-	
+public class FireBall
+{
 	public static void playEffect(LivingEntity entity)
 	{
 		spawnFire(entity, new Vector(10, 0, 0));
@@ -19,6 +19,7 @@ public class FireBall {
 		spawnFire(entity, new Vector(-1, 0, 0));
 		spawnFire(entity, new Vector(-0.5, 0, 0.5));
 	}
+	
 	public static void spawnFire(LivingEntity entity, Vector vector)
 	{
 		Location l = entity.getLocation();
