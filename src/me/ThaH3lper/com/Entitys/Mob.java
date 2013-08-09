@@ -9,6 +9,7 @@ import me.ThaH3lper.com.Skills.DragIn;
 import me.ThaH3lper.com.Skills.FireStorm;
 import me.ThaH3lper.com.Skills.HealthDepend;
 import me.ThaH3lper.com.Skills.Ignite;
+import me.ThaH3lper.com.Skills.LightningStorm;
 import me.ThaH3lper.com.Skills.Potion;
 import me.ThaH3lper.com.Skills.Skill;
 import me.ThaH3lper.com.Skills.SpawnMobs;
@@ -117,6 +118,14 @@ public class Mob
 				int radius = Integer.valueOf(split[1]);
 				double chance = Double.valueOf(split[2]);
 				this.skills.add(new FireStorm(chance, radius));
+			}
+			else if(split[0].equalsIgnoreCase("lightningstorm"))
+			{
+				if(split.length != 3)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new LightningStorm(chance, radius));
 			}
 		}
 	}

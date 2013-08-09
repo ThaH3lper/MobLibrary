@@ -2,8 +2,8 @@ package me.ThaH3lper.com.Items;
 
 import org.bukkit.inventory.ItemStack;
 
-public class ItemsObject {
-	
+public class ItemsObject
+{	
 	public ItemStack itemStack;
 	public String name;
 	
@@ -12,5 +12,4 @@ public class ItemsObject {
 		this.name = name;
 		this.itemStack = itemStack;
 	}
-
 }

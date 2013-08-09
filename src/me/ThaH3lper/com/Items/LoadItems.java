@@ -58,19 +58,20 @@ public class LoadItems {
 					IM.setLore(newLores);
 				}
 				
+				stack.setItemMeta(IM);
+				
 				//Set Enchantments
 				if(ml.items.getCustomConfig().contains("Items." + s + ".Enchantments"))
 				{
-					List<String> Enchants = ml.items.getCustomConfig().getStringList("Items." + s + ".Enchantments");
-					for(String Enchant : Enchants)
+					List<String> enchants = ml.items.getCustomConfig().getStringList("Items." + s + ".Enchantments");
+					for(String enchant : enchants)
 					{
-						String[] split = Enchant.split(",");
+						String[] split = enchant.split(",");
 						int lvl = Integer.parseInt(split[1]);
-						IM.addEnchant(Enchantment.getByName(split[0]), lvl, true);
+						stack.addUnsafeEnchantment(Enchantment.getByName(split[0]), lvl);
 					}
 				}
 				
-				stack.setItemMeta(IM);
 				ml.itemList.add(new ItemsObject(s, stack));	
 			}
 		}
