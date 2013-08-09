@@ -1,5 +1,6 @@
 package me.ThaH3lper.com.Skills;
 
+import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.entity.LivingEntity;
@@ -19,11 +20,12 @@ public class SpawnMobs extends Skill implements UsableOnce, HealthDepend
 		this.healthNeededToCast = healthNeededToCast;
 	}
 	
-	public void playSkill(LivingEntity mob)
+	public void playSkill(LivingEntity le)
 	{
 		for(int i = 0;i < amount; ++i)
 		{
-			MobsHandler.SpawnAPI(cmdName, mob.getLocation(), 1);
+			Mob mob = MobsHandler.getMob(le);
+			mob.addAdds(MobsHandler.SpawnAPI(cmdName, le.getLocation(), 1));
 		}
 		setUsed(true);
 		/*if(!(usedSkill.contains(mob)))

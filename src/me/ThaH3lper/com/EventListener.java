@@ -36,7 +36,7 @@ public class EventListener implements Listener
 			return;
 		e.getDrops().clear();
 		mob.dropLoot();
-		
+		mob.clearAdds();
 		/*if(MobsHandler.getSpawnerFromMob(l) != null)
 		{
 			SpawnerPlace sign = MobsHandler.getSpawnerFromMob(l);
@@ -107,7 +107,10 @@ public class EventListener implements Listener
 			if(mob == null)
 				return;
 			if(mob.hasSkills())
-				mob.executeSkills();
+			{
+				if(mob.getEntity().getNoDamageTicks() <= 10)
+					mob.executeSkills();
+			}
 			/*if(MobsHandler.getSkills((LivingEntity)l) != null)
 			{
 				SpawnerPlace sign = MobsHandler.getSpawnerFromMob((LivingEntity)l);
@@ -143,7 +146,10 @@ public class EventListener implements Listener
 			if(mob == null)
 				return;
 			if(mob.hasSkills())
-				mob.executeSkills();
+			{
+				if(mob.getEntity().getNoDamageTicks() <= 10)
+					mob.executeSkills();
+			}
 			/*if(getMobTemplet((LivingEntity)snowball.getShooter()) != null)
 			{
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)snowball.getShooter());
@@ -186,7 +192,10 @@ public class EventListener implements Listener
 			if(mob == null)
 				return;
 			if(mob.hasSkills())
-				mob.executeSkills();
+			{
+				if(mob.getEntity().getNoDamageTicks() <= 10)
+					mob.executeSkills();
+			}
 			/*if(getMobTemplet((LivingEntity)fireball.getShooter()) != null)
 			{
 				MobTemplet mt = getMobTempletFromSpawner((LivingEntity)fireball.getShooter());
@@ -223,7 +232,8 @@ public class EventListener implements Listener
 			{
 				if(mob.hasSkills())
 				{
-					mob.executeSkills();
+					if(mob.getEntity().getNoDamageTicks() <= 10)
+						mob.executeSkills();
 				}
 			}
 			Mob mDamager = MobsHandler.getMob(damager);

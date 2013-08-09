@@ -31,6 +31,7 @@ public class Mob
 	private List<String> drops = new ArrayList<String>();
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
+	private List<Mob> adds = new ArrayList<Mob>();
 	
 	public Mob(LivingEntity entity, int damage, List<String> drops, List<String> skills)
 	{
@@ -177,8 +178,31 @@ public class Mob
 		}
 	}
 	
+	public void addAdds(Mob add)
+	{
+		adds.add(add);
+	}
+	
+	public void clearAdds()
+	{
+		Iterator<Mob> itr = adds.iterator();
+		while(itr.hasNext())
+		{
+			Mob add = itr.next();
+			if(add == null)
+			{
+				itr.remove();
+				continue;
+			}
+			add.remove();
+			itr.remove();
+		}
+		adds.clear();
+	}
+	
 	public void remove()
 	{
+		clearAdds();
 		entity.remove();
 	}
 	

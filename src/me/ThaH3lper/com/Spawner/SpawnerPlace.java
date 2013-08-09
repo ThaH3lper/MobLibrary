@@ -22,7 +22,7 @@ public class SpawnerPlace
 	private Location loc;
 	private String cmdMob;
 	private int Amount, interval, radious;
-	private boolean AlreadySpawnedAdds;
+	//private boolean AlreadySpawnedAdds;
 	//private int timeSinceLastSpell;
     private String display;
 	
@@ -41,7 +41,7 @@ public class SpawnerPlace
 		this.interval = interval;
 		this.radious = radious;
 		this.locked = false;
-		this.AlreadySpawnedAdds = false;
+		//this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
 		//this.timeSinceLastSpell = 0;
         display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
@@ -76,7 +76,7 @@ public class SpawnerPlace
 			if(mobs.size() >= Amount)
 				return;
 			spawnMob();
-			this.setAlreadySpawnedAdds(false);
+			//this.setAlreadySpawnedAdds(false);
 		}
 		Iterator<Mob> itr = mobs.iterator();
 		while(itr.hasNext())
@@ -212,20 +212,20 @@ public class SpawnerPlace
 		mobs.remove(l);
 	}
 	
-	public boolean AlreadySpawnedAdds()
+	/*public boolean AlreadySpawnedAdds()
 	{
 		return this.AlreadySpawnedAdds;
-	}
+	}*/
 	
 	public int getAmoutOfMobs()
 	{
 		return mobs.size();
 	}
 	
-	public void setAlreadySpawnedAdds(boolean alreadySpawnedAdds)
+	/*public void setAlreadySpawnedAdds(boolean alreadySpawnedAdds)
 	{
 		this.AlreadySpawnedAdds = alreadySpawnedAdds;
-	}
+	}*/
 	
 	public int getTick()
 	{
@@ -258,10 +258,11 @@ public class SpawnerPlace
 		while(itr.hasNext())
 		{
 			itr.next().remove();
+			itr.remove();
 		}
 		
 		this.mobs.clear();
-		this.setAlreadySpawnedAdds(false);
+		//this.setAlreadySpawnedAdds(false);
 		this.tick = 0;
 	}
 	
@@ -281,6 +282,8 @@ public class SpawnerPlace
 			if(temp.getEntity().equals(le))
 			{
 				itr.remove();
+				if(mobs.isEmpty())
+					reset();
 				return true;
 			}
 		}
