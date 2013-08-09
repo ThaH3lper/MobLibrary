@@ -6,6 +6,7 @@ import java.util.List;
 
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Skills.DragIn;
+import me.ThaH3lper.com.Skills.FireStorm;
 import me.ThaH3lper.com.Skills.HealthDepend;
 import me.ThaH3lper.com.Skills.Ignite;
 import me.ThaH3lper.com.Skills.Potion;
@@ -108,6 +109,14 @@ public class Mob
 				int amount = Integer.valueOf(split[3]);
 				double chance = Double.valueOf(split[4]);
 				this.skills.add(new SpawnMobs(chance, cmdName, amount, healthNeedToCast));
+			}
+			else if(split[0].equalsIgnoreCase("firestorm"))
+			{
+				if(split.length != 3)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new FireStorm(chance, radius));
 			}
 		}
 	}
