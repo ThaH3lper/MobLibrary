@@ -1,9 +1,14 @@
 package me.ThaH3lper.com.Skills;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import me.ThaH3lper.com.Entitys.Mob;
+import me.ThaH3lper.com.Entitys.MobsHandler;
+
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,6 +30,18 @@ public class SkillHandler
 			}
 		}
 		return list;
+	}
+	
+	public static void message(int radius, LivingEntity le, String message)
+	{
+		List<Player> list = getPlayers(radius, le);
+		Mob mob = MobsHandler.getMob(le);
+		Iterator<Player> itr = list.iterator();
+		while(itr.hasNext())
+		{
+			Player temp = itr.next();
+			temp.sendMessage("<" + mob.getName() + ChatColor.RESET + "> " + message);
+		}
 	}
 	
 	/*public static void executeSkills(List<String> list, LivingEntity mob) throws IllegalArgumentException, Exception

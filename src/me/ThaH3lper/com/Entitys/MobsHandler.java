@@ -77,7 +77,7 @@ public class MobsHandler
 		
 		setEquipment(l, mt.equip);
 		
-		Mob mob = new Mob(l, mt.damage, mt.drops, mt.skills);
+		Mob mob = new Mob(l, mt.damage, display, mt.drops, mt.skills);
 		mobs.add(mob);
 		return mob;
 	}

@@ -5,12 +5,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Skills.Detonate;
 import me.ThaH3lper.com.Skills.DragIn;
+import me.ThaH3lper.com.Skills.Enrage;
 import me.ThaH3lper.com.Skills.FireStorm;
 import me.ThaH3lper.com.Skills.HealthDepend;
 import me.ThaH3lper.com.Skills.Ignite;
 import me.ThaH3lper.com.Skills.LightningStorm;
 import me.ThaH3lper.com.Skills.Potion;
+import me.ThaH3lper.com.Skills.Shuffle;
 import me.ThaH3lper.com.Skills.Skill;
 import me.ThaH3lper.com.Skills.SpawnMobs;
 import me.ThaH3lper.com.Skills.Teleport;
@@ -30,15 +33,17 @@ import org.bukkit.potion.PotionEffectType;
 public class Mob
 {
 	private int damage;
+	private String name;
 	private List<String> drops = new ArrayList<String>();
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<Mob> adds = new ArrayList<Mob>();
 	
-	public Mob(LivingEntity entity, int damage, List<String> drops, List<String> skills)
+	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills)
 	{
 		this.entity = entity;
 		this.damage = damage;
+		this.name = name;
 		this.drops = drops;
 		Iterator<String> itr = skills.iterator();
 		while(itr.hasNext())
@@ -126,6 +131,32 @@ public class Mob
 				int radius = Integer.valueOf(split[1]);
 				double chance = Double.valueOf(split[2]);
 				this.skills.add(new LightningStorm(chance, radius));
+			}
+			else if(split[0].equalsIgnoreCase("shuffle"))
+			{
+				if(split.length != 3)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new Shuffle(chance, radius));
+			}
+			else if(split[0].equalsIgnoreCase("enrage"))
+			{
+				if(split.length != 3)
+					continue;
+				int duration = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new Enrage(chance, duration));
+			}
+			else if(split[0].equalsIgnoreCase("detonate"))
+			{
+				if(split.length != 5)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				int dmg = Integer.valueOf(split[2]);
+				int delay = Integer.valueOf(split[3]);
+				double chance = Double.valueOf(split[4]);
+				this.skills.add(new Detonate(chance, radius, dmg, delay));
 			}
 		}
 	}
@@ -257,5 +288,10 @@ public class Mob
 	public LivingEntity getEntity()
 	{
 		return entity;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 }
