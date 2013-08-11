@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.ThaH3lper.com.Entitys.Mob;
+
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
@@ -78,6 +80,13 @@ public class SpawnerHandler
 			SpawnerPlace temp = itr.next();
 			if(temp.getLocation().getChunk().equals(c))
 				return true;
+			Iterator<Mob> mobItr = temp.getMobsList().iterator();
+			while(mobItr.hasNext())
+			{
+				Mob mTemp = mobItr.next();
+				if(mTemp.getLocation().getChunk().equals(c))
+					return true;
+			}
 		}
 		return false;
 	}

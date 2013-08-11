@@ -251,8 +251,10 @@ public class Mob
 	
 	public void remove()
 	{
+		
 		clearAdds();
-		entity.remove();
+		if(entity != null)
+			entity.remove();
 	}
 	
 	public void setCustomName(String customName)
@@ -290,8 +292,18 @@ public class Mob
 		return entity;
 	}
 	
+	public boolean isValid()
+	{
+		return entity.isValid();
+	}
+	
 	public String getName()
 	{
 		return name;
+	}
+	
+	public Location getLocation()
+	{
+		return entity.getLocation();
 	}
 }

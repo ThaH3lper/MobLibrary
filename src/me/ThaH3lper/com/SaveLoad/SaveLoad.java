@@ -131,17 +131,23 @@ public class SaveLoad
 					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
-					if(loc.getBlock().getType() != Material.SIGN)
+					if(!(loc.getBlock().getState() instanceof Sign))
 					{
 						Block block = loc.getBlock();
 						block.setType(Material.SIGN_POST);
 					}
-					Sign sign = (Sign)loc.getBlock().getState();
-					sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
-					sign.setLine(1, "" + radius);
-					sign.setLine(2, cmdName);
-					sign.setLine(3, amount + "i,"+ interval + "s");
-					sign.update();
+					try
+					{
+						Sign sign = (Sign)loc.getBlock().getState();
+						sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
+						sign.setLine(1, "" + radius);
+						sign.setLine(2, cmdName);
+						sign.setLine(3, amount + "i,"+ interval + "s");
+						sign.update();
+					}
+					catch(Exception ed)
+					{
+					}
 				}
 				Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
 				while(itr.hasNext())
@@ -158,17 +164,23 @@ public class SaveLoad
 					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
 					chunk.load(true);
-					if(loc.getBlock().getType() != Material.SIGN)
+					if(!(loc.getBlock().getState() instanceof Sign))
 					{
 						Block block = loc.getBlock();
 						block.setType(Material.SIGN_POST);
 					}
-					Sign sign = (Sign)loc.getBlock().getState();
-					sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
-					sign.setLine(1, "" + radius);
-					sign.setLine(2, cmdName);
-					sign.setLine(3, amount + "i,"+ interval + "s");
-					sign.update();
+					try
+					{
+						Sign sign = (Sign)loc.getBlock().getState();
+						sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
+						sign.setLine(1, "" + radius);
+						sign.setLine(2, cmdName);
+						sign.setLine(3, amount + "i,"+ interval + "s");
+						sign.update();
+					}
+					catch(Exception ed)
+					{
+					}
 				}
 				if(alreadyexist == true)
 				{

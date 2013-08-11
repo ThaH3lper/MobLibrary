@@ -9,7 +9,6 @@ import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,7 +23,7 @@ public class SpawnerPlace
 	private int Amount, interval, radious;
 	//private boolean AlreadySpawnedAdds;
 	//private int timeSinceLastSpell;
-    private String display;
+    //private String display;
 	
 	private List<Mob> mobs = new ArrayList<Mob>();
 	//public List<LivingEntity> adds = new ArrayList<LivingEntity>();
@@ -44,7 +43,7 @@ public class SpawnerPlace
 		//this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
 		//this.timeSinceLastSpell = 0;
-        display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
+        //display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
 		spawnMob();
 	}
 	
@@ -87,12 +86,23 @@ public class SpawnerPlace
 				itr.remove();
 				continue;
 			}
+			if(!mob.getLocation().getChunk().isLoaded())
+			{
+				mob.getLocation().getChunk().load(true);
+			}
 			if(mob.isDead())
 			{
+				mob.remove();
 				itr.remove();
 				continue;
 			}
-			mob.setCustomName(ChatColor.translateAlternateColorCodes('&', display)+ "");
+			if(!mob.isValid())
+			{
+				mob.remove();
+				itr.remove();
+				continue;
+			}
+			mob.setCustomName(mob.getName());
 		}
 		/*if(!this.mobs.isEmpty())
 		{
@@ -133,7 +143,17 @@ public class SpawnerPlace
 	public void spawnMob()
 	{
 		this.timesSpawned++;
-		Location l = getMobSpawnLocation();
+		Location l = null;
+		int counter = 0;
+		while(true)
+		{
+			l = getMobSpawnLocation();
+			if(l != null)
+				break;
+			++counter;
+			if(counter >= 25)
+				return;
+		}
 		Chunk chunk = l.getChunk();
 		chunk.load();
 		Mob mob = MobsHandler.SpawnAPI(cmdMob, l, 1f);
@@ -142,7 +162,7 @@ public class SpawnerPlace
 	
 	public Location getMobSpawnLocation()
 	{
-
+		int counter = 0;
 		double x = (loc.getX()-radious) +(r.nextInt((int) ((loc.getX()+radious)-(loc.getX()-radious))));
 		double z = (loc.getZ()-radious) +(r.nextInt((int) ((loc.getZ()+radious)-(loc.getZ()-radious))));
 			
@@ -158,6 +178,9 @@ public class SpawnerPlace
 				}
 			}
 			l.add(0,1,0);
+			++counter;
+			if(counter >= radious + 2);
+				return null;
 		}
 	}
 	
@@ -268,7 +291,8 @@ public class SpawnerPlace
 	
 	private boolean isSpawnableBlock(Block b)
 	{
-		if(b.getType().equals(Material.AIR) || b.getType().equals(Material.WATER) || b.getType().equals(Material.WEB) || b.getType().equals(Material.CROPS) || b.getType().equals(Material.DEAD_BUSH))
+		if(b.getType().equals(Material.AIR) || b.getType().equals(Material.WATER) || b.getType().equals(Material.WEB) || b.getType().equals(Material.CROPS) || b.getType().equals(Material.DEAD_BUSH)
+				|| b.getType().equals(Material.VINE))
 			return true;
 		return false;
 	}
