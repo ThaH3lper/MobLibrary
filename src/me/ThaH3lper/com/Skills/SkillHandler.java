@@ -9,10 +9,13 @@ import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.util.Vector;
 
 public class SkillHandler
 {
@@ -26,6 +29,8 @@ public class SkillHandler
 		{
 			if(check instanceof Player)
 			{
+				if(((Player)check).getGameMode().equals(GameMode.CREATIVE))
+					continue;
 				list.add((Player) check);
 			}
 		}
@@ -34,7 +39,15 @@ public class SkillHandler
 	
 	public static void message(int radius, LivingEntity le, String message)
 	{
-		List<Player> list = getPlayers(radius, le);
+		List<Player> list = new ArrayList<Player>();
+		List<Entity> near = le.getNearbyEntities(radius, radius, radius);
+		for(Entity check : near)
+		{
+			if(check instanceof Player)
+			{
+				list.add((Player) check);
+			}
+		}
 		Mob mob = MobsHandler.getMob(le);
 		Iterator<Player> itr = list.iterator();
 		while(itr.hasNext())
@@ -148,6 +161,15 @@ public class SkillHandler
 				}
 			}
 		}
+	}
+	
+	public static Vector getTargetVector(Location shooter, Location target)
+	{
+		Location first_location = shooter.add(0, 1, 0);
+		Location second_location = target.add(0, 1, 0);
+		Vector vector = second_location.toVector().subtract(first_location.toVector());
+		return vector;
+		
 	}
 
 }

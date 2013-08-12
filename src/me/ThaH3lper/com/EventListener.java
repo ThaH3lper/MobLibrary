@@ -3,6 +3,7 @@ package me.ThaH3lper.com;
 import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
+import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
 import org.bukkit.ChatColor;
@@ -24,6 +25,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.util.Vector;
+
+import PvpBalance.PvpHandler;
 
 public class EventListener implements Listener 
 {			
@@ -230,6 +234,20 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob != null)
 			{
+				if(mob.isParrying())
+				{
+					if(e.getDamager() instanceof Player)
+					{
+						Player target = (Player)e.getDamager();
+						PvpHandler.getPvpPlayer(target).damage(mob.getDamage());
+						Vector v = SkillHandler.getTargetVector(mob.getEntity().getLocation(), target.getLocation());
+						target.setVelocity(v.add(new Vector(0,1,0)));
+						target.damage(0D, mob.getEntity());
+						SkillHandler.message(30, mob.getEntity(), ChatColor.RED + "Parried " + ChatColor.AQUA + target.getName());
+						e.setCancelled(true);
+						return;
+					}
+				}
 				if(mob.hasSkills())
 				{
 					if(mob.getEntity().getNoDamageTicks() <= 10)

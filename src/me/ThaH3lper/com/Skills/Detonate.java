@@ -4,9 +4,13 @@ import java.util.Iterator;
 import java.util.List;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Effects.FireWorkEffect;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -17,6 +21,7 @@ public class Detonate extends Skill
 	private int damage;
 	private int radius;
 	private int delay;
+	private FireWorkEffect fplayer = new FireWorkEffect();
 	
 	public Detonate(double chance, int radius, int damage, int delay)
 	{
@@ -35,6 +40,14 @@ public class Detonate extends Skill
 			public void run()
 			{
 				caster.getWorld().createExplosion(caster.getLocation(), radius);
+				try
+				{
+					fplayer.playFirework(caster.getWorld(), caster.getLocation(), FireworkEffect.builder().withColor(Color.RED).withColor(Color.ORANGE).withFade(Color.YELLOW).with(Type.BURST).build());
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
 				List<Player> list = SkillHandler.getPlayers(radius, caster);
 				if(list.isEmpty())
 					return;

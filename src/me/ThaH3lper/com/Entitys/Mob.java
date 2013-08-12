@@ -11,7 +11,9 @@ import me.ThaH3lper.com.Skills.Enrage;
 import me.ThaH3lper.com.Skills.FireStorm;
 import me.ThaH3lper.com.Skills.HealthDepend;
 import me.ThaH3lper.com.Skills.Ignite;
+import me.ThaH3lper.com.Skills.Jockey;
 import me.ThaH3lper.com.Skills.LightningStorm;
+import me.ThaH3lper.com.Skills.Parry;
 import me.ThaH3lper.com.Skills.Potion;
 import me.ThaH3lper.com.Skills.Shuffle;
 import me.ThaH3lper.com.Skills.Skill;
@@ -20,6 +22,7 @@ import me.ThaH3lper.com.Skills.Teleport;
 import me.ThaH3lper.com.Skills.Tnt;
 import me.ThaH3lper.com.Skills.Toss;
 import me.ThaH3lper.com.Skills.UsableOnce;
+import me.ThaH3lper.com.Skills.WitherStorm;
 import me.frodenkvist.armoreditor.Store;
 
 import org.bukkit.Location;
@@ -38,6 +41,7 @@ public class Mob
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<Mob> adds = new ArrayList<Mob>();
+	private boolean parry;
 	
 	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills)
 	{
@@ -158,6 +162,30 @@ public class Mob
 				double chance = Double.valueOf(split[4]);
 				this.skills.add(new Detonate(chance, radius, dmg, delay));
 			}
+			else if(split[0].equalsIgnoreCase("witherstorm"))
+			{
+				if(split.length != 3)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new WitherStorm(chance, radius));
+			}
+			else if(split[0].equalsIgnoreCase("jockey"))
+			{
+				if(split.length != 4)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				int mDamage = Integer.valueOf(split[2]);
+				double chance = Double.valueOf(split[3]);
+				this.skills.add(new Jockey(chance, radius, mDamage));
+			}
+			else if(split[0].equalsIgnoreCase("parry"))
+			{
+				if(split.length != 2)
+					continue;
+				double chance = Double.valueOf(split[1]);
+				this.skills.add(new Parry(chance));
+			}
 		}
 	}
 	
@@ -261,6 +289,16 @@ public class Mob
 	{
 		entity.setCustomName(customName);
 	}
+
+	public void setCustomName()
+	{
+		entity.setCustomName(name);
+		Iterator<Mob> itr = adds.iterator();
+		while(itr.hasNext())
+		{
+			itr.next().setCustomName();
+		}
+	}
 	
 	public boolean isDead()
 	{
@@ -305,5 +343,15 @@ public class Mob
 	public Location getLocation()
 	{
 		return entity.getLocation();
+	}
+	
+	public boolean isParrying()
+	{
+		return parry;
+	}
+	
+	public void setParrying(boolean value)
+	{
+		parry = value;
 	}
 }

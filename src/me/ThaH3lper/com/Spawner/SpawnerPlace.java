@@ -102,7 +102,7 @@ public class SpawnerPlace
 				itr.remove();
 				continue;
 			}
-			mob.setCustomName(mob.getName());
+			mob.setCustomName();
 		}
 		/*if(!this.mobs.isEmpty())
 		{

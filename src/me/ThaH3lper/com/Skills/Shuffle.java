@@ -13,6 +13,8 @@ import org.bukkit.Location;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class Shuffle extends Skill
 {
@@ -51,6 +53,7 @@ public class Shuffle extends Skill
 			}
 			int r = rand.nextInt(locs.size());
 			temp.teleport(locs.get(r));
+			temp.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION,10*20,1));
 			locs.remove(r);
 		}
 	}
