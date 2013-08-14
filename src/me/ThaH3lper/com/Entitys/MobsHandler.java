@@ -3,18 +3,14 @@ package me.ThaH3lper.com.Entitys;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
-//import org.bukkit.metadata.FixedMetadataValue;
-//import org.bukkit.metadata.MetadataValue;
-//import org.bukkit.plugin.Plugin;
 
 import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Items.ItemHandler;
 import me.frodenkvist.armoreditor.Store;
 
 public class MobsHandler
@@ -82,7 +78,7 @@ public class MobsHandler
 		return mob;
 	}
 	
-	public static List<ItemStack> getDrops(List<String> drops)
+	/*public static List<ItemStack> getDrops(List<String> drops)
 	{
 		List<ItemStack> items = new ArrayList<ItemStack>();
 		for(String s : drops)
@@ -112,7 +108,7 @@ public class MobsHandler
 			}
 		}
 		return items;
-	}
+	}*/
 	
 	public static void setEquipment(LivingEntity l, List<String> items)
 	{
@@ -135,7 +131,7 @@ public class MobsHandler
 				}
 				else
 				{
-					is = ml.loadItems.getItem(split[0]);
+					is = ItemHandler.getItem(split[0]);
 					if(is == null)
 						is = Store.getItem(split[0]);
 				}

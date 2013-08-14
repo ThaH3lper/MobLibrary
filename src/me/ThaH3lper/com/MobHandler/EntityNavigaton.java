@@ -2,7 +2,7 @@ package me.ThaH3lper.com.MobHandler;
 
 //import org.bukkit.Bukkit;
 
-
+@Deprecated
 public class EntityNavigaton //extends Navigation
 {/*
   double speedMod = 1.0D;

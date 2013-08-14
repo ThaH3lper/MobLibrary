@@ -1,10 +1,11 @@
 package me.ThaH3lper.com.Entitys;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import me.ThaH3lper.com.MobLibrary;
+import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.Skills.Detonate;
 import me.ThaH3lper.com.Skills.DragIn;
 import me.ThaH3lper.com.Skills.Enrage;
@@ -41,7 +42,10 @@ public class Mob
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<Mob> adds = new ArrayList<Mob>();
+	private Mob spawner;
 	private boolean parry;
+	private double lastDamageTime;
+	private boolean hasBeenDamaged;
 	
 	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills)
 	{
@@ -243,7 +247,7 @@ public class Mob
 			}
 			else
 			{
-				ItemStack stack = MobLibrary.plugin.loadItems.getItem(parts[0]);
+				ItemStack stack = ItemHandler.getItem(parts[0]);
 				if(stack == null)
 					stack = Store.getItem(parts[0]);
 				if(stack == null)
@@ -300,6 +304,31 @@ public class Mob
 		}
 	}
 	
+	public void resetMob()
+	{
+		if((new Date().getTime() - lastDamageTime) < 30000)
+			return;
+		entity.setHealth(entity.getMaxHealth());
+		if(!hasBeenDamaged)
+			return;
+		Iterator<Skill> sItr = skills.iterator();
+		while(sItr.hasNext())
+		{
+			Skill skill = sItr.next();
+			if(skill instanceof UsableOnce)
+			{
+				((UsableOnce) skill).setUsed(false);
+			}
+		}
+		Iterator<Mob> mItr = adds.iterator();
+		while(mItr.hasNext())
+		{
+			mItr.next().remove();
+			mItr.remove();
+		}
+		hasBeenDamaged = false;
+	}
+	
 	public boolean isDead()
 	{
 		return entity.isDead();
@@ -353,5 +382,49 @@ public class Mob
 	public void setParrying(boolean value)
 	{
 		parry = value;
+	}
+	
+	public void setSpawner(Mob mob)
+	{
+		spawner = mob;
+	}
+	
+	public Mob getSpawner()
+	{
+		return spawner;
+	}
+	
+	public void setLastDamageTime()
+	{
+		double time = new Date().getTime();
+		if(spawner == null)
+		{
+			lastDamageTime = time;
+			hasBeenDamaged = true;
+			if(adds.size() <= 0)
+				return;
+			Iterator<Mob> itr = adds.iterator();
+			while(itr.hasNext())
+			{
+				itr.next().setLastDamageTime(time);
+			}
+		}
+		else
+		{
+			spawner.setLastDamageTime();
+		}
+	}
+	
+	public void setLastDamageTime(double time)
+	{
+		lastDamageTime = time;
+		hasBeenDamaged = true;
+		if(adds.size() <= 0)
+			return;
+		Iterator<Mob> itr = adds.iterator();
+		while(itr.hasNext())
+		{
+			itr.next().setLastDamageTime(time);
+		}
 	}
 }

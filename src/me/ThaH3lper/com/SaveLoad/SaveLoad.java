@@ -115,7 +115,7 @@ public class SaveLoad
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			while((line = bufferedReader.readLine()) != null)
 			{
-				boolean alreadyexist = false;
+				//boolean alreadyexist = false;
 				StringTokenizer st= new StringTokenizer(line, "/");
 				double x = Integer.parseInt(st.nextToken()),
 					y = Integer.parseInt(st.nextToken()),
@@ -126,7 +126,7 @@ public class SaveLoad
 				int amount = Integer.parseInt(st.nextToken()),
 					interval = Integer.parseInt(st.nextToken()),
 					radius = Integer.parseInt(st.nextToken());
-				if(!SpawnerHandler.getSpanwerItr().hasNext())
+				/*if(!SpawnerHandler.getSpanwerItr().hasNext())
 				{
 					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 					Chunk chunk = loc.getChunk();
@@ -148,45 +148,54 @@ public class SaveLoad
 					catch(Exception ed)
 					{
 					}
-				}
-				Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
+				}*/
+				/*Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
 				while(itr.hasNext())
 				{
-					SpawnerPlace sign = itr.next();
+					/*SpawnerPlace sign = itr.next();
 					Location existing = sign.getLocation();
 					if(existing.getBlockX() == loc.getBlockX() && existing.getBlockY() == loc.getBlockY() && existing.getBlockZ() == loc.getBlockZ())
 					{
 						alreadyexist = true;
 					}
-				}
-				if(alreadyexist == false)
-				{
-					SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
-					Chunk chunk = loc.getChunk();
-					chunk.load(true);
-					if(!(loc.getBlock().getState() instanceof Sign))
-					{
-						Block block = loc.getBlock();
-						block.setType(Material.SIGN_POST);
-					}
-					try
-					{
-						Sign sign = (Sign)loc.getBlock().getState();
-						sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
-						sign.setLine(1, "" + radius);
-						sign.setLine(2, cmdName);
-						sign.setLine(3, amount + "i,"+ interval + "s");
-						sign.update();
-					}
-					catch(Exception ed)
-					{
-					}
-				}
-				if(alreadyexist == true)
+				}*/
+				//if(alreadyexist == false)
+				//{
+				if(SpawnerHandler.getSpawner(loc) != null)
 				{
 					Bukkit.getLogger().info("TRIED TO LOAD SPAWNER THAT ALREADY EXISTED IGNORED");
+					continue;
 				}
-				alreadyexist = false;
+				SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
+				Chunk chunk = loc.getChunk();
+				chunk.load(true);
+				if(loc.getBlock() == null || loc.getBlock().getState() == null)
+				{
+					continue;
+				}
+				if(!(loc.getBlock().getState() instanceof Sign))
+				{
+					Block block = loc.getBlock();
+					block.setType(Material.SIGN_POST);
+				}
+				try
+				{
+					Sign sign = (Sign)loc.getBlock().getState();
+					sign.setLine(0, ChatColor.GREEN + "[MobSpawner]");
+					sign.setLine(1, "" + radius);
+					sign.setLine(2, cmdName);
+					sign.setLine(3, amount + "i,"+ interval + "s");
+					sign.update();
+				}
+				catch(Exception ed)
+				{
+				}
+				//}
+				//if(alreadyexist == true)
+				//{
+				//	Bukkit.getLogger().info("TRIED TO LOAD SPAWNER THAT ALREADY EXISTED IGNORED");
+				//}
+				//alreadyexist = false;
 			}
 			bufferedReader.close();			
 		}

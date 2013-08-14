@@ -1,13 +1,10 @@
 package me.ThaH3lper.com;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
-import me.ThaH3lper.com.Items.ItemsObject;
-import me.ThaH3lper.com.Items.LoadItems;
+import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
@@ -21,11 +18,10 @@ public class MobLibrary extends JavaPlugin{
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public static MobLibrary plugin;
 	
-	public SaveLoad items, mobs;
-	public LoadItems loadItems;
+	public SaveLoad mobs;
 	
 	//public List<SpawnerPlace> spawnerList = new ArrayList<SpawnerPlace>();
-	public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
+	//public List<ItemsObject> itemList = new ArrayList<ItemsObject>();
 	
 	@Override
 	public void onDisable()
@@ -47,19 +43,20 @@ public class MobLibrary extends JavaPlugin{
 		
 		//Setup();
 		
-		items = new SaveLoad(this, "Items.yml");
+		ItemHandler.load();
+		//items = new SaveLoad(this, "Items.yml");
 		mobs = new SaveLoad(this, "Mobs.yml");
-		loadItems = new LoadItems(this);
+		//loadItems = new LoadItems(this);
 		MobsHandler.load(this);
+		SaveLoad.readStoredData("StoredLocations.txt");
 				
-		getCommand("Library").setExecutor(new CommandHandler(this));
+		getCommand("Library").setExecutor(new CommandHandler());
 		
 		PluginManager manager = this.getServer().getPluginManager();
 		manager.registerEvents(new EventListener(), this);
 		manager.registerEvents(new SpawnerListener(this), this);
 		
-		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10l, 20l);
-		SaveLoad.readStoredData("StoredLocations.txt");
+		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(), 10l, 20l);
 	}
 	
 	/*public void Setup()

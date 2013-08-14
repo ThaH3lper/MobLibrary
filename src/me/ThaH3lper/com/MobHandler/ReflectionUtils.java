@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
+@Deprecated
 public class ReflectionUtils
 {
   public static <T> T getFieldValue(Class<?> src, String name, Class<T> type, Object from)

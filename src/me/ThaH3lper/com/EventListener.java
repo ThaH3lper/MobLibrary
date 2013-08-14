@@ -110,6 +110,7 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob == null)
 				return;
+			mob.setLastDamageTime();
 			if(mob.hasSkills())
 			{
 				if(mob.getEntity().getNoDamageTicks() <= 10)
@@ -149,6 +150,7 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob == null)
 				return;
+			mob.setLastDamageTime();
 			if(mob.hasSkills())
 			{
 				if(mob.getEntity().getNoDamageTicks() <= 10)
@@ -195,6 +197,7 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob == null)
 				return;
+			mob.setLastDamageTime();
 			if(mob.hasSkills())
 			{
 				if(mob.getEntity().getNoDamageTicks() <= 10)
@@ -234,6 +237,7 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob != null)
 			{
+				mob.setLastDamageTime();
 				if(mob.isParrying())
 				{
 					if(e.getDamager() instanceof Player)

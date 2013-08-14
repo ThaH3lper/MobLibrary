@@ -103,6 +103,7 @@ public class SpawnerPlace
 				continue;
 			}
 			mob.setCustomName();
+			mob.resetMob();
 		}
 		/*if(!this.mobs.isEmpty())
 		{
