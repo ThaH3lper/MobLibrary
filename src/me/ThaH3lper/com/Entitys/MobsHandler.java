@@ -43,8 +43,9 @@ public class MobsHandler
 				List<String> equip = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Equipment");
 				List<String> drops = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
 				List<String> skills = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
+				boolean epicImmune = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".EpicImmune");
 				
-				mobTemplets.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills));
+				mobTemplets.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills, epicImmune));
 			}
 			else
 			{
@@ -73,7 +74,7 @@ public class MobsHandler
 		
 		setEquipment(l, mt.equip);
 		
-		Mob mob = new Mob(l, mt.damage, display, mt.drops, mt.skills);
+		Mob mob = new Mob(l, mt.damage, display, mt.drops, mt.skills, mt.epicImmune);
 		mobs.add(mob);
 		return mob;
 	}

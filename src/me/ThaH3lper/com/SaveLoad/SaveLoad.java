@@ -169,7 +169,11 @@ public class SaveLoad
 				SpawnerHandler.addSpawner(new SpawnerPlace(loc, cmdName, amount, interval, radius, MobLibrary.plugin));
 				Chunk chunk = loc.getChunk();
 				chunk.load(true);
-				if(loc.getBlock() == null || loc.getBlock().getState() == null)
+				if(loc.getBlock() == null)
+				{
+					continue;
+				}
+				if(loc.getBlock().getState() == null)
 				{
 					continue;
 				}

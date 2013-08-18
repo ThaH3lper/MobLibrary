@@ -46,13 +46,15 @@ public class Mob
 	private boolean parry;
 	private double lastDamageTime;
 	private boolean hasBeenDamaged;
+	private boolean epicImmune;
 	
-	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills)
+	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills, boolean epicImmune)
 	{
 		this.entity = entity;
 		this.damage = damage;
 		this.name = name;
 		this.drops = drops;
+		this.epicImmune = epicImmune;
 		Iterator<String> itr = skills.iterator();
 		while(itr.hasNext())
 		{
@@ -392,6 +394,11 @@ public class Mob
 	public Mob getSpawner()
 	{
 		return spawner;
+	}
+	
+	public boolean isEpicImmune()
+	{
+		return epicImmune;
 	}
 	
 	public void setLastDamageTime()

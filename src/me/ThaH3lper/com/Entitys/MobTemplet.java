@@ -15,8 +15,9 @@ public class MobTemplet {
 	public List<String> equip;
 	public List<String> drops;
 	public List<String> skills;
+	public boolean epicImmune;
 	
-	public MobTemplet(String cmdName, String mob, String display, double speed, int health, int damage, float aggro, boolean despawn, List<String> equip, List<String> drops, List<String> skills)
+	public MobTemplet(String cmdName, String mob, String display, double speed, int health, int damage, float aggro, boolean despawn, List<String> equip, List<String> drops, List<String> skills, boolean epicImmune)
 	{
 		this.cmdName = cmdName;
 		this.mob = mob;
@@ -29,5 +30,6 @@ public class MobTemplet {
 		this.equip = equip;
 		this.drops = drops;
 		this.skills = skills;
+		this.epicImmune = epicImmune;
 	}
 }
