@@ -62,7 +62,7 @@ public class MobTemplet
 	{
 		this.cmdName = cmdName;
 		this.mob = mob;
-		this.display = display;
+		this.display = ItemUtils.addChatColor(display);
 		//this.speed = speed;
 		this.health = health;
 		this.damage = damage;
@@ -77,7 +77,7 @@ public class MobTemplet
 	public Mob spawn(Location loc)
 	{
 		LivingEntity le = spawnEntity(loc, mob);
-		le.setCustomName(ItemUtils.addChatColor(display));
+		le.setCustomName(display);
 		le.setCustomNameVisible(true);
 		le.setMaxHealth(health);
 		le.setHealth(health);
