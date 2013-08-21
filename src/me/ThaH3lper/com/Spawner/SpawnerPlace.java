@@ -7,6 +7,7 @@ import java.util.Random;
 
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.Mob;
+import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
 import org.bukkit.Chunk;
@@ -19,12 +20,12 @@ public class SpawnerPlace
 {
 	private boolean locked = false;
 	private Location loc;
-	private String cmdMob;
+	private MobTemplet mt;
 	private int Amount, interval, radious;
 	//private boolean AlreadySpawnedAdds;
 	//private int timeSinceLastSpell;
     //private String display;
-	
+	private String cmdName; 
 	private List<Mob> mobs = new ArrayList<Mob>();
 	//public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
@@ -32,10 +33,11 @@ public class SpawnerPlace
 	private int timesSpawned;
 	//public boolean canCast;
 	
-	public SpawnerPlace(Location location, String cmdMob, int Amount, int interval, int radious, MobLibrary ml)
+	public SpawnerPlace(Location location, String cmdName, int Amount, int interval, int radious, MobLibrary ml)
 	{
 		this.loc = location;
-		this.cmdMob = cmdMob;
+		this.cmdName = cmdName;
+		this.mt = MobsHandler.getTemplet(cmdName);
 		this.Amount = Amount;
 		this.interval = interval;
 		this.radious = radious;
@@ -157,7 +159,7 @@ public class SpawnerPlace
 		}
 		Chunk chunk = l.getChunk();
 		chunk.load();
-		Mob mob = MobsHandler.SpawnAPI(cmdMob, l, 1f);
+		Mob mob = MobsHandler.SpawnAPI(mt, l);
 		mobs.add(mob);
 	}
 	
@@ -194,7 +196,7 @@ public class SpawnerPlace
 	}*/
 	public String getCmdMob()
 	{
-		return this.cmdMob;
+		return this.cmdName;
 	}
 	
 	public int getTimesSpawned()

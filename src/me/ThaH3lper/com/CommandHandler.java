@@ -112,7 +112,7 @@ public class CommandHandler implements CommandExecutor
 
 				}
 			}
-			if(args.length == 3)
+			if(args.length == 2)
 			{
 				if(args[0].equalsIgnoreCase("items"))
 				{
@@ -128,7 +128,7 @@ public class CommandHandler implements CommandExecutor
 				}
 				if(args[0].equalsIgnoreCase("mobs"))
 				{
-					Mob spawned = MobsHandler.SpawnAPI(args[1], p.getLocation(), Float.parseFloat(args[2]));
+					Mob spawned = MobsHandler.SpawnAPI(args[1], p.getLocation());
 					if(spawned == null)
 					{
 						p.sendMessage(ChatColor.RED + "There is no mob with that name!");
@@ -153,7 +153,7 @@ public class CommandHandler implements CommandExecutor
 		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
 			count++;
-			s += ChatColor.LIGHT_PURPLE + mt.cmdName + ChatColor.DARK_GREEN + ", ";
+			s += ChatColor.LIGHT_PURPLE + mt.getCmdName() + ChatColor.DARK_GREEN + ", ";
 			if(count == 5)
 			{
 				count = 0;

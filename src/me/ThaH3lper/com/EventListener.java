@@ -1,7 +1,6 @@
 package me.ThaH3lper.com;
 
 import me.ThaH3lper.com.Entitys.Mob;
-import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
@@ -319,7 +318,7 @@ public class EventListener implements Listener
 	}*/
 
 	
-	public static MobTemplet getMobTemplet(LivingEntity l)
+	/*public static MobTemplet getMobTemplet(LivingEntity l)
 	{
 		for(MobTemplet mt : MobsHandler.getMobTemplets())
 		{
@@ -352,7 +351,7 @@ public class EventListener implements Listener
 			}
 		}
 		return null;
-	}
+	}*/
 	
 	@EventHandler
 	public void entityTnTDamage(EntityDamageEvent event){

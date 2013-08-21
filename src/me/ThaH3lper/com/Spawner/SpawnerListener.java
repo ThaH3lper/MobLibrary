@@ -17,8 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-public class SpawnerListener implements Listener{
-	
+public class SpawnerListener implements Listener
+{
 	private MobLibrary ml;
 	
 	public SpawnerListener(MobLibrary ml)

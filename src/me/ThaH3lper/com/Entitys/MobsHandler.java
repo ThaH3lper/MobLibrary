@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.inventory.ItemStack;
 
 import me.ThaH3lper.com.MobLibrary;
-import me.ThaH3lper.com.Items.ItemHandler;
-import me.frodenkvist.armoreditor.Store;
 
 public class MobsHandler
 {
@@ -35,17 +31,17 @@ public class MobsHandler
 			{
 				String mob = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Mob");
 				String display = ml.mobs.getCustomConfig().getString("Mobs." + Name + ".Display");
-				double speed = ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Speed");
+				//double speed = ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Speed");
 				int health = ml.mobs.getCustomConfig().getInt("Mobs." + Name + ".Health");
 				int damage = ml.mobs.getCustomConfig().getInt("Mobs." + Name + ".Damage");
-				float aggro = (float)ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Aggro");
+				//float aggro = (float)ml.mobs.getCustomConfig().getDouble("Mobs." + Name + ".Aggro");
 				boolean despawn = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".Despawn");
 				List<String> equip = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Equipment");
 				List<String> drops = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
 				List<String> skills = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
 				boolean epicImmune = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".EpicImmune");
 				
-				mobTemplets.add(new MobTemplet(Name, mob, display, speed, health, damage, aggro, despawn, equip, drops, skills, epicImmune));
+				mobTemplets.add(new MobTemplet(Name, mob, display, health, damage, despawn, equip, drops, skills, epicImmune));
 			}
 			else
 			{
@@ -56,25 +52,47 @@ public class MobsHandler
 		return true;
 	}
 	
-	public static Mob SpawnAPI(String cmdName, Location loc, float multi)
+	public static Mob SpawnAPI(String cmdName, Location loc)
 	{
 		if(getTemplet(cmdName) == null)
 		{
 			return null;
 		}
 		MobTemplet mt = getTemplet(cmdName);
-		LivingEntity l = AllEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, multi);
+		//LivingEntity l = AllEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, multi);
+		//LivingEntity l = 
+		//String display = mt.display.replace("_", " ");
+		//display = ChatColor.translateAlternateColorCodes('&', display);
+		//l.setCustomName(display);
+		//l.setCustomNameVisible(true);
 		
-		String display = mt.display.replace("_", " ");
-		display = ChatColor.translateAlternateColorCodes('&', display);
-		l.setCustomName(display);
-		l.setCustomNameVisible(true);
+		//l.setRemoveWhenFarAway(mt.despawn);
 		
-		l.setRemoveWhenFarAway(mt.despawn);
+		//setEquipment(l, mt.equip);
 		
-		setEquipment(l, mt.equip);
+		Mob mob = mt.spawn(loc);
+		mobs.add(mob);
+		return mob;
+	}
+	
+	public static Mob SpawnAPI(MobTemplet mt, Location loc)
+	{
+		if(mt == null)
+		{
+			return null;
+		}
+		//LivingEntity l = AllEntitys.SpawnMob(mt.mob, loc, mt.speed, mt.damage, mt.health, mt.aggro, multi);
+		//LivingEntity l = 
+		//String display = mt.display.replace("_", " ");
+		//display = ChatColor.translateAlternateColorCodes('&', display);
+		//l.setCustomName(display);
+		//l.setCustomNameVisible(true);
 		
-		Mob mob = new Mob(l, mt.damage, display, mt.drops, mt.skills, mt.epicImmune);
+		//l.setRemoveWhenFarAway(mt.despawn);
+		
+		//setEquipment(l, mt.equip);
+		
+		Mob mob = mt.spawn(loc);
 		mobs.add(mob);
 		return mob;
 	}
@@ -111,7 +129,7 @@ public class MobsHandler
 		return items;
 	}*/
 	
-	public static void setEquipment(LivingEntity l, List<String> items)
+	/*public static void setEquipment(LivingEntity l, List<String> items)
 	{
 		Iterator<String> itr = items.iterator();
 		while(itr.hasNext())
@@ -163,18 +181,18 @@ public class MobsHandler
 				l.getEquipment().setBootsDropChance(0f);
 			}
 		}
-	}
+	}*/
 	
 	public static MobTemplet getTemplet(String cmdName)
 	{
 		for(MobTemplet mt : mobTemplets)
 		{
-			if(mt.cmdName.equals(cmdName))
+			if(mt.getCmdName().equals(cmdName))
 				return mt;
 		}
 		return null;
 	}
-	public static MobTemplet getTempletDisplay(String display)
+	/*public static MobTemplet getTempletDisplay(String display)
 	{
 		for(MobTemplet mt : mobTemplets)
 		{
@@ -184,7 +202,7 @@ public class MobsHandler
 				return mt;
 		}
 		return null;
-	}
+	}*/
 	
 	private static boolean check(String s)
 	{
@@ -224,7 +242,7 @@ public class MobsHandler
 		return null;
 	}*/
 	
-	public static MobTemplet getMobTempletFromCmdName(String cmdName)
+	/*public static MobTemplet getMobTempletFromCmdName(String cmdName)
 	{
 		for(MobTemplet mt : mobTemplets)
 		{
@@ -326,18 +344,5 @@ public class MobsHandler
 				return temp;
 		}
 		return null;
-	}
-	
-	private static boolean isInteger(String s)
-	{
-		try
-		{
-			Integer.valueOf(s);
-			return true;
-		}
-		catch(Exception e)
-		{
-			return false;
-		}
 	}
 }

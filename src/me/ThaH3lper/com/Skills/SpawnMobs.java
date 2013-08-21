@@ -25,7 +25,7 @@ public class SpawnMobs extends Skill implements UsableOnce, HealthDepend
 		for(int i = 0;i < amount; ++i)
 		{
 			Mob mob = MobsHandler.getMob(le);
-			Mob add = MobsHandler.SpawnAPI(cmdName, le.getLocation(), 1);
+			Mob add = MobsHandler.SpawnAPI(cmdName, le.getLocation());
 			mob.addAdds(add);
 			add.setSpawner(mob);
 		}
