@@ -40,8 +40,10 @@ public class MobsHandler
 				List<String> drops = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Drops");
 				List<String> skills = ml.mobs.getCustomConfig().getStringList("Mobs." + Name + ".Skills");
 				boolean epicImmune = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".EpicImmune");
+				boolean arrowImmune = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".ArrowImmune");
+				boolean deathBroadcast = ml.mobs.getCustomConfig().getBoolean("Mobs." + Name + ".DeathBroadcast");
 				
-				mobTemplets.add(new MobTemplet(Name, mob, display, health, damage, despawn, equip, drops, skills, epicImmune));
+				mobTemplets.add(new MobTemplet(Name, mob, display, health, damage, despawn, equip, drops, skills, epicImmune, arrowImmune, deathBroadcast));
 			}
 			else
 			{

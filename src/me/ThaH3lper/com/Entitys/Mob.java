@@ -47,14 +47,18 @@ public class Mob
 	private double lastDamageTime;
 	private boolean hasBeenDamaged;
 	private boolean epicImmune;
+	private boolean arrowImmune;
+	private boolean deathBroadcast;
 	
-	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills, boolean epicImmune)
+	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills, boolean epicImmune, boolean arrowImmune, boolean deathBroadcast)
 	{
 		this.entity = entity;
 		this.damage = damage;
 		this.name = name;
 		this.drops = drops;
 		this.epicImmune = epicImmune;
+		this.arrowImmune = arrowImmune;
+		this.deathBroadcast = deathBroadcast;
 		Iterator<String> itr = skills.iterator();
 		while(itr.hasNext())
 		{
@@ -399,6 +403,16 @@ public class Mob
 	public boolean isEpicImmune()
 	{
 		return epicImmune;
+	}
+	
+	public boolean isArrowImmune()
+	{
+		return arrowImmune;
+	}
+	
+	public boolean hasDeathBroadcast()
+	{
+		return deathBroadcast;
 	}
 	
 	public void setLastDamageTime()

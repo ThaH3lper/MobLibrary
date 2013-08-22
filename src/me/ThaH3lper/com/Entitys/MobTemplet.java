@@ -57,8 +57,11 @@ public class MobTemplet
 	private List<String> drops;
 	private List<String> skills;
 	private boolean epicImmune;
+	private boolean arrowImmune;
+	private boolean deathBroadcast;
 	
-	public MobTemplet(String cmdName, String mob, String display, int health, int damage, boolean despawn, List<String> equip, List<String> drops, List<String> skills, boolean epicImmune)
+	public MobTemplet(String cmdName, String mob, String display, int health, int damage, boolean despawn, List<String> equip, List<String> drops, List<String> skills, boolean epicImmune, boolean arrowImmune,
+			boolean deathBroadcast)
 	{
 		this.cmdName = cmdName;
 		this.mob = mob;
@@ -72,6 +75,8 @@ public class MobTemplet
 		this.drops = drops;
 		this.skills = skills;
 		this.epicImmune = epicImmune;
+		this.arrowImmune = arrowImmune;
+		this.deathBroadcast = deathBroadcast;
 	}
 	
 	public Mob spawn(Location loc)
@@ -83,7 +88,7 @@ public class MobTemplet
 		le.setHealth(health);
 		le.setRemoveWhenFarAway(despawn);
 		setEquipment(le, equip);
-		return new Mob(le, damage, display, drops, skills, epicImmune);
+		return new Mob(le, damage, display, drops, skills, epicImmune, arrowImmune, deathBroadcast);
 	}
 	
 	private LivingEntity spawnEntity(Location loc, String s)

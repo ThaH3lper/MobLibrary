@@ -5,6 +5,7 @@ import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Skills.SkillHandler;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
 import org.bukkit.entity.Arrow;
@@ -40,6 +41,13 @@ public class EventListener implements Listener
 		e.getDrops().clear();
 		mob.dropLoot();
 		mob.clearAdds();
+		if(mob.hasDeathBroadcast())
+		{
+			Player killer = l.getKiller();
+			if(killer == null)
+				return;
+			Bukkit.broadcastMessage(killer.getName() + ChatColor.YELLOW + " Has Slain " + ChatColor.DARK_PURPLE + mob.getName());
+		}
 		/*if(MobsHandler.getSpawnerFromMob(l) != null)
 		{
 			SpawnerPlace sign = MobsHandler.getSpawnerFromMob(l);
@@ -109,6 +117,12 @@ public class EventListener implements Listener
 			Mob mob = MobsHandler.getMob((LivingEntity)l);
 			if(mob == null)
 				return;
+			if(mob.isArrowImmune())
+			{
+				e.getDamager().remove();
+				e.setCancelled(true);
+				return;
+			}
 			mob.setLastDamageTime();
 			if(mob.hasSkills())
 			{
