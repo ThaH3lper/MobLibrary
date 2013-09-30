@@ -14,8 +14,8 @@ import me.ThaH3lper.com.Skills.SpawnMobs;
 import me.ThaH3lper.com.Skills.Teleport;
 import me.ThaH3lper.com.Skills.Tnt;
 import me.ThaH3lper.com.Skills.Toss;
+import me.frodenkvist.utils.MaterialFromInt;
 
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
@@ -133,7 +133,7 @@ public class Mob
 			if(s.contains(":"))
 			{
 				String[] splits = parts[0].split(":");
-				ItemStack stack = new ItemStack(Material.getMaterial(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
+				ItemStack stack = new ItemStack(MaterialFromInt.getMaterialFromInt(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
 				if(Math.random() <= Double.valueOf(parts[1]))
 				{
 					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);

@@ -7,7 +7,6 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 //import org.bukkit.metadata.FixedMetadataValue;
@@ -19,6 +18,7 @@ import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
+import me.frodenkvist.utils.MaterialFromInt;
 
 public class MobsHandler {
 
@@ -117,7 +117,7 @@ public class MobsHandler {
 			{
 				Random rand = new Random();
 				String[] splits = parts[0].split(":");
-				ItemStack stack = new ItemStack(Material.getMaterial(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
+				ItemStack stack = new ItemStack(MaterialFromInt.getMaterialFromInt(Integer.parseInt(splits[0])), Integer.parseInt(splits[2]), (short)Integer.parseInt(splits[1]));
 				if(rand.nextFloat() < Float.parseFloat(parts[1]))
 				{
 					items.add(stack);

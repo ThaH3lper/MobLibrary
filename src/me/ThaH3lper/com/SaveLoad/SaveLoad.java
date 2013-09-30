@@ -97,10 +97,10 @@ public class SaveLoad
 	    }
 	    
 	}
-	
-	@Deprecated
+
 	public static void readStoredData(String file)
 	{
+		int bossesLoaded = 0;
 		String fileName = file;
 		File dir = new File(MobLibrary.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("%20", " ").replaceAll( ".jar", ""));
 		File actualFile = new File (dir, fileName);
@@ -116,6 +116,7 @@ public class SaveLoad
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
 			while((line = bufferedReader.readLine()) != null)
 			{
+				bossesLoaded++;
 				boolean alreadyexist = false;
 				StringTokenizer st= new StringTokenizer(line, "/");
 				double x = Integer.parseInt(st.nextToken()),
@@ -185,9 +186,9 @@ public class SaveLoad
 		{
 			Bukkit.getLogger().info("[SEVERE]: Error reading file " + actualFile);
 		}
+		Bukkit.getLogger().info("LOADED :" + bossesLoaded + " Bosses!");
 	}
 	
-	@Deprecated
 	public static void storeData(String file)
 	{
 		// The name of the file to open change this later to allow filename to be file name.
@@ -216,13 +217,11 @@ public class SaveLoad
 		}
 	}
 	
-	@Deprecated
 	public static void storeBackupData()
 	{
 		storeData("StoredLocationsBackup.txt");
 	}
 	
-	@Deprecated
 	public static void restoreBackupData()
 	{
 		SpawnerHandler.clear();

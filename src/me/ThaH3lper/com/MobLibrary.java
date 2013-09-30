@@ -52,6 +52,7 @@ public class MobLibrary extends JavaPlugin
 		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(this), 10L, 20L);
 		SpawnerHandler.load();
+		SaveLoad.readStoredData("StoredLocations.txt");
 	}
 	
 	public SaveLoad getItemConfig()

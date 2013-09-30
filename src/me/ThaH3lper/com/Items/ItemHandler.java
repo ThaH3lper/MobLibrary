@@ -6,9 +6,9 @@ import java.util.List;
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.frodenkvist.utils.ItemUtils;
+import me.frodenkvist.utils.MaterialFromInt;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +28,7 @@ public class ItemHandler
 			Short data = (short)items.getCustomConfig().getInt("Items." + s + ".Data");
 			int Amount = items.getCustomConfig().getInt("Items." + s + ".Amount");
 				
-			ItemStack is = new ItemStack(Material.getMaterial(ID), Amount, data);
+			ItemStack is = new ItemStack(MaterialFromInt.getMaterialFromInt(ID), Amount, data);
 			
 			//Set DisplayName
 			if(items.getCustomConfig().contains("Items." + s + ".Name"))
