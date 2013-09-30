@@ -5,7 +5,7 @@ import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
-import org.bukkit.craftbukkit.v1_6_R2.entity.CraftItem;
+import org.bukkit.craftbukkit.v1_6_R3.entity.CraftItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fireball;
