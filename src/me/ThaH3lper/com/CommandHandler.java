@@ -99,6 +99,13 @@ public class CommandHandler implements CommandExecutor
 					me.ThaH3lper.com.SaveLoad.SaveLoad.restoreBackupData();
 
 				}
+				else if(args[0].equalsIgnoreCase("mobtimers"))
+				{					
+					p.sendMessage(ChatColor.YELLOW + "===LISTING MOBTIMERS===");
+					for(String s : getMobTimers())
+						p.sendMessage(s);
+
+				}
 			}
 			if(args.length == 3)
 			{
@@ -130,6 +137,23 @@ public class CommandHandler implements CommandExecutor
 			sender.sendMessage("Only Ingame! sorry");
 		}
 		return false;	
+	}
+	public List<String> getMobTimers()
+	{
+		String s = " ";
+		int count = 0;
+		List<String> mobTimers = new ArrayList<String>();
+		for(SpawnerPlace sign : SpawnerHandler.getSpawners())
+		{
+			count++;
+			s += ChatColor.LIGHT_PURPLE + "Loc: " + "X:" + ChatColor.RED + sign.getLocation().getBlockX() + ChatColor.LIGHT_PURPLE + "Y:" + ChatColor.RED + sign.getLocation().getBlockY() + ChatColor.LIGHT_PURPLE + "Z:" + ChatColor.RED + sign.getLocation().getZ() + ChatColor.LIGHT_PURPLE + "TICK:" + ChatColor.RED + sign.getTick() + " OF " + sign.getInterval() + ChatColor.LIGHT_PURPLE + " Type: " + ChatColor.RED + sign.getCmdMob() + ChatColor.LIGHT_PURPLE + " # spawns: " + ChatColor.RED + sign.getNumberOfSpawns() + ChatColor.AQUA + " || ";
+			if(count == 1)
+			{
+				count = 0;
+				mobTimers.add(s);
+			}
+		}
+		return mobTimers;
 	}
 	
 	public List<String> getMobs()

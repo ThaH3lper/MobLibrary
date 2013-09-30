@@ -17,6 +17,7 @@ public class SpawnerPlace
 	private Location loc;
 	private String cmdMob;
 	private int amount, interval, radius;
+	private int numberOfSpawns = 1;
 	private MobLibrary ml;
 	
 	private List<LivingEntity> mobs = new ArrayList<LivingEntity>();
@@ -45,6 +46,7 @@ public class SpawnerPlace
 				return;
 			else
 				spawnMob();
+				numberOfSpawns++;
 		}
 		if(tick > 1000000)
 		{
@@ -97,10 +99,18 @@ public class SpawnerPlace
 	{
 		return this.radius;
 	}
+	public int getNumberOfSpawns()
+	{
+		return numberOfSpawns;
+	}
 	
 	public void setLocked()
 	{
 		locked = true;
+	}
+	public int getTick()
+	{
+		return tick;
 	}
 	
 	public List<LivingEntity> getMobsList()
