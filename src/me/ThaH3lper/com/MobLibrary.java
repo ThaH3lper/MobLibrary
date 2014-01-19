@@ -9,6 +9,12 @@ import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerListener;
 import me.ThaH3lper.com.Spawner.Ticker;
+
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +42,12 @@ public class MobLibrary extends JavaPlugin{
 	@Override
 	public void onEnable()
 	{
+		World world = Bukkit.getWorld("world");
+		for(Entity check : world.getEntities()){
+			if(check instanceof LivingEntity && !(check instanceof Player)){
+				check.remove();
+			}
+		}
 		plugin = this;
 		//Enable
 		PluginDescriptionFile pdfFile = this.getDescription();

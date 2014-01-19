@@ -26,6 +26,8 @@ import me.ThaH3lper.com.Skills.UsableOnce;
 import me.ThaH3lper.com.Skills.WitherStorm;
 import me.frodenkvist.armoreditor.Store;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -42,6 +44,9 @@ public class Mob
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<Mob> adds = new ArrayList<Mob>();
+	private List<Player> lootPlayers = new ArrayList<Player>();
+	private int lootRecipiant;
+	private int lastLootPlayerAdded;
 	private Mob spawner;
 	private boolean parry;
 	private double lastDamageTime;
@@ -49,6 +54,7 @@ public class Mob
 	private boolean epicImmune;
 	private boolean arrowImmune;
 	private boolean deathBroadcast;
+	private int numberOfAdds;
 	
 	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills, boolean epicImmune, boolean arrowImmune, boolean deathBroadcast)
 	{
@@ -59,6 +65,8 @@ public class Mob
 		this.epicImmune = epicImmune;
 		this.arrowImmune = arrowImmune;
 		this.deathBroadcast = deathBroadcast;
+		this.lootRecipiant = 0;
+		this.lastLootPlayerAdded = 0;
 		Iterator<String> itr = skills.iterator();
 		while(itr.hasNext())
 		{
@@ -238,6 +246,12 @@ public class Mob
 	
 	public void dropLoot()
 	{
+		for(Player looter: this.lootPlayers){
+			if(!(this.entity.getNearbyEntities(35, 35, 35).contains(looter))){
+				looter.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "YOU ARE OUT OF RANGE AND CANNOT RECEIVE LOOT!");
+				this.lootPlayers.remove(looter);
+			}
+		}
 		Iterator<String> itr = drops.iterator();
 		while(itr.hasNext())
 		{
@@ -249,7 +263,21 @@ public class Mob
 				ItemStack stack = new ItemStack(Material.getMaterial(Integer.valueOf(splits[0])), Integer.valueOf(splits[2]), Short.valueOf(splits[1]));
 				if(Math.random() > Double.valueOf(parts[1]))
 					continue;
-				entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+				Player looter = this.getLootRecipent();
+				if(looter != null){
+					if(looter.getInventory().firstEmpty() != -1){
+						looter.getInventory().addItem(stack);
+						looter.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "LOOT REWARDED! CHECK YOUR INVENTORY!");
+					}
+					else{
+						entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+						looter.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "OH NO! YOUR INVENTORY WAS FULL LOOT DROPED ON GROUND!" + stack.getType().toString());
+					}
+				}
+				else if(looter == null){
+					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+				}
+				this.lootRecipiant++;
 			}
 			else
 			{
@@ -260,7 +288,22 @@ public class Mob
 					continue;
 				if(Math.random() > Double.valueOf(parts[1]))
 					continue;
-				entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+				Player looter = this.getLootRecipent();
+				if(looter != null){
+					int inventory = looter.getInventory().firstEmpty();
+					if(inventory != -1){
+						looter.getInventory().addItem(stack);
+						looter.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "LOOT REWARDED! CHECK YOUR INVENTORY!");
+					}
+					else{
+						entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+						looter.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "OH NO! YOUR INVENTORY WAS FULL LOOT DROPED ON GROUND!" + stack.getType().toString());
+					}
+				}
+				else{
+					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
+				}
+				this.lootRecipiant++;
 			}
 		}
 	}
@@ -309,9 +352,18 @@ public class Mob
 			itr.next().setCustomName();
 		}
 	}
-	
+	public int getAddCount(){
+		int checktotal = 0;
+		for(Mob check:this.adds){
+			if(check.getHealth() >= 1){
+				checktotal++;
+			}
+		}
+		return checktotal;
+	}
 	public void resetMob()
 	{
+		this.lootPlayers.clear();
 		if((new Date().getTime() - lastDamageTime) < 30000)
 			return;
 		entity.setHealth(entity.getMaxHealth());
@@ -448,4 +500,21 @@ public class Mob
 			itr.next().setLastDamageTime(time);
 		}
 	}
+	public void addLootPlayer(Player player)
+	{
+		if(this.lootPlayers.contains(player)){
+			return;
+		}
+		this.lootPlayers.add(player);
+		if(this.lootPlayers.size() > 20){
+			this.lootPlayers.clear();
+		}
+	}
+	public Player getLootRecipent(){
+		if(this.lootRecipiant > this.lootPlayers.size() - 1){
+			this.lootRecipiant = 0;
+		}
+		return this.lootPlayers.get(this.lootRecipiant);
+	}
+
 }

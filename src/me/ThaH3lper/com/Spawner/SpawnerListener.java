@@ -99,6 +99,11 @@ public class SpawnerListener implements Listener
 		Sign s = (Sign) e.getBlock().getState();
 		if(s.getLine(0).equalsIgnoreCase(ChatColor.GREEN + "[MobSpawner]"))
 		{
+			if(!e.getPlayer().hasPermission("mobspawner.break")){
+				e.setCancelled(true);
+				e.getPlayer().sendMessage(ChatColor.RED + "you need the permission : mobspawner.break : please get it");
+				return;
+			}
 			SpawnerPlace sp = SpawnerHandler.getSpawner(s.getLocation());
 			if(sp == null)
 				return;

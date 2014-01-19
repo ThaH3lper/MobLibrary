@@ -16,12 +16,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CommandHandler implements CommandExecutor
 {
-	final String VERSION = ChatColor.RED + "Version 0.7 ALPHA";
+	final String VERSION = ChatColor.RED + "Version 0.9 ALPHA";
 	
 	private String head = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
 	private String ihead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
@@ -51,7 +53,8 @@ public class CommandHandler implements CommandExecutor
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib restore" + ChatColor.DARK_GREEN + " to restore signs from backup file");
-
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib local" + ChatColor.DARK_GREEN + " get local mob info /lib local");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib teleport" + ChatColor.DARK_GREEN + " teleport nearby mobs");
 			}
 			if(args.length == 1)
 			{
@@ -111,6 +114,34 @@ public class CommandHandler implements CommandExecutor
 					SaveLoad.restoreBackupData();
 
 				}
+				else if(args[0].equalsIgnoreCase("local"))
+				{					
+					int radius = 25;
+					for(Entity e:p.getNearbyEntities(radius, radius, radius)){
+						if(e instanceof LivingEntity){
+							Mob mob = MobsHandler.getMob((LivingEntity)e);
+							if(mob != null){
+								p.sendMessage(ChatColor.GREEN +"MOB ATTRIBUTES: " + ChatColor.RED + mob.getName());
+								p.sendMessage(ChatColor.GREEN + "HEALTH: " + mob.getHealth());
+								p.sendMessage(ChatColor.GREEN + "LIVING ADDS: " + mob.getAddCount());
+							}
+						}
+					}
+
+				}
+				else if(args[0].equalsIgnoreCase("teleport"))
+				{					
+					int radius = 25;
+					for(Entity e:p.getNearbyEntities(radius, radius, radius)){
+						if(e instanceof LivingEntity){
+							Mob mob = MobsHandler.getMob((LivingEntity)e);
+							if(mob != null){
+									e.teleport(p);
+								}
+						}
+					}
+
+				}
 			}
 			if(args.length == 2)
 			{
@@ -135,16 +166,13 @@ public class CommandHandler implements CommandExecutor
 					}
 				}
 			}
-
-
-		}
-		else
-		{
-			sender.sendMessage("Only Ingame! sorry");
-		}
-		return false;	
 	}
-	
+	else
+	{
+		sender.sendMessage("Only Ingame! sorry");
+	}
+	return false;	
+	}
 	public List<String> getMobs()
 	{
 		String s = " ";
