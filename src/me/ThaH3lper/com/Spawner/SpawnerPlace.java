@@ -10,6 +10,7 @@ import me.ThaH3lper.com.Entitys.Mob;
 import me.ThaH3lper.com.Entitys.MobTemplet;
 import me.ThaH3lper.com.Entitys.MobsHandler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,19 +20,15 @@ import org.bukkit.entity.LivingEntity;
 public class SpawnerPlace
 {
 	private boolean locked = false;
-	private Location loc;
+	private final Location loc;
 	private MobTemplet mt;
 	private int Amount, interval, radious;
-	//private boolean AlreadySpawnedAdds;
-	//private int timeSinceLastSpell;
-    //private String display;
 	private String cmdName; 
 	private List<Mob> mobs = new ArrayList<Mob>();
-	//public List<LivingEntity> adds = new ArrayList<LivingEntity>();
 	private int tick = 0;
 	private Random r = new Random();
 	private int timesSpawned;
-	//public boolean canCast;
+	private final Block sign;
 	
 	public SpawnerPlace(Location location, String cmdName, int Amount, int interval, int radious, MobLibrary ml)
 	{
@@ -42,25 +39,13 @@ public class SpawnerPlace
 		this.interval = interval;
 		this.radious = radious;
 		this.locked = false;
-		//this.AlreadySpawnedAdds = false;
 		this.timesSpawned = 0;
-		//this.timeSinceLastSpell = 0;
-        //display = ml.mobs.getCustomConfig().getString("Mobs." + this.cmdMob + ".Display");
+		this.sign = location.subtract(0, 1, 0).getBlock();
 		spawnMob();
 	}
 	
 	public void tick()
 	{	
-		/*if(this.timeSinceLastSpell <= 0)
-		{
-			this.canCast = true;
-		}
-		if(this.timeSinceLastSpell > 0)
-		{
-			this.timeSinceLastSpell--;
-			this.canCast = false;
-		}*/
-
 		if(!this.loc.getChunk().isLoaded())
 		{
 			this.loc.getChunk().load();
@@ -69,6 +54,12 @@ public class SpawnerPlace
 			{
 				itr.next().loadChunk();
 			}
+		}
+		if(mobs.size() == 0){
+			sign.setType(Material.REDSTONE_BLOCK);
+		}
+		else if(mobs.size() > 0){
+			sign.setType(Material.OBSIDIAN);
 		}
 		tick++;
 		if(tick >= interval && locked == false)
@@ -107,40 +98,6 @@ public class SpawnerPlace
 			mob.setCustomName();
 			mob.resetMob();
 		}
-		/*if(!this.mobs.isEmpty())
-		{
-			itr = mobs.iterator();
-			while(itr.hasNext())
-			{
-				Mob mob = itr.next();
-				if(mob.isDead())
-				{
-					mobs.remove(mob);
-				}
-				else if(mob.getHealth() <= 0)
-				{
-					mobs.remove(mob);
-				}
-				else if(mob.getKiller() != null)
-				{
-					mobs.remove(mob);
-				}
-			}
-		}*/
-		/*if(!(this.adds.isEmpty())){
-			for(int i = 0; i >= adds.size(); i++){
-				LivingEntity mob = adds.get(i);
-				if(mob == null){
-					mobs.remove(mob);
-				}
-				else if(mob.getHealth() < 1){
-					mobs.remove(mob);
-				}
-				else if(mob.getKiller() != null){
-					mobs.remove(mob);
-				}
-			}
-		}*/
 	}
 	
 	public void spawnMob()
@@ -169,7 +126,7 @@ public class SpawnerPlace
 		double x = (loc.getX()-radious) +(r.nextInt((int) ((loc.getX()+radious)-(loc.getX()-radious))));
 		double z = (loc.getZ()-radious) +(r.nextInt((int) ((loc.getZ()+radious)-(loc.getZ()-radious))));
 			
-		Location l = new Location(loc.getWorld(), x, loc.getY() + 2, z);
+		Location l = new Location(loc.getWorld(), x, loc.getY() + 3, z);
 		while(true)
 		{
 			Block b = l.getBlock();
@@ -191,9 +148,6 @@ public class SpawnerPlace
 	{
 		return this.loc;
 	}
-	/*public int getTimeSinceLastSpell(){
-		return this.timeSinceLastSpell;
-	}*/
 	public String getCmdMob()
 	{
 		return this.cmdName;
@@ -295,7 +249,7 @@ public class SpawnerPlace
 	private boolean isSpawnableBlock(Block b)
 	{
 		if(b.getType().equals(Material.AIR) || b.getType().equals(Material.WATER) || b.getType().equals(Material.WEB) || b.getType().equals(Material.CROPS) || b.getType().equals(Material.DEAD_BUSH)
-				|| b.getType().equals(Material.VINE))
+				|| b.getType().equals(Material.VINE) && b.getLocation().add(0, 1, 0).getBlock().getType().equals(Material.AIR))
 			return true;
 		return false;
 	}

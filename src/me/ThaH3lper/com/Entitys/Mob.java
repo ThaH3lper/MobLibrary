@@ -265,7 +265,8 @@ public class Mob
 					continue;
 				Player looter = this.getLootRecipent();
 				if(looter != null){
-					if(looter.getInventory().firstEmpty() != -1){
+					int inventory = looter.getInventory().firstEmpty();
+					if(inventory != -1){
 						looter.getInventory().addItem(stack);
 						looter.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "LOOT REWARDED! CHECK YOUR INVENTORY!");
 					}
@@ -274,10 +275,9 @@ public class Mob
 						looter.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "OH NO! YOUR INVENTORY WAS FULL LOOT DROPED ON GROUND!" + stack.getType().toString());
 					}
 				}
-				else if(looter == null){
+				else{
 					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
 				}
-				this.lootRecipiant++;
 			}
 			else
 			{
@@ -303,8 +303,8 @@ public class Mob
 				else{
 					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
 				}
-				this.lootRecipiant++;
 			}
+			this.lootRecipiant++;
 		}
 	}
 	
@@ -366,6 +366,9 @@ public class Mob
 		this.lootPlayers.clear();
 		if((new Date().getTime() - lastDamageTime) < 30000)
 			return;
+		if(adds.size() > 0 && (new Date().getTime() - lastDamageTime) < 300000){
+		    return;
+		}
 		entity.setHealth(entity.getMaxHealth());
 		if(!hasBeenDamaged)
 			return;
@@ -505,16 +508,16 @@ public class Mob
 		if(this.lootPlayers.contains(player)){
 			return;
 		}
-		this.lootPlayers.add(player);
-		if(this.lootPlayers.size() > 20){
-			this.lootPlayers.clear();
+		else{
+			this.lootPlayers.add(player);
 		}
 	}
 	public Player getLootRecipent(){
 		if(this.lootRecipiant > this.lootPlayers.size() - 1){
 			this.lootRecipiant = 0;
 		}
-		return this.lootPlayers.get(this.lootRecipiant);
+		return this.lootPlayers.get(lootRecipiant);
+
 	}
 
 }
