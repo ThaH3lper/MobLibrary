@@ -30,6 +30,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.util.Vector;
 
+import PvpBalance.PVPPlayer;
 import PvpBalance.PvpHandler;
 
 public class EventListener implements Listener 
@@ -42,15 +43,17 @@ public class EventListener implements Listener
 		if(mob == null)
 			return;
 		e.getDrops().clear();
-		mob.dropLoot();
-		mob.clearAdds();
-		if(mob.hasDeathBroadcast())
-		{
-			Player killer = l.getKiller();
-			if(killer == null)
-				return;
-			Bukkit.broadcastMessage(killer.getName() + ChatColor.YELLOW + " Has Slain " + ChatColor.DARK_PURPLE + mob.getName());
+		if(mob.lootPlayers.size() > 0){
+			mob.dropLoot();
+			if(mob.hasDeathBroadcast())
+			{
+				Player killer = l.getKiller();
+				if(killer == null)
+					return;
+				Bukkit.broadcastMessage(killer.getName() + ChatColor.YELLOW + " Has Slain " + ChatColor.DARK_PURPLE + mob.getName());
+			}
 		}
+		mob.clearAdds();
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
@@ -91,7 +94,8 @@ public class EventListener implements Listener
 				Random rand = new Random();
 				if(rand.nextBoolean() == true && rand.nextBoolean()== true){
 					mob.getEntity().teleport(shooter.getLocation());
-					shooter.damage(mob.getDamage());
+					PVPPlayer pvpShooter = PvpHandler.getPvpPlayer(shooter);
+					pvpShooter.damage(mob.getDamage());
 					shooter.sendMessage("<"+mob.getName()+ ChatColor.WHITE + "> :"+ ChatColor.RED + " Has retaliated against your ranged attack!");
 				}
 			}

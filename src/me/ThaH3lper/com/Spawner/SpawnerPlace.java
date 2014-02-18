@@ -3,6 +3,7 @@ package me.ThaH3lper.com.Spawner;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import me.ThaH3lper.com.MobLibrary;
@@ -15,7 +16,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class SpawnerPlace
 {
@@ -74,6 +78,11 @@ public class SpawnerPlace
 		while(itr.hasNext())
 		{
 			Mob mob = itr.next();
+			if(mob.getEntity().getType() == EntityType.ENDER_DRAGON){
+				LivingEntity mobEnt = mob.getEntity();
+				PotionEffect pot = new PotionEffect(PotionEffectType.SLOW,200,3);
+				mobEnt.addPotionEffect(pot);
+			}
 			if(mob == null)
 			{
 				itr.remove();

@@ -9,6 +9,7 @@ import me.ThaH3lper.com.Items.ItemHandler;
 import me.ThaH3lper.com.Skills.Detonate;
 import me.ThaH3lper.com.Skills.DragIn;
 import me.ThaH3lper.com.Skills.Enrage;
+import me.ThaH3lper.com.Skills.FireBall;
 import me.ThaH3lper.com.Skills.FireStorm;
 import me.ThaH3lper.com.Skills.HealthDepend;
 import me.ThaH3lper.com.Skills.Ignite;
@@ -44,7 +45,7 @@ public class Mob
 	private LivingEntity entity;
 	private List<Skill> skills = new ArrayList<Skill>();
 	private List<Mob> adds = new ArrayList<Mob>();
-	private List<Player> lootPlayers = new ArrayList<Player>();
+	public List<Player> lootPlayers = new ArrayList<Player>();
 	private int lootRecipiant;
 	private int lastLootPlayerAdded;
 	private Mob spawner;
@@ -145,6 +146,14 @@ public class Mob
 				int radius = Integer.valueOf(split[1]);
 				double chance = Double.valueOf(split[2]);
 				this.skills.add(new FireStorm(chance, radius));
+			}
+			else if(split[0].equalsIgnoreCase("fireball"))
+			{
+				if(split.length != 3)
+					continue;
+				int radius = Integer.valueOf(split[1]);
+				double chance = Double.valueOf(split[2]);
+				this.skills.add(new FireBall(chance, radius));
 			}
 			else if(split[0].equalsIgnoreCase("lightningstorm"))
 			{
