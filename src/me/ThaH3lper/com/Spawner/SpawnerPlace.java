@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import me.ThaH3lper.com.MobLibrary;
 import me.ThaH3lper.com.Entitys.Mob;
@@ -16,8 +18,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -44,7 +48,19 @@ public class SpawnerPlace
 		this.radious = radious;
 		this.locked = false;
 		this.timesSpawned = 0;
-		this.sign = location.subtract(0, 1, 0).getBlock();
+		int addthis = 0;
+		int countoff = 0;
+		Logger log = me.ThaH3lper.com.MobLibrary.plugin.logger;
+		while(location.clone().add(0, 1, 0).getBlock().getType() == Material.OBSIDIAN || location.clone().add(0, 1, 0).getBlock().getType() == Material.REDSTONE_BLOCK){
+			loc.add(0,1,0);
+			countoff++;
+			if(countoff > 256){
+				countoff = 0;
+				log.log(Level.WARNING, "ERROR IN BLOCK CHECKER LINE 59 SPAWNERPLACE.JAVA", (Object)this);			
+			}
+			countoff++;
+		}
+		this.sign = loc.clone().subtract(0, 1, 0).getBlock();
 		spawnMob();
 	}
 	
@@ -52,18 +68,29 @@ public class SpawnerPlace
 	{	
 		if(!this.loc.getChunk().isLoaded())
 		{
-			this.loc.getChunk().load();
 			Iterator<Mob> itr = mobs.iterator();
-			while(itr.hasNext())
-			{
-				itr.next().loadChunk();
+			if(itr != null){
+				this.loc.getChunk().load();
+				while(itr.hasNext())
+				{
+					itr.next().loadChunk();
+				}
 			}
 		}
 		if(mobs.size() == 0){
 			sign.setType(Material.REDSTONE_BLOCK);
+			sign.getLocation().add(2, 0, 0).getBlock().setType(Material.OBSIDIAN);
 		}
 		else if(mobs.size() > 0){
 			sign.setType(Material.OBSIDIAN);
+			for(Mob mob:this.mobs){
+				if(mob.getEntity().getHealth() < mob.getEntity().getMaxHealth()){
+					sign.getLocation().add(2, 0, 0).getBlock().setType(Material.REDSTONE_BLOCK);
+				}
+				else{
+					sign.getLocation().add(2, 0, 0).getBlock().setType(Material.OBSIDIAN);
+				}
+			}
 		}
 		tick++;
 		if(tick >= interval && locked == false)
@@ -78,15 +105,15 @@ public class SpawnerPlace
 		while(itr.hasNext())
 		{
 			Mob mob = itr.next();
-			if(mob.getEntity().getType() == EntityType.ENDER_DRAGON){
-				LivingEntity mobEnt = mob.getEntity();
-				PotionEffect pot = new PotionEffect(PotionEffectType.SLOW,200,3);
-				mobEnt.addPotionEffect(pot);
-			}
 			if(mob == null)
 			{
 				itr.remove();
 				continue;
+			}
+			if(mob.getEntity().getType() == EntityType.ENDER_DRAGON){
+				LivingEntity mobEnt = mob.getEntity();
+				PotionEffect pot = new PotionEffect(PotionEffectType.SLOW,200,3);
+				mobEnt.addPotionEffect(pot);
 			}
 			if(!mob.getLocation().getChunk().isLoaded())
 			{

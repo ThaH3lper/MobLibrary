@@ -84,6 +84,11 @@ public class SpawnerHandler
 			while(mobItr.hasNext())
 			{
 				Mob mTemp = mobItr.next();
+				if(mTemp == null)
+				{
+					itr.remove();
+					continue;
+				}
 				if(mTemp.getLocation().getChunk().equals(c))
 					return true;
 			}

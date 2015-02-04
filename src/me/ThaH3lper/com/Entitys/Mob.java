@@ -56,10 +56,14 @@ public class Mob
 	private boolean arrowImmune;
 	private boolean deathBroadcast;
 	private int numberOfAdds;
+	private double maxHealth;
+	private Location lastLocation;
+	private int timesInLastLocation;
 	
 	public Mob(LivingEntity entity, int damage, String name, List<String> drops, List<String> skills, boolean epicImmune, boolean arrowImmune, boolean deathBroadcast)
 	{
 		this.entity = entity;
+		this.setMaxHealth(entity.getMaxHealth());
 		this.damage = damage;
 		this.name = name;
 		this.drops = drops;
@@ -278,10 +282,12 @@ public class Mob
 					if(inventory != -1){
 						looter.getInventory().addItem(stack);
 						looter.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "LOOT REWARDED! CHECK YOUR INVENTORY!");
+						this.lootRecipiant++;
 					}
 					else{
 						entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
 						looter.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "OH NO! YOUR INVENTORY WAS FULL LOOT DROPED ON GROUND!" + stack.getType().toString());
+						this.lootRecipiant++;
 					}
 				}
 				else{
@@ -313,7 +319,6 @@ public class Mob
 					entity.getWorld().dropItemNaturally(entity.getLocation(), stack);
 				}
 			}
-			this.lootRecipiant++;
 		}
 	}
 	
@@ -527,6 +532,30 @@ public class Mob
 		}
 		return this.lootPlayers.get(lootRecipiant);
 
+	}
+
+	public double getMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(double maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
+	public Location getLastLocation() {
+		return lastLocation;
+	}
+
+	public void setLastLocation(Location lastLocation) {
+		this.lastLocation = lastLocation;
+	}
+
+	public int getTimesInLastLocation() {
+		return timesInLastLocation;
+	}
+
+	public void setTimesInLastLocation(int timesInLastLocation) {
+		this.timesInLastLocation = timesInLastLocation;
 	}
 
 }

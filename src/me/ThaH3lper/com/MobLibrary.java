@@ -38,7 +38,6 @@ public class MobLibrary extends JavaPlugin{
 		PluginDescriptionFile pdfFile = this.getDescription();
 		this.logger.info(pdfFile.getName() +  " Has Been Disabled!");
 	}
-	
 	@Override
 	public void onEnable()
 	{

@@ -12,7 +12,9 @@ import me.ThaH3lper.com.SaveLoad.SaveLoad;
 import me.ThaH3lper.com.Spawner.SpawnerHandler;
 import me.ThaH3lper.com.Spawner.SpawnerPlace;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,7 +25,10 @@ import org.bukkit.inventory.ItemStack;
 
 public class CommandHandler implements CommandExecutor
 {
-	final String VERSION = ChatColor.RED + "Version 0.9 ALPHA";
+	final String VERSION = ChatColor.RED + "Version 1.2 BETA";
+	public static List<String> mobsList = new ArrayList<String>();
+	public static List<Location> mobsFound = new ArrayList<Location>();
+	public static List<Location> mobLocations = new ArrayList<Location>();
 	
 	private String head = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
 	private String ihead = ChatColor.GREEN + "vVv----------[" + ChatColor.GOLD + ChatColor.BOLD + " ITEM LIBRARY " + ChatColor.RESET + ChatColor.GREEN + "]----------vVv";
@@ -46,15 +51,17 @@ public class CommandHandler implements CommandExecutor
 				p.sendMessage(head);
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib ver" + ChatColor.DARK_GREEN + " Version Info");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mobs" + ChatColor.DARK_GREEN + " to go to Mob Libaray");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mob [name]" + ChatColor.DARK_GREEN + " spawn mob at your location");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib items" + ChatColor.DARK_GREEN + " to go to Item Libaray");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib locations" + ChatColor.DARK_GREEN + " Mob spawner locations");
-				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mobtimers" + ChatColor.DARK_GREEN + " get boss spawn timer info");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib mobtimers [index]" + ChatColor.DARK_GREEN + " get boss spawn timer info");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib load" + ChatColor.DARK_GREEN + " to read sign locations from memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib save" + ChatColor.DARK_GREEN + " to write sign locations to memory");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib backup" + ChatColor.DARK_GREEN + " to save signs to backup file");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib restore" + ChatColor.DARK_GREEN + " to restore signs from backup file");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib local" + ChatColor.DARK_GREEN + " get local mob info /lib local");
 				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib teleport" + ChatColor.DARK_GREEN + " teleport nearby mobs");
+				p.sendMessage(ChatColor.DARK_GREEN + "Type " + ChatColor.WHITE + "/lib teleto [name] [index]" + ChatColor.DARK_GREEN + " teleport to mob with name");
 			}
 			if(args.length == 1)
 			{
@@ -93,13 +100,6 @@ public class CommandHandler implements CommandExecutor
 				{					
 					p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD +  "Listing Mob Locations:");
 					for(String s : getSignLocations())
-						p.sendMessage(s);
-
-				}
-				else if(args[0].equalsIgnoreCase("mobtimers"))
-				{					
-					p.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + "Listing Mob Timers:");
-					for(String s : getMobTimers())
 						p.sendMessage(s);
 
 				}
@@ -157,13 +157,48 @@ public class CommandHandler implements CommandExecutor
 					else
 						p.sendMessage(ChatColor.RED + "There is no item like that!");
 				}
-				if(args[0].equalsIgnoreCase("mobs"))
+				if(args[0].equalsIgnoreCase("mob"))
 				{
 					Mob spawned = MobsHandler.SpawnAPI(args[1], p.getLocation());
 					if(spawned == null)
 					{
 						p.sendMessage(ChatColor.RED + "There is no mob with that name!");
 					}
+				}
+				if(args[0].equalsIgnoreCase("mobtimers"))
+				{
+					String message = ChatColor.GREEN + "" + ChatColor.BOLD + "Listing Mob Timers ";
+					if(mobsList.size() > 0){
+						mobsList.clear();
+					}
+					for(String s : getMobTimers()){
+						mobsList.add(s);
+					}
+					message += " Page " + args[1] + " of " + (mobsList.size()/10+1) + " Pages";
+					p.sendMessage(message);
+					int indexMaster = Integer.parseInt(args[1]);
+					if(indexMaster >= 0){
+						indexMaster = indexMaster * 10;
+						int index = indexMaster;
+						while(index > indexMaster - 10){
+							--index;
+							if(index < 0){
+								p.sendMessage(ChatColor.RED + "Must be more then 0");
+								break;
+							}
+							while(mobsList.size() - 1 < index){
+								index--;
+							}
+							p.sendMessage(mobsList.get(index));
+						}
+					}
+				}
+			}
+			if(args.length == 3){
+				if(args[0].equalsIgnoreCase("teleto"))
+				{					
+					p.sendMessage(ChatColor.GREEN + "Teleporting to " + args[1]);
+					getMobLocations(args[1], p, Integer.parseInt(args[2]));
 				}
 			}
 	}
@@ -203,6 +238,30 @@ public class CommandHandler implements CommandExecutor
 			locations.add(s);
 		}
 		return locations;
+	}
+	public void getMobLocations(String name, Player p, int number)
+	{
+		Iterator<SpawnerPlace> itr = SpawnerHandler.getSpanwerItr();
+		int index = 0;
+		boolean found = false;
+		while(itr.hasNext())
+		{
+			SpawnerPlace sp = itr.next();
+			if(sp.getCmdMob().equalsIgnoreCase(name)){
+				mobLocations.add(sp.getLocation());
+				found = true;
+				p.sendMessage(ChatColor.RED + "MOB FOUND " + index);
+			}
+		}
+		if(found == true){
+			Location teleport = mobLocations.get(number - 1);
+			p.teleport(teleport.add(0, 5, 0));
+			mobLocations.clear();
+		}
+		if(found == false){
+			p.sendMessage(ChatColor.RED + "Mob " + name + " " + " Number: " + number + " WAS NOT FOUND!");
+		}
+		mobLocations.clear();
 	}
 	
 	public List<String> getMobTimers()

@@ -9,7 +9,6 @@ import me.ThaH3lper.com.Spawner.SpawnerHandler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_7_R1.entity.CraftItem;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -56,7 +55,7 @@ public class EventListener implements Listener
 		mob.clearAdds();
 	}
 	
-	@EventHandler(priority = EventPriority.LOWEST)
+	@EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
 	public void ModHit(EntityDamageByEntityEvent e)
 	{
 		//if(e.getDamager() instanceof CraftItem){
