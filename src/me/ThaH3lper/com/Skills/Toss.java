@@ -32,8 +32,8 @@ public class Toss extends Skill
 		{
 			for(Player p : list)
 			{
-                float hForce = 20 / 10.0F;
-                float vForce = 15 / 10.0F;
+                float hForce = 20 / 25.0F;
+                float vForce = 15 / 20.0F;
 	            Vector v = p.getLocation().toVector().subtract(entity.getLocation().toVector());
                 v.setY(5);
                 v.normalize();
