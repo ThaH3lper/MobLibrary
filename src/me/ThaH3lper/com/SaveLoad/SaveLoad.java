@@ -86,14 +86,15 @@ public class SaveLoad
 	    {
 	    	return;
 	    }
-	    try
-	    {
-	        getCustomConfig().save(data);
-	    }
-	    catch(IOException ex)
-	    {
-	        mb.getLogger().log(Level.SEVERE, "Could not save config to " + data, ex);
-	    }
+	 //   try
+	  //  {
+	        //getCustomConfig().save(data);
+	  //  }
+	    //catch(IOException ex)
+	    //{
+	    //	ex.printStackTrace();
+	    //    mb.getLogger().log(Level.SEVERE, "Could not save config to " + data, ex);
+	   // }
 	    
 	}
 	

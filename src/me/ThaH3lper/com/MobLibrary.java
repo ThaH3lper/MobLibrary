@@ -56,8 +56,8 @@ public class MobLibrary extends JavaPlugin{
 		
 		ItemHandler.load();
 		//items = new SaveLoad(this, "Items.yml");
-		mobs = new SaveLoad(this, "Mobs.yml");
 		//loadItems = new LoadItems(this);
+		mobs = new SaveLoad(this, "Mobs.yml");
 		MobsHandler.load(this);
 		SaveLoad.readStoredData("StoredLocations.txt");
 				
@@ -66,7 +66,6 @@ public class MobLibrary extends JavaPlugin{
 		PluginManager manager = this.getServer().getPluginManager();
 		manager.registerEvents(new EventListener(), this);
 		manager.registerEvents(new SpawnerListener(this), this);
-		
 		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Ticker(), 10l, 20l);
 	}
 	
