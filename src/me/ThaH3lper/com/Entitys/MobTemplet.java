@@ -16,9 +16,11 @@ import org.bukkit.entity.Cow;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Endermite;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ghast;
 import org.bukkit.entity.Giant;
+import org.bukkit.entity.Guardian;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
@@ -329,6 +331,16 @@ public class MobTemplet
 		else if(s.equals("silverfish"))
 		{
 			Silverfish m = (Silverfish) loc.getWorld().spawnEntity(loc, EntityType.SILVERFISH);
+			return m;
+		}
+		else if(s.equals("endermite"))
+		{
+			Endermite m = (Endermite) loc.getWorld().spawnEntity(loc, EntityType.ENDERMITE);
+			return m;
+		}
+		else if(s.equals("gaurdian"))
+		{
+			Guardian m = (Guardian) loc.getWorld().spawnEntity(loc, EntityType.GUARDIAN);
 			return m;
 		}
 		return null;
